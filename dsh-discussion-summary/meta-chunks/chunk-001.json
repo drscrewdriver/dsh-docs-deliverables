@@ -1,0 +1,212 @@
+[
+ {
+  "number": 5777,
+  "title": "【社区反馈·第二轮】伪装型广告与自顶行为正在污染首页（#1477 假图群广告 + 自顶证据清单）",
+  "score": 128,
+  "cls": "A_治理反馈",
+  "preview": "# 【社区反馈·第二轮】伪装型广告与自顶行为正在污染首页（含证据清单）\n\n上一轮反馈后官方清理了全部群引流帖（含证据确凿的 #3383 夜间自顶帖），效果显著。但一种**更隐蔽的形态**正在占据首页：**伪装成项目/指南的广告帖 + 自动化顶贴**。\n\n## 🎯 案例一：#1477（\"插件实战指南共建\"）——伪装成项目的群广告\n\n- **实质是群引流帖**：正文引导加入\"deepseek-harness 插件实验室\"群，二维码放在评论区；\n- **基准测试截图是 AI 生成的假图**：楼主自己承认\"图片不是我跑的，只作讨论参考\"，评论区其他用户也确认\"那两张图确实不是实测截图\"；有社区用户直言\"**评论区怎么全是人机**\"；\n- **靠内容式评论持续霸榜 3 周以上**：8/14 发布，至今（9/6）仍挂在首页\"最新动态\"——评论区不断出现格式工整、来源可疑的\"投稿\"型评论（声称维护 33"
+ },
+ {
+  "number": 2714,
+  "title": "[RFC] dsh 社区插件互操作标准 v0.15 —— Manifest、Capability 协商与事件契约（社区讨论稿，征求意见）",
+  "score": 126,
+  "cls": "B_社区标准RFC",
+  "preview": "<html><head></head><body><h1>RFC: dsh 社区插件互操作标准 v0.15 —— Manifest、Capability 协商与事件契约</h1>\r\n\r\n字段 | 内容\r\n-- | --\r\n日期 | 2026-08-17\r\n状态 | 社区 Draft v0.15。社区讨论稿，不是官方标准，也不自称官方标准\r\n来源 | community#23（首轮 RFC + 13 条评论）→ community#24（v0.1 定稿 + 第三轮 5 条评论）→ 本文（v0.15）。另参考 dsh-community-fabric 中的 4 份 Draft RFC\r\n反馈方式 | 直接在本帖评论，或到 omdsh-dev/community 开 issue / PR。新评论不会静默改写 Draft：变更先过审查，再更新处置记录\r\n\r\n\r\n<p><em>本文由 dsh 社区生"
+ },
+ {
+  "number": 5098,
+  "title": "[Proposal] Read-only protocol-layer mount of TDCA governance onto deepseek-harness / 只读协议层挂载提案",
+  "score": 68,
+  "cls": "B_社区标准RFC",
+  "preview": "Dear deepseek-ai/deepseek-harness maintainers,\n\nFollowing an earlier outreach window (no response received — respectfully noted), and per TDCA governance rules (no-response after the window makes a mount eligible without requiring upstream approval, since your MIT license is itself the authorization basis), we are proceeding with a **read-only, proposal-level protocol mount** and notifying you pub"
+ },
+ {
+  "number": 3192,
+  "title": "[提案讨论] CHA2A：智能体生态身份与来源认证规范（draft）——四层标识 × 分层签名 × 认证等级",
+  "score": 59,
+  "cls": "B_社区标准RFC",
+  "preview": "> 面向：DeepSeek Harness 官方讨论区（社区提案，欢迎讨论与采纳）\n> 作者：wwumit（complianceHub 技术负责人；GitHub: github.com/wwumit）\n> 关联：生态现有开发规范（如 #2269 STANDARD）——本提案管\"是谁的、可信吗\"，与其互补\n\n---\n\n## 〇、提案定位\n\n本提案响应社区对插件生态安全与 provenance 的呼声（如 #1115\"尽快建立官方插件市场、做好标准和安全规范\"），目标：形成**智能体生态身份与来源认证规范**（讨论稿，简称 **CHA2A** —— Agent Identity & Source Attestation Framework；方法名 `did:cha2a` 已提交 W3C 注册，见 §1.4）——四层标识 + 分层签名 + 认证等级，解决\"谁发布的、是否被改、在哪些市场上架、可信"
+ },
+ {
+  "number": 2269,
+  "title": "[插件生态] 提案：市场识别层插件开发规范 STANDARD.md——仓库怎么写才能被市场正确收录/安装（欢迎社区讨论）",
+  "score": 56,
+  "cls": "B_社区标准RFC",
+  "preview": "我们是 [DSH 插件市场](https://github.com/bradeGithub/DSH-Plugins-Marketplace)（dsh-plugin-marketplace）的维护者。最近整理了一份 **[STANDARD.md — 市场识别层插件开发规范](https://github.com/bradeGithub/DSH-Plugins-Marketplace/blob/main/STANDARD.md)**，想抛出来和社区讨论，也希望能与官方文档形成互补。\n\n## 背景：一个没有被任何文档覆盖的空白层\n\n目前生态里的文档覆盖了两层，中间恰好缺一层：\n\n| 层 | 现有文档 | 覆盖内容 |\n|---|---|---|\n| DSH 框架层 | 官方 [publish.zh.md](https://github.com/deepseek-ai/deepseek-harne"
+ },
+ {
+  "number": 1846,
+  "title": "RFC: Community plugin registry contract + first-class plugin checks (registry v2 ? dsh plugin check ? dsh doctor)",
+  "score": 53,
+  "cls": "C_生态基础设施",
+  "preview": "# RFC: Community plugin registry contract + first-class plugin checks\n\n> English below · 中文摘要见后\n\n## Summary\n\nThree small, upstream-able pieces that make the plugin ecosystem safer to\nuse and easier to build on:\n\n1. **Community Plugin Registry Contract v2** — one shared JSON schema for\n   plugin catalogs, so a single entry drives web storefronts, CLI sync tools,\n   and in-harness agent tools identi"
+ },
+ {
+  "number": 5398,
+  "title": "DSH | DSH Feedback BridgeDSH社区反馈 | Turn conversations into reviewable community feedback",
+  "score": 46,
+  "cls": "E_社区流程渠道",
+  "preview": "> **Unofficial project, independently developed and maintained by a community member. It has not been reviewed or endorsed by DeepSeek. Please verify the source and assess the risks before use.**\r\n\r\n## Project\r\n\r\n**DSH Feedback Bridge — DSH 社区反馈**\r\n\r\n- GitHub: https://github.com/yx222yx/DSH-Feedback-Bridge\r\n- npm: https://www.npmjs.com/package/dsh-feedback-bridge\r\n- Release: https://github.com/yx2"
+ },
+ {
+  "number": 3592,
+  "title": "[提案讨论] CHA2A · 系列分册：验证互信——机器可读测试证据（Evidence Record）",
+  "score": 46,
+  "cls": "B_社区标准RFC",
+  "preview": "这是 #3192（CHA2A：智能体生态身份与来源认证）里**讨论到证据模型部分的正式化提案**，作为 CHA2A 系列的一个分册，已落地最小闭环，欢迎讨论和参与。\n\n**问题**：智能体插件的运行级测试成本高（资源 / 时间 / 环境），每个消费者都自己测不现实。测试结果互信 = 测过的验证者产出机器可读证据，其他人基于证据决策，不必重测。这正是 L4（生态验证）的关键问题。\n\n**提案：Evidence Record（机器可读测试证据）**\n\n1. **统一格式**：对齐 in-toto Attestation（Statement / Envelope / Bundle，业界标准，不自造）。predicate 能用现成直接用（`test-result`、`vuln` 引用 in-toto 规范 URI），缺的走 CHA2A 命名空间（内容完整性 / 静态扫描 / 来源 / 发行）。\n2"
+ },
+ {
+  "number": 4586,
+  "title": "[RFC / Feature Proposal] Built-in Extension Guardrails and Native Meta-Skill for Safe Skill and Plugin Authoring",
+  "score": 45,
+  "cls": "D_功能API提案",
+  "preview": "As DeepSeek Harness (dsh) expands its plugin and skill ecosystem, both human developers and autonomous AI agents frequently install, modify, or author extensions. However, small, common configuration mistakes—such as listing a Cordis plugin in package.json's dsh.profile.bundles or declaring { required: true } on a tool's child schema—result in fatal runtime panics during the boot phase (dsh-app-bo"
+ },
+ {
+  "number": 3640,
+  "title": "会话管理补全：生命周期控制 + 会话信箱（两个 RFC，求反馈与投票）/ Completing session management: lifecycle controls + session mailbox (two RFCs, feed",
+  "score": 45,
+  "cls": "E_社区流程渠道",
+  "preview": "---\r\n\r\n大家好。我想提出两个互补的 RFC，合起来把\"会话\"补全为可管理、可寻址的一等对象，希望听到团队与社区的反馈。\r\n\r\n**RFC1 会话生命周期控制**\r\n- 现状：`packages/host/apiproxy/src/api/rpc-map.ts` 没有 `session.resume`；`packages/host/apiproxy/src/api/workspace.ts:102` 的归档是单向的，注释已预留 \"a future unarchive restores its position\"；`SessionPersistence` 缝没有任何删除入口。\r\n- 提议：`session.resume` RPC + `workspace.unarchiveSession` + 基于 `SessionPersistence` 缝的两步删除（先归档、仅归档态可删、删除需客户"
+ },
+ {
+  "number": 5598,
+  "title": "# RFC: CCP 协议能力发现层 — 让 DSH Agent 通过信任向量搜索、评估、调用外部能力",
+  "score": 43,
+  "cls": "B_社区标准RFC",
+  "preview": "# RFC: CCP 协议能力发现层 — 让 DSH Agent 通过信任向量搜索、评估、调用外部能力\r\n\r\n> RFC 编号：CCP-RFC-001\r\n> 状态：草案（Draft）\r\n> 日期：2026-09-03\r\n> 作者：SkillMesh CCP 社区\r\n> 目标框架：DeepSeek-Harness (DSH) v0.8+\r\n> 协议：CCP v1.0.0\r\n\r\n---\r\n\r\n## 一、问题陈述\r\n\r\n### 1.1 当前 DSH 插件生态的痛点\r\n\r\nDSH 的插件系统已成熟，但插件的\"发现\"环节存在三个问题：\r\n\r\n1. **安装即承诺**：Agent 必须先安装插件才能知道它是否适合当前任务。这等于要求 Agent 在\"了解能力\"之前就做出\"使用能力\"的决策。\r\n2. **插件即孤岛**：每个插件独立声明自己的工具，没有统一的语义索引。Agent 无法跨插件搜索\"哪个插件"
+ },
+ {
+  "number": 2910,
+  "title": "RFC：统一资源渲染层 —— 可插拔的富输出渲染器 seam（对标 Jupyter Notebook）",
+  "score": 43,
+  "cls": "B_社区标准RFC",
+  "preview": "**英文摘要 / English summary**\n\nDSH's web chat currently renders only plain markdown plus absolute `http(s)://` images; there is no first-class seam for rendering workspace-relative resources (images, audio, video, media streams, icons, progress bars, tables/charts). A plugin must either rewrite the model output stream into the durable session log (polluting memory) or fork the whole markdown renderer"
+ },
+ {
+  "number": 3622,
+  "title": "[提案讨论] CHA2A · 系列分册：智能体身份协议（Agent Identity）",
+  "score": 41,
+  "cls": "B_社区标准RFC",
+  "preview": "作为 CHA2A 系列的一个新分册，我们提出**智能体身份协议（Agent Identity）**——`did:cha2a:agent` 从 CHA2A 命名第一天就在主规范里（§3.2 定义了 Agent 类型、信任域、出站签名 §4.5），本分册把它推进为可工作的身份协议，征求社区意见。规范文本：[agent-identity.md](https://github.com/wwumit/did-method-cha2a/blob/main/agent-identity.md)\n\n**背景**：CHA2A 在插件层已经跑通了\"注册表 + 凭证 + 证据\"的完整机制——403 个插件、内容完整性/来源/发行等级、机器可读测试证据（Evidence Record，对齐 in-toto）闭环可核验。机制既已就绪，把它延伸到智能体本身，是这套工作的自然推进；我们基于已有的规范基础与运行实证，认为"
+ },
+ {
+  "number": 2717,
+  "title": "建议：提供官方插件更新生命周期与“重启扩展服务”能力",
+  "score": 41,
+  "cls": "B_社区标准RFC",
+  "preview": "> 这是对 [#1231](https://github.com/deepseek-ai/deepseek-harness/discussions/1231) 的中文补充。#1231 主要讨论安全重启宿主；这里希望进一步讨论从“发现新版本”到“安全生效、失败回滚”的完整插件更新链路，以及长期是否需要类似 VS Code Extension Host 的独立扩展宿主。\r\n\r\n## 背景\r\n\r\n我正在为一个第三方插件增加基于 GitHub Tags 的版本检查。实际开发中发现：\r\n\r\n- **检查新版本比较容易**；\r\n- **把新版本安全安装并立即生效很难**。\r\n\r\n当前已加载的插件代码涉及 ESM 模块缓存和仍在运行的 Cordis 注册。插件直接覆盖自身文件后，很难保证旧代码已完整卸载；使用 cache-busting 重新导入还可能产生重复模块实例。另一方面，让普通插件自己处理 Wi"
+ },
+ {
+  "number": 2431,
+  "title": "Proposal: standard ASR / TTS / avatar-media capability seams for dsh",
+  "score": 41,
+  "cls": "B_社区标准RFC",
+  "preview": "# Upstream proposal: standard ASR / TTS / avatar-media capability seams for dsh\n\nStatus: submitted to `deepseek-ai/deepseek-harness` Discussions → Ideas (2026-08).\n\n## Motivation\n\nDeepSeek Harness already has excellent seams for `llm`, `web`, `fs`, `subprocess`,\n`jobs`, and the UI slot system. Conversational-avatar experiences add three more\ncapabilities that are currently re-implemented by every "
+ },
+ {
+  "number": 2281,
+  "title": "提案：模型路由插件的预组装 Hook 与 Session 事件注册 / Proposal: pre-assembly hook and Session-event registration",
+  "score": 40,
+  "cls": "D_功能API提案",
+  "preview": "### 中文摘要\r\n\r\n我们在实现一个 DSH 自适应模型路由插件时遇到了两个通用的 Host 扩展缺口：插件无法在依赖 provider 的 prompt assembly 之前读取当前 step 刚领取的消息并冻结模型选择；插件通过 `SessionEventMap` 声明的必需事件在重启后又无法被 persistence reader 可靠识别。我们在 fork 上实现了两个产品无关的候选契约，并通过组合冷加载探针。这里希望先确认这些能力是否符合 DSH 的扩展方向；当前仓库不接受外部 PR，因此先发布设计与实现证据，不请求直接合并。\r\n\r\n### Summary\r\n\r\nAn adaptive routing plugin needs to make one decision after the current messages are claimed but before prov"
+ },
+ {
+  "number": 4423,
+  "title": "Proposal: Workspace Provider API v1 for credential-free remote workspaces",
+  "score": 37,
+  "cls": "D_功能API提案",
+  "preview": "# Workspace Provider API v1 — bilingual design proposal / 工作区提供程序 API v1 双语设计提案\n\n> **English and 中文** — every section is presented in both languages. This is a community design proposal, not an official DSH feature or an external pull request.\n>\n> **英文与中文对照**——每一节均提供双语说明。本讨论是社区设计提案，不代表 DSH 官方功能，也不是外部 Pull Request。\n\n## 1. Background / 背景\n\n**English.** I am building a community plugin, [DSH SSH Forg"
+ },
+ {
+  "number": 2960,
+  "title": "RFC: Agent Loop 稳定性系统性问题汇总与改进建议（Agent Loop Stability: consolidated issues & proposal）",
+  "score": 37,
+  "cls": "D_功能API提案",
+  "preview": "> 本文由社区用户整理，汇总近期讨论区中分散的 Agent Loop 稳定性问题，并给出系统性改进建议。\n\n## 背景 Background\n\nAgent Loop 是智能体体验的核心（回合调度、状态重放、工具调用、错误恢复）。近期讨论区出现多起相互关联的 Loop 稳定性问题，但以零散 Bug 形式分散在各帖中。本文尝试整合为一份系统性清单，便于官方评估与排期。\n\n## 一、问题汇总（按环节分类）\n\n### 1. 会话状态重放（Replay State）—— 最严重\n\n| 现象 | 相关讨论 |\n|------|---------|\n| 回合中断/失败后会话永久损坏，继续对话报 `INVALID_REPLAY_STATE`，只能开新会话 | [#2913](https://github.com/deepseek-ai/deepseek-harness/discussions/2913) "
+ },
+ {
+  "number": 2550,
+  "title": "Proposal: provider-row extension slots / 提案：Provider 卡片扩展位",
+  "score": 36,
+  "cls": "D_功能API提案",
+  "preview": "## English\n\n### Summary\n\nThis proposal adds two generic, typed extension slots to each configured provider row in **Settings → Models**:\n\n- `settings.models.provider.action` — compact feature-owned actions beside the provider controls.\n- `settings.models.provider.summary` — compact feature-owned status below the provider row.\n\nThe owner payload exposes only provider-row context: `provider`, `displ"
+ },
+ {
+  "number": 2514,
+  "title": "提案：为 dsh profile 内置启动健康检查与依赖自动回滚（fail-fast 之后的恢复路径）",
+  "score": 36,
+  "cls": "C_生态基础设施",
+  "preview": "<details open>\n<summary><b>中文</b> 🇨🇳</summary>\n\n## 摘要\n\ndsh profile 是 fail-fast（快速失败）设计：任一插件加载失败即整体退出；配合 launchctl `KeepAlive` 这类守护，只会反复重启到同一个坏状态。目前**没有任何内置恢复路径**——没有\"上次健康状态\"快照、没有自动回滚、没有修复命令。一个坏插件就能让整个 GUI 失联，非开发用户没有任何自救手段。本提案请求内置恢复路径：启动成功后记录健康快照、启动失败自动回滚、并提供手动修复命令。\n\n## 问题\n\n1. **fail-fast 是对的默认，但失败之后无人接管**。加载器遇到第一个坏条目（缺依赖、包名错误、`apply` 抛错）就中止，但没有任何组件记住\"上一次能正常启动的状态\"。\n2. **守护进程只会重复失败**。系统级 `KeepAlive`"
+ },
+ {
+  "number": 631,
+  "title": "修复提案：移除 host-apiproxy 中重复的 Cordis 依赖键（含补丁分支）Proposal: Remove the Duplicate Cordis Dependency Key from host-apiproxy (Pat",
+  "score": 36,
+  "cls": "D_功能API提案",
+  "preview": "## 提案：移除 host-apiproxy 中重复的 Cordis 依赖键（含补丁分支）\r\n\r\n### 问题\r\n\r\n`packages/host/apiproxy/package.json` 的 `devDependencies` 重复声明了两次相同的依赖：\r\n\r\n```json\r\n\"@deepseek-ai/cordis\": \"workspace:^\"\r\n```\r\n\r\nBun 等会检查对象重复键的工具会因此报告：\r\n\r\n```text\r\nwarn: Duplicate key \"@deepseek-ai/cordis\" in object literal\r\nat packages/host/apiproxy/package.json:92:5\r\n```\r\n\r\n两个声明的值相同，因此该问题通常不会改变最终依赖解析结果，但重复键会使 manifest 产生歧义，并可能被严格解析器或其他包管"
+ },
+ {
+  "number": 3856,
+  "title": "RFC: 加一个 codex 引擎适配器插件（外部引擎，复用全部现有插件生态）",
+  "score": 35,
+  "cls": "B_社区标准RFC",
+  "preview": "## 一句话价值假设\n\nOpenAI Codex 已全面开源（Apache-2.0，含 codex-rs 核心、TypeScript/Python SDK、`codex exec` / app-server 协议）。以「外部引擎」插件的形式接入 DeepSeek Harness，让 DSH 用户直接获得 Codex 的循环能力（Responses 协议生态、沙箱、plan mode、review），同时 DSH 的会话持久化、UI 轨迹、审批、skill/workflow、subagent 等全部现有插件原样可用。\n\n## 为什么是「外部引擎插件」，而不是「换掉 agent-loop」\n\n- `dsh-agent-loop` 的 README 明确声明：它是 harness 中**唯一包含具体循环逻辑的包**，其他一切都是抽象服务或扩展点插件——替换点就是 `ctx.agents` 背后的"
+ },
+ {
+  "number": 2276,
+  "title": "[RFC] Ecosystem primitives: plugin discoverability, an optional identity seam, and a path to account-anchored sync",
+  "score": 35,
+  "cls": "B_社区标准RFC",
+  "preview": "**TL;DR** — Three asks, ordered by cost. (1) A tiny `package.json` convention so the world's dsh plugins become machine-discoverable; (2) an optional `Identity` service seam beside the existing anonymous-user-id (untouched); (3) longer-term: OIDC device flow on the platform side, so settings/plugin sync can anchor to official accounts. We are building the interim layers in the open and will happil"
+ },
+ {
+  "number": 5395,
+  "title": "Add a visible “Community Feedback” entry to the DSH Web UI建议增加官方的反馈功能",
+  "score": 34,
+  "cls": "E_社区流程渠道",
+  "preview": "#为什么需要这个功能\r\n很多有价值的反馈，往往产生在用户正在使用 DSH 对话的时候。此时对话中已经包含了问题场景、异常表现、错误信息、运行环境和预期结果。\r\n但目前用户需要离开 DSH，找到官方 Discussions、选择分类，再手动整理这些内容。这个过程对不熟悉 GitHub 的用户并不友建议的功能好，也容易遗漏重要信息。\r\n#建议的功能\r\n希望在 DSH Web 的侧边栏或帮助菜单中增加一个清晰可见的“社区反馈”入口。\r\n完整流程可以支持：\r\n1. 选择反馈类型，例如插件需求、功能建议、缺陷报告或其他反馈。\r\n2. 由用户主动选择可以使用的对话内容和诊断信息。\r\n3. 查找相关的官方 Discussions、现有插件和文档。\r\n4. 使用中文或英文整理反馈草稿。\r\n5. 在提交前查看并修改完整内容。\r\n6. 经用户明确确认后提交，或者导出 Markdown 手动发布。\r\n# Pro"
+ },
+ {
+  "number": 4364,
+  "title": "Upstream proposal — draft",
+  "score": 33,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\n`@deepseek-ai/dsh-host-webserver` currently exposes three composition seams: named routes (`register`), a single fallback seat (`registerFallback`), and index transforms (`tapIndex`). All three are *registration-time* extension points. There is **no request-time seam** — once the dispatch loop picks a winner (exact table → longest prefix → fallback), the winning owner unconditionally"
+ },
+ {
+  "number": 2413,
+  "title": "分享我们的生态组件：im-gateway（IM 网关插件）+ dsh-desktop（桌面客户端）",
+  "score": 33,
+  "cls": "E_社区流程渠道",
+  "preview": "\r\n<img width=\"1583\" height=\"992\" alt=\"screenshot_2026-08-16_08-26-56\" src=\"https://github.com/user-attachments/assets/e853c2ad-7399-4542-9317-6f44b657da1e\" />\r\n<img width=\"1583\" height=\"990\" alt=\"screenshot_2026-08-16_08-26-33\" src=\"https://github.com/user-attachments/assets/4e73d07d-224f-41a5-a445-6a5a300b72b1\" />\r\n<img width=\"1583\" height=\"991\" alt=\"screenshot_2026-08-16_08-26-17\" src=\"https://g"
+ },
+ {
+  "number": 2232,
+  "title": "分享我们的生态组件：im-gateway（IM 网关插件）+ dsh-desktop（桌面客户端）",
+  "score": 33,
+  "cls": "E_社区流程渠道",
+  "preview": "\r\n<img width=\"1583\" height=\"992\" alt=\"screenshot_2026-08-16_08-26-56\" src=\"https://github.com/user-attachments/assets/e853c2ad-7399-4542-9317-6f44b657da1e\" />\r\n<img width=\"1583\" height=\"990\" alt=\"screenshot_2026-08-16_08-26-33\" src=\"https://github.com/user-attachments/assets/4e73d07d-224f-41a5-a445-6a5a300b72b1\" />\r\n<img width=\"1583\" height=\"991\" alt=\"screenshot_2026-08-16_08-26-17\" src=\"https://g"
+ },
+ {
+  "number": 1920,
+  "title": "Proposal: first-class file snapshot + /rewind and batch-write confirmation guardrails for core (community plugins exist,",
+  "score": 33,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: file snapshot + `/rewind` and batch-write confirmation must be native core capabilities, not third-party plugins\r\n\r\n## 1. Background / Problem Statement\r\n\r\nWhile using DSH, an agent executed a Bash script that batch-modified workspace files, truncating and blanking the content of **multiple files at once** (a scripting bug wrote only the front-matter block back to each file). The damag"
+ },
+ {
+  "number": 1797,
+  "title": "Welcome to DeepSeek Harness Community - Please Read Before Posting",
+  "score": 33,
+  "cls": "E_社区流程渠道",
+  "preview": "Hi everyone - great to meet fellow Harness developers here.\r\n\r\nDeepSeek Harness is still an early preview, and there’s plenty we need to improve. Thanks for trying it this early and bearing with the rough edges.\r\n\r\nWhether you’re using Harness for real-world tasks, building plugins, or trying out new agent workflows, feel free to share what you’re working on in the relevant category. If something "
+ },
+ {
+  "number": 5327,
+  "title": "Proposal: URL-loadable DSH Bundles via a stable subscription manifest",
+  "score": 32,
+  "cls": "B_社区标准RFC",
+  "preview": "I would like feedback on adding URL-backed DSH Bundles as an optional delivery form for the existing profile Bundle model.\r\n\r\n\r\n## Motivation\r\n\r\nPackage installation remains the right default for public and reusable Bundles. However, deployment-specific or private Bundles are sometimes produced and hosted inside the same cloud environment where DSH runs. Requiring an npm or Git installation lifecy"
+ }
+]

@@ -1,0 +1,212 @@
+[
+ {
+  "number": 5191,
+  "title": "Great project — thanks for opening the community up!",
+  "score": 16,
+  "cls": "C_生态基础设施",
+  "preview": "Great project — thanks for opening the community up!\r\n\r\nI built [DSH Preset Market](https://dsh-preset.tech/), a browsable catalog for community Agent presets so you don't have to hunt through GitHub topics one repo at a time.\r\n\r\nWhat you get:\r\n\r\n48+ presets synced from #dsh-preset / #dsh-plugin repos — coding, multi-agent, platform adapters, vertical workflows, and more\r\nFormula at a glance — per"
+ },
+ {
+  "number": 5065,
+  "title": "Proposal: support multiline editing for active goal objectives",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nThe active goal editor currently uses a single-line text input. Longer objectives, especially objectives containing multiple requirements, are hard to review and edit in the narrow composer dock.\n\n## Proposed interaction\n\n- Replace the inline text input with a three-row textarea.\n- Preserve ordinary Enter as a newline.\n- Save with Ctrl+Enter (or Cmd+Enter on macOS), while retaining the"
+ },
+ {
+  "number": 5038,
+  "title": "DSH｜Blue｜为 DeepSeek Harness 打造的交互式终端 UI——一棵可热替换的 Cordis 插件树",
+  "score": 16,
+  "cls": "E_社区流程渠道",
+  "preview": "> [!IMPORTANT]\n> **非官方项目,由社区成员独立开发和维护。** Unofficial project — independently developed and maintained by a community member, not reviewed or endorsed by DeepSeek.\n\n## 项目地址 / Links\n\n- 仓库:https://github.com/dsh-blue/blue (MIT,开源)\n- 文档(中文优先):https://dsh-blue.dev/ · [English](https://dsh-blue.dev/en/)\n- npm:`@dsh-blue/blue` · 一体化启动器 `@dsh-blue/blue-cli`\n\n## 演示 / Demo\n\n![Blue 演示——流式回复、工具卡片与底部 dock 面板](h"
+ },
+ {
+  "number": 4942,
+  "title": "Proposal: persist the append watermark + per-session writer lock + lease before closers (closes the whole seq-corruption",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "A write-side proposal addressed to maintainers, moved out of the #1497 thread so it can be tracked as a topic. Every report in the session-corruption family — #1333, #1452, #1497, #1586, #2068, #2167, #3198, #4274, #4662 (canonical list, see the verification-side proposal) — is produced by one of three write-side gaps, and all three are fixable without touching the reader:\n\n1. **Persist the append"
+ },
+ {
+  "number": 4930,
+  "title": "【接入第三方模型BUG】委派子代理的权限范围在启动时已固定，但工具 schema 仍向其暴露沙箱升级字段——模型填了这些字段后，每次调用都在参数校验阶段失败",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "\r\n**DSH 版本**：0.1.1-rc.2（macOS；headless 与 GUI 会话均可复现）\r\n\r\n## 易复现第三方模型\r\nGPT系列\r\n\r\n## 摘要\r\n\r\n委派子代理（delegated child）的文件策略与审批状态在启动时即被固定（`approval/policy` 来源为 `delegation`——子代理无法升级权限，也无法发起审批）。然而 `bash` / `edit` / `write` 工具的 schema 仍向该子代理展示可选的 `sandbox_permissions` 与 `justification` 字段。部分模型有\"填满 schema 中所有可选字段\"的习惯；一旦填了，**每一次**工具调用都会在命令真正执行前被参数校验拒绝：\r\n\r\n```\r\nError: invalid justification: expected a non-empty "
+ },
+ {
+  "number": 4718,
+  "title": "Session Presentation protocol v2: an additive API for showing more than one Session at once (client-side, backward compa",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "### Motivation\n\nRight now the render layer treats \"the current Session\" as a single slot: one Session is mounted, everything else is torn down or hidden when you switch. That's the right default for most usage, but it also means a whole category of workflows — comparing two conversations side by side, keeping a reference session open while working in another — can't be built as a plugin on stock D"
+ },
+ {
+  "number": 4175,
+  "title": "Proposal + tested PoC: keep DSH bootable when an optional plugin bundle is incompatible",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "While maintaining an out-of-tree plugin (Codex Connect), we encountered the worst failure mode after a DSH upgrade: an incompatible plugin could prevent the DSH Web application shell from mounting, which also removed the settings/plugin-management path needed to diagnose or remove that plugin.\n\nI built a narrow local proof of concept against `deepseek-ai/deepseek-harness@b150a551b8d465e31e418e1b2e"
+ },
+ {
+  "number": 4138,
+  "title": "Draft Budget — see what your draft costs before you send it (`dsh-client-draft-budget`)",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "Know before you send: how many tokens that half-written prompt will cost, and how much of your context window it's about to eat.\n\n**Why:** The ContextMeter ring shows current occupancy, but nothing warns you that the draft you're typing will push the session to 90% — or blow past the window entirely. I checked the ecosystem (awesome list + this thread): usage dashboards are plentiful, but nothing "
+ },
+ {
+  "number": 3999,
+  "title": "Draft Keeper — auto-save and restore composer drafts per session (`dsh-client-draft-keeper`)",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "Your half-written prompt now survives a page reload, a browser crash, or an accidental tab close.\n\n**Why:** Composer drafts were browser-local state only — anything not yet sent was lost on reload. I checked the ecosystem (awesome list + this thread) and found history-recall plugins that restore drafts when navigating history, but nothing doing automatic persistence & recovery — so this fills the "
+ },
+ {
+  "number": 3908,
+  "title": "[BUG] Tool Result 内容类型契约不一致，导致 post-tool LLM step 崩溃：content.some is not a function",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "在正常的 DSH Agent Tool Loop 中，工具执行完成后产生的 `tool-result`，\r\n其内部 `content` 在实际运行时可以是字符串。\r\n但 `@deepseek-ai/dsh-llm` 中的 `contentHasImage()` 默认假设\r\n`tool-result.content` 一定是数组，并直接调用 `.some()`。\r\n因此，在工具返回普通文本字符串后，下一轮 LLM 请求准备阶段会稳定触发：\r\n```text\r\nTypeError: content.some is not a function\r\n\r\n目前已在以下版本中确定性复现：\r\n@deepseek-ai/dsh-llm@0.1.0-rc.7\r\n@deepseek-ai/dsh-llm@0.1.1-rc.2\r\n其中 0.1.1-rc.2 为当前 npm 最新版本，使用全新隔离安装环境验证，未"
+ },
+ {
+  "number": 3480,
+  "title": "Detect and recover from degenerate repeated model output (repetition guard) / 检测并恢复退化的重复模型输出（重复守卫）",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Problem / 问题\r\n\r\nModels sometimes degenerate into repeating one word, phrase, or n-gram until the output-token ceiling. The harness currently accepts such responses as an ordinary completed turn: the stream finishes with `stop` or `max-tokens`, neither of which is a failure, so nothing truncates the loop and no retry is triggered. The user is left with a long, unusable, token-wasting reply, and "
+ },
+ {
+  "number": 3452,
+  "title": "DSH | dsh-showcase | Turn session exports into redacted README demos",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "> **Unofficial community project, independently developed and maintained. Not reviewed or endorsed by DeepSeek.**\n\n## dsh-showcase\n\nProject: https://github.com/STFQ/dsh-showcase  \nRelease: https://github.com/STFQ/dsh-showcase/releases/tag/v0.1.1\n\n`dsh-showcase` turns a DeepSeek Harness session export into a short, redacted animation for a GitHub README, release, issue, or plugin launch. It renders"
+ },
+ {
+  "number": 3426,
+  "title": "Proposal: Make 'lessons learned' a harness-level mechanism (failure → auto-inject → behavior gate)",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Proposal: Make \"lessons learned\" a harness-level mechanism, not an agent-behavior reminder\n\n### The problem\n\nEvery LLM-based agent harness — including DSH — has the same core flaw: **the model is stateless (re-reasons from scratch every turn), so \"lessons learned\" only work if the agent happens to re-activate them in context at the exact moment it needs them.** Writing a rule in the persona, or"
+ },
+ {
+  "number": 3409,
+  "title": "dsh-reference-anything：像Codex一样在DSH里@任何东西！（相较于 0.1.0-rc.8，我们扩展了直接引用来自外部网页的Chatbot对话，不断增加中~）",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "> **非官方项目，由社区成员独立开发和维护。**  \r\n> **Unofficial project, independently developed and maintained by a community member.**\r\n\r\n如果觉得插件有用欢迎多多点Star🌟关注~ 我们会不断更新！\r\nIf you find the plugin useful, please consider giving it a Star 🌟 and following us! We’ll continue to update and improve it!\r\n\r\n## 中文介绍\r\n\r\n**项目地址：**  \r\nhttps://github.com/Chael-Chael/dsh-reference-anything\r\n\r\n### 项目介绍\r\n\r\n`dsh-reference-anything` 扩展"
+ },
+ {
+  "number": 3394,
+  "title": "llm-pi-ai 让自定义 OpenAI 兼容网关可选思考强度（新增 supportsDeveloperRole 回退 system 角色；参考实现，AI 代写，仅供参考）",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "## 正文 | Body\r\n\r\n### 摘要 | Summary\r\n\r\n**中文**：我是 DSH 使用者。用自定义 OpenAI 兼容网关（如百炼 token plan 的 compatible-mode 端点）时，推理模型**选不了努力程度**：界面上没有档位可选，一旦发起带档位（推理）的请求还会 400。原因：pi-ai 对所有未收录的网关默认按\"支持 `developer` 角色\"探测，而不少网关只认 `system`。我加了一处小改动：给 `dsh-llm-pi-ai` 透传 `supportsDeveloperRole` 兼容开关，让这类网关可以显式声明\"不认 `developer`\"，思考强度档位即可正常使用。改动由 AI agent 代写，**仅供参考**——我了解官方目前不接受外部 PR，请把它当作讨论素材，欢迎任何批评与建议。\r\n\r\n**English**: I'm a"
+ },
+ {
+  "number": 3297,
+  "title": "Proposal: choose the execution model in the Plan Review UI",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nThe current Plan Review surface lets the user approve a plan or keep planning, but it does not expose model selection. After approval, execution therefore continues with the model that produced the plan.\n\nA common workflow would benefit from separating the planner and executor. For example, a stronger reasoning model can prepare the plan, while a faster or cheaper model carries it out."
+ },
+ {
+  "number": 3247,
+  "title": "DSH | dsh-security — Unified Security Check Framework for DSH Ecosystem",
+  "score": 16,
+  "cls": "E_社区流程渠道",
+  "preview": "> **Unofficial project, independently developed and maintained by a community member.**\n\n## Background\n\nDSH ecosystem exploded after open-sourcing: 2,958 plugin repos, 8+ curated lists, new plugins hourly. But there's **no unified security check framework** — security tools work in isolation, and users can't get a complete security posture in one pass.\n\n`dsh-security` fills this gap: a composable "
+ },
+ {
+  "number": 3212,
+  "title": "dsh-crew — 把一次任务交给一支角色小队：产品经理就在你的会话里，评审员只有只读工具，只有它能动 git",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "非官方项目，由社区成员独立开发与维护。\n\n仓库：https://github.com/stuarthu/dsh-crew ·  npm 包名：`dsh-crew`（0.4.3）· MIT 许可\n\n## 它是什么\n\n`dsh-crew` 把一次任务交给一支小队来做。你自己的 dsh 会话变成 **产品经理**，也是唯一跟你说话的角色。它先写清「做完」的标准，等你确认，再叫 **架构师** 做设计、**工程师** 写代码、**代码 / 安全 / 文档评审员** 和 **测试** 做检查。**调研员** 会先在仓库里找答案，所以你只会被问文件回答不了的问题。\n\n```sh\ndsh plugin --profile tui add dsh-crew   # 或 --profile web\n```\n\n重启 dsh，开会话时选 **Crew** 这个预设。\n\n## 分成两半，因为工具不住在 profi"
+ },
+ {
+  "number": 3191,
+  "title": "[Proposal] Session event registration for out-of-tree plugins — unknown event types refuse resume (dsh-click/observed|ac",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## 问题 Problem\n\n第三方插件写入的自定义会话事件（session events）会导致**会话恢复崩溃**（resume refused）。\n\ndsh-click（桌面控制插件，`dsh-click/observed` / `dsh-click/action` 审计事件）实测在 rc.6 / rc.7 上触发：\n\n```\nsession \"...\" contains event type \"dsh-click/action\" (seq N) unknown to this\nharness and not marked ignorable; refusing to interpret the log — it was\nlikely written by a newer harness\n```\n\n后果：QQ/IM 客户端恢复会话失败 → 强制 `create` 新会话 → **历史"
+ },
+ {
+  "number": 3119,
+  "title": "Proposal: make dsh-acp-demo directly runnable from external ACP clients",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "I would like to integrate DeepSeek Harness with external ACP orchestrators such as Harbor. The current published `dsh-acp-demo` binary defaults to `./cordis.yml`, but the npm package does not ship that file, so `npx @deepseek-ai/dsh-acp-demo` cannot start from an arbitrary task workspace without an out-of-band configuration file.\r\n\r\nI prepared a small patch that:\r\n\r\n- bundles a minimal DeepSeek + "
+ },
+ {
+  "number": 3104,
+  "title": "SDK: bridge `ctx.userQuestions` to out-of-process clients (request/answer protocol)",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Context\n\nWe drive a long-lived Harness runtime via `packages/sdk`. Our product surfaces clarification and plan-review prompts to end users in its own UI. The in-repo `user-questions` capability (`ctx.userQuestions.ask()`, plan-review intent, `tool-ask-user`) is exactly the seam we want — but there is no provider implementation that transports questions to an SDK client.\n\n## Current behavior\n\n- "
+ },
+ {
+  "number": 3064,
+  "title": "🎉 dsh-kingdom v0.4.0 — 王国治理插件：换届与会话归属",
+  "score": 16,
+  "cls": "C_生态基础设施",
+  "preview": "# 🎉 dsh-kingdom v0.4.0 — 王国治理插件的「换届与会话归属」\n\n**Repo:** [github.com/lusblead/dsh-Kingdom](https://github.com/lusblead/dsh-Kingdom) · topic: `dsh-plugin`\n**Release:** [v0.4.0](https://github.com/lusblead/dsh-Kingdom/releases/tag/v0.4.0)\n\n一个 DeepSeek Harness (DSH) 插件：在会话里用自然语言创建并治理一个「最小王国」——\n领地 / 角色绑定 / 任务治理闭环（Worker Claim ≠ Fact）/ 执行生命周期 / 本地 GUI 数据网关。\n\n## 安装（README 方式 A / B）\n```bash\ndsh plugin --prof"
+ },
+ {
+  "number": 3055,
+  "title": "Custom presets combining Standard with a persistent shell fail to mount on rc.7 (tool \"bash\" is already registered in th",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "**Context.** I'm maintaining a community agent preset (`dsh-minimal-anchored`) that bootstraps the first request on the official Minimal tool schemas (persistent `bash` + `str_replace_editor`) and then promotes to the full Standard catalog. Its composition is built by combining the official `minimal` and `standard` preset compositions, i.e. it mounts both:\n\n- `@deepseek-ai/dsh-tool-bash` (Standard"
+ },
+ {
+  "number": 2846,
+  "title": "[Bug] web profile 崩溃 Cannot read properties of undefined reading prepare — dsh-tools 多实例 Symbol 契约冲突",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "mutation {\n  createDiscussion(input: {\n    repositoryId: \"R_kgDOT3T1gw\"\n    categoryId: \"DIC_kwDOT3T1g84DDSUb\"\n    title: \"[Bug] web profile 崩溃 Cannot read properties of undefined reading prepare — dsh-tools 多实例 Symbol 契约冲突\"\n    body: \"# [Bug] web profile 在模型调用工具时崩溃：`Cannot read properties of undefined (reading 'prepare')`\n\n> 提交渠道说明：官方仓库 `deepseek-ai/deepseek-harness` 已关闭 Issues / Pull Requests，仅开"
+ },
+ {
+  "number": 2600,
+  "title": "提案：新增参与布局的右侧 Shell 插槽，便于更多长期存在的看板插件置入",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "### 背景\r\n\r\n当前 `ui-layout` 提供 `sidebar`、`conversation`、`details` 和 `shell.overlay` 等插槽：\r\n\r\nhttps://github.com/deepseek-ai/deepseek-harness/blob/master/packages/client/ui-layout/src/client/index.ts\r\n\r\n其中 `shell.overlay` 是覆盖整个应用框架的悬浮层，适合 Toast、徽标、浮动提示等内容，但它不参与页面布局。\r\n\r\n当外部插件需要提供长期存在、可交互的右侧工作面板时，例如：\r\n\r\n- 文件浏览与预览\r\n- 交互式终端\r\n- 编辑器或任务面板\r\n- 调试、监控等辅助工具\r\n\r\n使用 `shell.overlay` 会覆盖中间的会话区域，而不是让会话区域自然缩窄。其他现有插槽也不完全适"
+ },
+ {
+  "number": 2543,
+  "title": "dsh-dev — scaffold extension development: agent presets, plugin bundles, MCP wiring (community CLI + skill)",
+  "score": 16,
+  "cls": "C_生态基础设施",
+  "preview": "**[dsh-dev](https://github.com/Qidianyan/dsh-dev)** is the second tool in my terminal toolbox for dsh (after [dshctl](https://github.com/Qidianyan/dshctl)).\n\n## The gap it fills\n\nThe official tutorials in `docs/user/develop/` are excellent and stay the single source of truth — dsh-dev does **not** restate them. What it adds is the \"what do I build → which path do I take\" layer plus scaffolding, wh"
+ },
+ {
+  "number": 2530,
+  "title": "dshctl — drive dsh entirely from the terminal (community CLI + Claude Code skill, no web UI needed)",
+  "score": 16,
+  "cls": "E_社区流程渠道",
+  "preview": "Hi! I built a small community tool for everyone who loves dsh but prefers the terminal: **[dshctl](https://github.com/Qidianyan/dshctl)**\n\n## What it is\n\nThe Web UI is just a browser shell over the Host HTTP API. dshctl calls that API directly, so every web-UI action works from the CLI (and from CI/scripts):\n\n- **Sessions & tasks**: `ask` (create session → send → wait → print final reply), `send`,"
+ },
+ {
+  "number": 2424,
+  "title": "任何 Editor，皆可成为 DSH Editor：用 MCP Apps 打通编辑、保存与 Agent 回读",
+  "score": 16,
+  "cls": "C_生态基础设施",
+  "preview": "\n> **任何 Editor，皆可成为 DSH Editor。**\n\n## 最新更新：v0.3.1\n\n[`@creative-dswork/dsh-uni-editor@0.3.1`](https://www.npmjs.com/package/@creative-dswork/dsh-uni-editor) 已发布：\n\n- 修复从 Session 历史恢复 MCP App 时使用旧进程 `viewId` 的问题；持久化结果会在校验工具名和 `ui://` Resource 后重新绑定当前 MCP Server；\n- Session Header 提供持续可达的 MCP Apps 入口，可在同一 Session 的多个 App 之间切换；\n- App 可在 inline 与 fullscreen 之间移动，不重建 iframe 或 AppBridge，因此未保存的 View 状态不会因切换"
+ },
+ {
+  "number": 2283,
+  "title": "关于修改dsh的“取消”行为的提案",
+  "score": 16,
+  "cls": "E_社区流程渠道",
+  "preview": "对于dsh而言，其“取消”行为的实现需要等当前tool call轮次中止之后，才会取消。但是这一行为在很多情况下并不理想，用户点击取消的同时，也会想要中断tool call。因此，建议修改“取消”行为，让用户可以在设置中选择直接取消、还是在tool call结束之后取消。\r\n\r\n# 以下为DeepSeek自己的分析报告：\r\n\r\n## 摘要\r\n\r\n当 agent 正在执行工具调用时点击**停止**,该工具调用并不会被取消。回合会一直等待所有\"已启动\"的工具分派结束(即 **drain 排空语义**),因此会话看起来完全无法中断:在工具返回或触发超时之前没有任何反应,之后回合才以 `aborted` 结束。对于完全不响应 abort 信号的工具(MCP 工具、某些 provider 请求、worker 线程运行、ralph/goal 轮次等),会话可能被阻塞非常久。\r\n\r\n## 环境\r\n\r\n-"
+ },
+ {
+  "number": 2047,
+  "title": "RFC: Kernel X-Ray as a foundation for automatic AMDGPU kernel optimization",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "Hi! I am exploring a small external DSH plugin around AMD GPU kernel development, and I would like to check whether the idea and its Plugin/Skill boundary match how the Harness team expects external plugins to be designed.\n\nRepository: https://github.com/yujiaoliang/dsh-plugin-amdgpu-inspect\n\n## The idea: give an agent \"X-ray vision\" into a GPU kernel\n\nWhen an agent works on a HIP kernel today, it"
+ }
+]

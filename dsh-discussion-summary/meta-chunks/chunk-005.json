@@ -1,0 +1,212 @@
+[
+ {
+  "number": 3474,
+  "title": "# 提议：把\"治理护栏\"做成 Harness 的一层可选插件 — PDSS 实践建议与试用邀请",
+  "score": 21,
+  "cls": "B_社区标准RFC",
+  "preview": "\r\n\r\n> **前言**：我做 PDSS（协议驱动共生系统）两个月，定位是**治理协议层**——和你正在做的 DeepSeek Harness（执行运行时）层位不同，但中间有一段空白我们自己撞得很痛：用户-代理关系、漂移自检、反谄媚护栏、元审归位。8/14 我们做过架构对照（PDSS ↔ Harness，互补非替代），本帖把那一侧的具体构件拉出来，看看能不能以**可选插件**形式落到 Harness 里。**试用邀请在文末，欢迎打脸。**\r\n\r\n## 一、我们看到的盲区（Harness 已强、未覆盖的部分）\r\n\r\nHarness 的执行层很扎实——Landlock 隔离、结构化 append-only 轨迹、插件化治理组件。但跑过几百次跨域真实工作后，我们发现下面这些**治理层盲区**目前没有原生组件可以挂：\r\n\r\n1. **用户-代理关系的终裁位**：什么时候 AI 应该顶住用户（\"这件"
+ },
+ {
+  "number": 3208,
+  "title": "[Feature Proposal] Configurable idle Enter behavior: Enter = Send or Newline (Cmd/Ctrl+Enter to send)",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "**Summary**\n\nThis proposal adds a user-facing preference to the Web composer: when the agent is **idle**, pressing Enter can either send the message (current default, unchanged) or insert a newline — with Cmd/Ctrl+Enter always sending. This matches the familiar chat-style keybinding (Slack/WeChat/Telegram desktop). When the agent is **running**, the existing `busyEnter` Queue/Steer mapping is full"
+ },
+ {
+  "number": 2937,
+  "title": "提案：为 Bundle patch 增加按插件身份校验的整行替换能力",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "## 背景\r\n\r\nDeepSeek Harness 的 profile 通过有序 Bundle layer 组合 Loader entry。当前普通 patch 可以按 `id` 覆盖字段，也可以 `insert` 新条目；但 patch 外层的 `name` 是身份匹配条件，不是可写字段，因此树外 Bundle 无法把一个已有 row 的插件实现替换成另一个实现。\r\n\r\n对 `agent-loop` 这类单一所有者 seam，这会留下两个不安全的绕过方式：\r\n\r\n- 用相同 `id` 插入新插件，最终因重复 id 启动失败；\r\n- 禁用旧 row，再用另一个 id 插入新插件，配置中同时存在两个所有者，且 stale disable 可能让两个 AgentFactory 同时注册。\r\n\r\n我检索了现有 Discussions，没有找到讨论“Bundle 按预期插件身份原子替换完整 row"
+ },
+ {
+  "number": 2598,
+  "title": "性能优化提案：历史加载剔除流式分块事件（附完整实现与测试）",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "## 中文\n\n**提案：`session.history` 历史页省略 `assistant/chunk` 流式分块增量**（附完整实现、测试与 Agent Note，欢迎直接取用）。\n\n### 现象\n\n手机端（经 Tailscale）打开会话历史需要 **10 秒以上**；桌面端随会话增长也越来越慢。\n\n### 根因（实测）\n\n`session.history` 按消息数分页（默认 50 条消息），然后发送页内 **seq 范围内的全部事件**。实测一个普通的重负载会话：50 条消息展开为 **26,562 条 `assistant/chunk` 事件、约 5.4MB JSON**——其中约 99% 是仅用于流式动画的分块增量。`assistant/message` 事件本身携带完整内容（`message.content`），对话 reducer 渲染历史时直接使用这些事件，分块对历史查"
+ },
+ {
+  "number": 2497,
+  "title": "[社区项目 / Community Project] DSH Get - 可搜索的 DeepSeek Harness 插件目录（2460+ plugins）",
+  "score": 21,
+  "cls": "E_社区流程渠道",
+  "preview": "大家好，我做了一个面向 DeepSeek Harness 社区的非官方插件发现网站：**DSH Get**。\r\n\r\n网站：https://www.dshget.com/\r\n\r\n目前收录并去重了 **2,460 个插件**，希望让大家更方便地查找、比较和安装插件：\r\n\r\n- 聚合 4 个公开数据源，并标注每个插件的来源\r\n- 支持中英文页面、关键词搜索和分类筛选\r\n- 每个插件都有独立详情页、仓库链接和可复制的安装命令\r\n- 提供插件知识图谱，方便发现相关插件\r\n- 目录会持续同步更新\r\n\r\n欢迎大家试用，也欢迎反馈遗漏、分类错误或其他改进建议。\r\n\r\n> **非官方声明：** DSH Get 是社区独立维护的发现目录，与 DeepSeek 无关联，也不代表官方推荐。收录不等于安全审核；安装第三方插件前请检查其源码、权限和风险。\r\n\r\n---\r\n\r\nHi everyone, I built "
+ },
+ {
+  "number": 1495,
+  "title": "Proposal: session-level context window override in the model menu",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: session-level context window override in the model menu\r\n\r\n## Motivation\r\n\r\nThe effective context capacity a session runs under currently comes from exactly one source: whatever the adapter's model declaration says (`contextWindow` on the resolved model). That value drives the ContextMeter pressure ring and compaction-basic's pressure threshold — but it is invisible and untouchable fro"
+ },
+ {
+  "number": 925,
+  "title": "[插件自荐] Project Blueprint — 一句话为项目建立完整 AI 编程规范体系（AGENTS.md + 文档 + CI + 测试制度，已实测可用）",
+  "score": 21,
+  "cls": "C_生态基础设施",
+  "preview": "大家好，DSH 开源后我第一时间把项目适配成了插件，今天来展示一下，先给结论：一条命令即可安装使用。\r\n\r\nbash\r\n复制\r\ndsh plugin --profile web add 'github:shuguang1994/project-blueprint'\r\n重启 dsh web 后，对新项目说一句\"初始化这个项目的开发规范\"，它会自动完成：扫描项目 → 推断技术栈 → 生成整套规范体系。\r\n\r\n它解决什么问题\r\nAGENTS.md 已成为 2026 年的行业标准（60,000+ 开源仓库在用），但手工写一份高质量 AGENTS.md 需要半天到一天，每个新项目都要重复一遍。Project Blueprint 让这件事变成一句话。\r\n\r\n核心能力\r\n自主发现引擎：扫描项目文件 → 分类 → 推断技术栈，不预设固定文件清单（零固定表设计）\r\n三层递进推断：70+ 组件知识库精确匹配 "
+ },
+ {
+  "number": 593,
+  "title": "ACP extension proposal: steer an active turn without cancelling it",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nThe ACP bridge currently supports `session/prompt` and `session/cancel`, but a second user message cannot redirect an active DeepSeek Harness turn. The core Agent already exposes `agent.steer()`, so the missing part is the ACP wire mapping.\n\n## Proposed extension\n\nAdd an opt-in extension method:\n\n```text\n_dsh/session/steer\n```\n\nRequest shape:\n\n```json\n{\n  \"sessionId\": \"...\",\n  \"prompt\""
+ },
+ {
+  "number": 5458,
+  "title": "Proposal: let the docked session-stats line scroll when it overflows (touch / portrait / large-font)",
+  "score": 20,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: let the docked session-stats line scroll when it overflows (touch / portrait / large-font)\n\nCategory: Ideas · Idea/incident tracker equivalent (this repo has Issues disabled).\n\n## 问题 / The problem\n\nThe session stats strip mounted on `conversation.composer.dock` (`packages/client/ui-chat/src/client/chat/StatsLine`) truncates an overlong summary to a single centered line ending in `…`, a"
+ },
+ {
+  "number": 5333,
+  "title": "Feature: natively auto-inject ~/.dsh/memory/ (with MEMORY.md) so a user's markdown memory convention stops being an AGEN",
+  "score": 20,
+  "cls": "D_功能API提案",
+  "preview": "> **📌 更新 / Update — 2026-09-07 15:34 UTC+08:00**\r\n> **Scope clarification**: This asks only for a native, opt-in load of the user's markdown `memory/` dir + its `MEMORY.md` index — not a general memory backend (SQLite/graph/vector already have plugins), and not the \"preference / correction\" layer (e.g. Tacit), which is a separate concern.\r\n> **Feasibility note**: the `agent-instructions` row alrea"
+ },
+ {
+  "number": 4322,
+  "title": "提案：为插件提供工作区域与唯一原生会话伴随栏",
+  "score": 20,
+  "cls": "B_社区标准RFC",
+  "preview": "一些插件需要一个完整的主工作区域，例如编辑器、笔记本、终端仪表盘、产物预览或数据分析视图；同时，用户仍应能继续使用 DSH 原生会话。\n\n目前下游插件通常只能：\n\n- 用 `shell.overlay` 覆盖页面；\n- 自行实现一套缩减版聊天界面；\n- 复制或深层导入 `ui-conversation` 的私有实现。\n\n这些都不是稳定的扩展路径。\n\n特别是，增加第二份 `conversation` 并不只是多渲染一个 React 组件。它会立即引入两个 composer、审批和提问的响应归属、附件 hub、快捷键和 document 监听、滚动状态、以及 tool details 目标等所有权问题。因此，我认为这不应作为解决“插件需要主工作区”的第一步。\n\n## 现状核查：frame 层没有可追加的布局 slot\n\n上游 `ui-layout` 在 `root` 下声明且仅声明四个子 sl"
+ },
+ {
+  "number": 4201,
+  "title": "Proposal: two generic transcript extension points — a user-bubble body chain and prose inline directives",
+  "score": 20,
+  "cls": "D_功能API提案",
+  "preview": "Hi team — while building a community plugin ([Codex-style answer annotations](https://github.com/lamost423/dsh-codex-experience), `dsh-plugin` topic) we ran into two places where the transcript is closed to plugins, and ended up carving generic seams for them. The full implementation ships in that repository as [one additive patch against current `master`](https://github.com/lamost423/dsh-codex-ex"
+ },
+ {
+  "number": 4144,
+  "title": "DSH | dsh-budget | Cost governance for DeepSeek Harness: budgets, carbon, and latency in one panel",
+  "score": 20,
+  "cls": "E_社区流程渠道",
+  "preview": "> **Unofficial project** -- independently developed and maintained by a community member. This third-party project has not been reviewed or endorsed by DeepSeek.\n>\n> **非官方项目** -- 由社区成员独立开发和维护，未经 DeepSeek 审核或背书。\n\n## Project URL / 项目地址\n\nhttps://github.com/PerryLink/dsh-budget\n\n## Introduction / 项目介绍\n\n`dsh-budget` is cost governance for DeepSeek Harness: aggregated token/cost metering per model, sess"
+ },
+ {
+  "number": 3877,
+  "title": "Bug: sandbox escalation rejects non-widening sandbox_permissions, causing tool-calling error spam with non-DeepSeek / cu",
+  "score": 20,
+  "cls": "A_治理反馈",
+  "preview": "Bug: sandbox escalation rejects non-widening sandbox_permissions, causing tool-calling error spam with non-DeepSeek / custom models\r\n\r\n(posted as a Discussion because Issues are disabled on this repo)\r\n\r\nSummary\r\nWhen the agent model passes sandbox_permissions on a call that is not strictly wider than the session's current effective sandbox mode — or passes it with an empty justification — the san"
+ },
+ {
+  "number": 3817,
+  "title": "Proposal: built-in local Skill Manager for invocation policy",
+  "score": 20,
+  "cls": "D_功能API提案",
+  "preview": "I built a focused, built-in Skill Manager proposal for DSH Web. It is intentionally narrower than the community dsh-skill-hub discussed in #3161: this surface manages invocation policy for the winning local disk-backed definitions only; it does not install, delete, scaffold, or provide a Skill market.\r\n\r\nWhat it adds:\r\n\r\n- Settings → Plugins → Skill Manager with local search and lazy instruction p"
+ },
+ {
+  "number": 3303,
+  "title": "Max-tokens truncation is unrecoverable for large tool calls on small context windows - four proposals (rc.7, code-traced",
+  "score": 20,
+  "cls": "D_功能API提案",
+  "preview": "Running dsh 0.1.0-rc.7 as a daily cockpit against a local model (Qwen3.8-27B via LM Studio, 65,536-token context window) surfaced a failure mode that matters a lot on smaller context windows, and after tracing the shipped package code I'd like to propose four changes. Everything below is from reading the rc.7 `lib/*.js` sources, so file references are to the published packages.\n\n## The failure\n\nWh"
+ },
+ {
+  "number": 2944,
+  "title": "Home patch layer is global, package resolution is per-profile: skin inserts crash or spam on the wrong profile",
+  "score": 20,
+  "cls": "A_治理反馈",
+  "preview": "## Summary\n\nThe home patch layer (`$DSH_HOME/cordis.patch.yml`) applies to **every** profile, but package resolution for entry `name` happens **per profile** (each `$DSH_HOME/profiles/<name>` is its own pnpm project, and the loader imports each entry from the profile root). There is no contract between the two, so a home-layer `insert` is either a hard crash or boot-time noise depending on how the"
+ },
+ {
+  "number": 2222,
+  "title": "人机边界不可伪造：DSH 审批的 FIDO2 带外门 + 策略格立法 / Unforgeable human approval for DSH: FIDO2 out-of-band gate + policy lattice",
+  "score": 20,
+  "cls": "B_社区标准RFC",
+  "preview": "# 人机边界不可伪造：DSH 审批的 FIDO2 带外门 + 策略格立法 / Unforgeable human approval for DSH: FIDO2 out-of-band gate + policy lattice\n\n在 #250（sandbox 内模型可通过 Web approval 回环通道自批准 danger-full-access）、#451/#817/#853（沙箱逃逸 ×2 + 本地 /api RPC 无鉴权）、#454（第三方安全审计）之后，我们对 DSH 的『人类审批』机制做了结构性分析，得出两条结论：**当前架构下 agent 伪装成人类批准自己的成功率是数学上恒等于 100% 的**；以及**唯一能打破它的路径**——带外签名 + 策略格。两份完整技术规格在此分享，欢迎攻击、欢迎证伪。\n\n## 一、问题：伪造率为什么是结构常数 1.0\n\n五路独立碰撞收敛到"
+ },
+ {
+  "number": 2031,
+  "title": "Show and tell: DSH 生态全景报告 — 1804 插件 × 780 帖交叉验证（5 洞察 + 6 能力缝）",
+  "score": 20,
+  "cls": "B_社区标准RFC",
+  "preview": "## DSH 生态全景报告：1804 插件 × 780 帖讨论区，交叉验证的 5 个洞察 + 6 个能力缝\n\n把社区数据盘点（1804 插件仓库）和我们对 780 帖讨论区的持续观察做了交叉验证，几个关键发现：\n\n### 数据快照（1804 仓库）\n- 分类：tools 569 · utility 345 · session 229 · orchestration 197 · ui 176 · llm 159 · **sandbox 仅 9**\n- 主题热度：设计/UI 生成 348 个/94K★（最旺）· 视觉 132/90K★ · 桌面壳 140/90K★ · 内容创作 40/88K★（单点价值最高）\n- **缺口**：金融 8 · 数据库 14 · 音频 19 · 评测 37——几乎空白\n\n### 5 个交叉验证洞察\n1. **Windows 是第一痛点**（60+ 帖：中文路径 1"
+ },
+ {
+  "number": 1603,
+  "title": "[Bug] WSL 禁用 interop 时「打开配置文件/打开目录」报 path open failed: spawn powershell.exe ENOENT",
+  "score": 20,
+  "cls": "B_社区标准RFC",
+  "preview": "在禁用了 Windows 互操作的 WSL2 发行版上,「打开配置文件」「打开目录」等原生打开操作必定失败,报 `path open failed: spawn powershell.exe ENOENT`;而代码本已为\"无原生打开器\"设计了降级(返回路径文本、界面展示路径),却被打开器能力检测的误判短路,降级永远走不到。\n\n<details>\n<summary>复现、预期与验收</summary>\n\n- 复现步骤:\n  1. WSL2 发行版(Ubuntu 24.04),`/etc/wsl.conf` 中 `[interop] enabled=false`、`appendWindowsPath=false`(即禁用 Linux→Windows 的互操作,Windows 程序无法从 Linux 侧启动,Windows 目录也不在 PATH 中);`[automount] enabled=f"
+ },
+ {
+  "number": 1181,
+  "title": "[Review] DeepSeek Harness 初步评测：插件化 AI 工作台的潜力与门槛",
+  "score": 20,
+  "cls": "B_社区标准RFC",
+  "preview": "这是一篇基于实际接入和发布独立 dsh-plugin 的初步体验，不代表 DeepSeek 官方立场。\r\n\r\n## 总体结论\r\n\r\nDeepSeek Harness 最有价值的地方，不只是调用某一个模型，而是把工具、技能、系统提示和工作流统一成可安装、可组合的插件。\r\n\r\n对于希望打造垂直行业 AI 的开发者，它提供了一个很有吸引力的基础：可以把“通用模型”包装成面向科研、教育、内容生产或其他行业的专门工作台。不过，目前项目仍处于 developer preview 阶段，开发者体验、插件分发和普通用户的上手流程还需要继续打磨。\r\n\r\n## 做得好的地方\r\n\r\n### 1. 插件化方向正确\r\n\r\n插件可以承载工具、技能、提示词和工作流，不需要每个行业都从头开发一套 Agent 应用。这种边界设计适合长期构建插件生态。\r\n\r\n### 2. 适合打造垂直行业 AI\r\n\r\n同一个 Harness"
+ },
+ {
+  "number": 826,
+  "title": "关于内置标准化数据库查询工具的建议",
+  "score": 20,
+  "cls": "B_社区标准RFC",
+  "preview": "目前在 harness 中访问数据库只能通过 shell 工具执行脚本完成。这种方式有几个问题：\r\n\r\n- 模型每次都需要自己写连接代码，容易出错\r\n- 查询结果是纯文本，模型需要自行解析\r\n- 凭据暴露在 shell 命令历史中\r\n- 无法在工具层面控制查询超时和行数限制\r\n社区已经有人在尝试这个方向（如 `dsh-data-agent`），做的是上层的数据分析任务。但缺少一个标准化的、安全的底层查询原语。\r\n\r\n## 提案\r\n- 连接凭据通过 `cordis.yml` 配置，不暴露给模型\r\n- 只支持参数化查询，防止 SQL 注入\r\n- 查询结果以结构化 JSON 返回，模型无需解析文本\r\n- 内置查询超时和最大行数限制\r\n\r\n`dsh-data-agent` 等上层插件已经在尝试让 Agent 与数据库交互，但它们各自实现连接逻辑，标准不统一。一个官方维护的基础设施工具可以作为共建组"
+ },
+ {
+  "number": 506,
+  "title": "Proposal: add `agent/turn-starting` and `agent/turn-aborting` hooks for turn-boundary observability",
+  "score": 20,
+  "cls": "D_功能API提案",
+  "preview": "---\n\n## TL;DR\n\nAdd two new plugin hooks to the agent loop so other plugins can observe turn boundaries without subscribing to step-level events and reconstructing turn boundaries themselves. No behavior change to existing events, session log shape, or `turnEnds` semantics. Three vitest fixtures demonstrate the new contract.\n\n---\n\n## Background\n\nToday `ReactLoopAgent.turn()` fires one turn-level ev"
+ },
+ {
+  "number": 5718,
+  "title": "Proposal: Preserve current-turn context when forking subagents",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "Would it make sense for `subagent_fork` to inherit the parent's committed context at delegation time, including the current turn?\n\nI have an **unofficial local implementation** and targeted verification. I am posting for design feedback in accordance with the [current contribution policy](https://github.com/deepseek-ai/deepseek-harness/blob/d347e703908d0406b7a7ef80e3a0e594d86b2215/CONTRIBUTING.md)"
+ },
+ {
+  "number": 5198,
+  "title": "Six implementation findings with fix proposals (0.1.1-rc.2, Windows)",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "# Discussion: 六个已定位的实现缺陷与修复建议（0.1.1-rc.2 实测 / master 对照）\n\n> 在自托管 DSH（0.1.1-rc.2，Windows）上做商用加固审查时定位的问题。其中三个已附带 `git format-patch` 补丁，三个建议官方实现。全部经 master（2026-08-27）源码对照核实。\n\n## 1. fs 写围栏在 ino=0 文件系统上可被绕过（附补丁）\n\n`packages/fs/fs-sandbox/src/containment.ts` 的 `sameIdentity` 用 `dev+ino` 相等判定目标位于可写根之下。FAT/exFAT 与部分网络共享卷的 `ino` 恒为 0，导致任意已存在祖先都与工作区根\"身份相同\"，`isPathUnder` 恒真，`write`/`edit` 工具可越过工作区边界。\n建议：`ino"
+ },
+ {
+  "number": 5035,
+  "title": "New Session draft view keeps the previous session on stage — `current` no longer means what the main column shows (0.1.2",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "On `dsh-v0.1.2-alpha.1` (built from the tag, `cd5ef814`), entering the **New Session draft view** swaps the main column to the empty state but leaves `list.current` pointing at the previously open session until the first message actually creates/stages the new one.\n\nThat contradicts the session store's own documented contract (`packages/api/session-controller/src/client/sessions/service.ts`):\n\n> S"
+ },
+ {
+  "number": 4842,
+  "title": "Contribution proposal: local search in the composer model picker",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "## Contribution proposal\r\n\r\nI prepared a local search field for the composer model picker in `@deepseek-ai/dsh-client-ui-model-selection`.\r\n\r\nThe search filters the displayed rows by model name, raw model id, or provider group. The complete directory remains authoritative for the active selection, opening or closing the picker resets the query, `Escape` clears a non-empty query, and an unmatched q"
+ },
+ {
+  "number": 4744,
+  "title": "官方能不能在dsh里加一个插件社区 统一规范下，现在插件鱼龙混杂，可用性不是很高",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "官方能不能在dsh里加一个插件社区 统一规范下，现在插件鱼龙混杂，可用性不是很高"
+ },
+ {
+  "number": 4492,
+  "title": "DSH | dsh-ptc-plus | 把 PTC 模式的 run_code 变成会话绑定的持久 TypeScript REPL",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "**_> 非官方项目，由社区成员独立开发和维护，与 DeepSeek 官方无隶属、无背书。_**\n\n**项目地址：** https://github.com/muyuanjin/dsh-ptc-plus\n**npm：** https://www.npmjs.com/package/dsh-ptc-plus\n\n**主旨：**\n\nPTC 模式让模型直接用 TypeScript 与完整 Node 环境交互，这种交互形式有潜力，用途还远未挖尽。但默认实现里每次 `run_code` 都从全新环境开始：状态无法复用、出一行错就要整段重发、模块语法写不了。PTC Plus 的定位，就是在 PTC 模式之上补成一个真正的会话级 REPL，让这些限制消失。\n\n**项目介绍：**\n\ndsh-ptc-plus 把 DSH PTC 模式的顶层 `run_code` 变成会话绑定的持久 TypeScript RE"
+ },
+ {
+  "number": 4394,
+  "title": "DSH | Reliability Governor | Evidence-gated completion with auditable receipts",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "\n> **Unofficial project, independently developed and maintained by a community member.**\n>\n> Project: https://github.com/chenjie1129/deepseek-harness-reliability-governor\n\n## Reliability Governor\n\nAI agents can say “done” while the requested artifact or tool evidence disagrees. Reliability Governor is an opt-in DeepSeek Harness bundle that changes completion from a model assertion into an explicit"
+ }
+]

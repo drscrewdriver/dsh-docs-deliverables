@@ -1,0 +1,212 @@
+[
+ {
+  "number": 3772,
+  "title": "SessionPersistence.delete: a single-session deletion primitive (proposal with a complete, tested implementation)",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "Hi! External contributor here. I implemented a single-session deletion primitive for the persistence seam, with full tests and docs, and would like the team to consider it.\n\n## Proposal\n\n`SessionPersistence` gains `abstract delete(id: SessionId): Promise<void>` that permanently removes one stored session's durable log, or cancels a created-but-never-appended create intent:\n\n- Unknown ids reject; a"
+ },
+ {
+  "number": 3728,
+  "title": "[认知架构提案] 琥珀记忆引擎 (Amber Memory Engine) — 为Harness构建跨会话的个性化感知进化系统",
+  "score": 19,
+  "cls": "E_社区流程渠道",
+  "preview": "# 琥珀记忆引擎（Amber Memory Engine）设计建议书\r\n\r\n> 为DeepSeek Harness构建具备长期经验积累与认知进化能力的个性化智能体感知架构\r\n\r\n---\r\n\r\n## 📌 摘要\r\n\r\n本提案为Harness设计了一套**六层认知架构**，核心是为其引入**跨会话、可积累、能进化的长期记忆系统**，使其从“每次对话都从头推理的婴儿”成长为“越用越懂用户的专属智能管家”。\r\n\r\n---\r\n\r\n## 🎯 设计目标\r\n\r\n- **记忆复用**：避免每次任务都从零开始评估光照、目标策略\r\n- **个性化适配**：根据用户历史行为自动优化特征筛选权重\r\n- **认知节能**：将成功策略从“情景记忆”固化为“程序性直觉”（系统一），降低推理消耗\r\n- **持续进化**：通过成败反馈动态更新经验库，实现终身学习\r\n\r\n---\r\n\r\n## 🧬 架构总览：琥珀六层感知决策引擎\r\n"
+ },
+ {
+  "number": 3630,
+  "title": "Feature Request: Pre-send prompt condensing (发送前自动精简提示词)",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "# Feature Request：发送前自动精简提示词（Pre-send Prompt Condensing）\n\n> 提交对象：deepseek-ai/deepseek-harness（DSH 官方仓库）\n> 提交入口：https://github.com/deepseek-ai/deepseek-harness/issues/new\n> 或 Discussions：https://github.com/deepseek-ai/deepseek-harness/discussions\n\n---\n\n## 概述 / Summary\n\n建议为 DSH 增加一个**发送前自动精简提示词**的通用能力：用户提交的冗长输入（长需求描述、粘贴的上下文、多段说明）在发送给模型前，先被压缩为结构化要点（保留目标、约束、关键信息，剔除冗余），并允许用户预览/确认/关闭。\n\nA general \"pre-se"
+ },
+ {
+  "number": 3137,
+  "title": "dsh-auth-gate: authentication and security hardening for DeepSeek Harness",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "# dsh-auth-gate\n\n**English** | [中文](#中文)\n\nA community authentication and security-hardening plugin for DeepSeek Harness.\n\n## Why I built this\n\nDeepSeek Harness is designed primarily as a local development tool. Its default Host, Origin, and Sec-Fetch-Site checks are useful browser CSRF defenses, but they do not authenticate the caller.\n\nIf the Web UI becomes reachable through a LAN, container prox"
+ },
+ {
+  "number": 3061,
+  "title": "SDK wire: support embedded-host interactions and causal prompt identity",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "We are evaluating DeepSeek Harness `0.1.0-rc.7` as an agent engine inside a long-lived desktop host. The host owns its UI, project scope, durable operation identity, and user-interaction policy, while Harness runs out of process.\n\nExisting discussions already cover session resume ([#712](https://github.com/deepseek-ai/deepseek-harness/discussions/712)) and session cancel/close ([#2888](https://git"
+ },
+ {
+  "number": 2772,
+  "title": "功能提案：为 Web UI 增加「删除会话」（session.delete）",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "**功能提案：为 Web UI 增加「删除会话」（session.delete）**\n\n目前会话只能归档——归档会永久保留日志、工作区记账槽位与搜索索引行，用户无法彻底清除不需要的历史（如含机密或大型工具输出的转录）。侧边栏会话菜单止步于「归档会话」，宿主也没有任何删除 RPC。\n\n## 实现内容（36 文件，+935/-43，含测试与文档）\n\n- 新 wire 方法 `session.delete` 全栈接线（命名遵循 `workspace.delete` 先例及 [domain KV storage note](https://github.com/deepseek-ai/deepseek-harness/blob/master/.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace."
+ },
+ {
+  "number": 2751,
+  "title": "[Bug] 插件 Config 非 Standard Schema 时抛裸 TypeError 无修复指引，建议提供 dsh doctor 诊断命令",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "## 一句话说明问题\n\n插件导出非 Standard Schema 的 `Config`（如普通对象 `{}`）时，启动直接抛裸 `TypeError: Cannot read properties of undefined (reading 'validate')`，无任何指向性提示；PM2 模式下表现为无限重启直到 errored，用户无法定位是哪个插件、为什么。\n\n## 详情\n\n- **复现步骤**：\n  1. 开发一个自定义插件，`export const Config = {}`（普通对象，非 Standard Schema）\n  2. 通过 `dsh plugin add` 装入 web profile\n  3. `dsh web` 启动即崩溃：`failed to apply loader entry <id> (dsh-path-open): Cannot read pro"
+ },
+ {
+  "number": 2690,
+  "title": "使用deepseek harness 设计插件安装评审师agent时，出现了死循环",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "<img width=\"1404\" height=\"592\" alt=\"48ebab252e7ab8833bb11b4c31402b4b\" src=\"https://github.com/user-attachments/assets/38c5452d-90a2-4edb-bf40-e0c60a1e5f82\" />\r\n原始设定：\r\n目前deepseek harness的插件琳琅满目，但是插件安装面临以下问题：\r\n1. 安全问题，目前插件来自于各个渠道，虽然大多数创作者是真正基于开发热情，但也要防止少数开发者偷偷往插件中放入一些安全性或漏洞性的代码，安装插件前，需要审核一下插件是否符合安全性; \r\n2. 效率问题，有一些插件非常消耗token，或者会让整个开发响应速度变慢，虽然起到了一定修饰或者装饰性作用，但是带来的极端效率降低问题也是需要注意的，需要基于效率给予评判; \r\n3. 重复性问题"
+ },
+ {
+  "number": 2529,
+  "title": "Proposal: make self-hosted gateways first-class providers in deepseek-harness (split `packages/llm`)",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: make self-hosted gateways first-class providers in deepseek-harness (split `packages/llm`)\r\n\r\n*Addressed to the deepseek-harness maintainers. Written from the perspective of\r\n[model_proxy_v3](https://github.com/qidu/model_proxy_v3/tree/feature/transforms_hooks) — an open-source,\r\nself-hosted multi-protocol LLM proxy — after a verified end-to-end integration\r\nwith dsh.*\r\n\r\n## TL;DR\r\n\r\nT"
+ },
+ {
+  "number": 2450,
+  "title": "Community review: deepseek-harness @ master (v0.1.0-rc.5) — findings & suggestions",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "Hi maintainers! I spent some time reading through the public repo (master @ v0.1.0-rc.5) and, since issues are off here, I wanted to share a few things I noticed. The codebase is honestly in really good shape for a release candidate — I kept this short on purpose.\n\n**Hooks can spin forever on a blocking Stop hook.** Both bridges hardcode `stop_hook_active: false` (`packages/hooks/hooks-codex/src/i"
+ },
+ {
+  "number": 2346,
+  "title": "Proposal: public cross-session conversation view navigation for Web plugins",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\nA `conversation.view` plugin can select another durable session through `ctx.sessions.open(sessionId)`, but it cannot also select the target conversation view through a supported public API. The active view belongs to a private, per-session `ui-conversation` store.\n\nThis becomes visible in a session-lineage plugin: selecting a historical branch and clicking **Open session** changes the"
+ },
+ {
+  "number": 2260,
+  "title": "社区项目介绍：DSH Toolbox、Windows 启动器与实用插件",
+  "score": 19,
+  "cls": "C_生态基础设施",
+  "preview": "> 更新于 2026-08-27\n\n这是我个人维护的一组 DeepSeek Harness（DSH）社区项目，目标是补充日常使用中比较实用的能力：更方便地安装和启动 Harness、查看调用成本、检查 Git 状态、诊断供应商问题、观察并发请求，以及通过状态伙伴了解任务进度。\n\n这些项目均为**独立社区项目**，不是 DeepSeek 官方产品，也不代表 DeepSeek 官方支持、认证或安全保证。请在安装前阅读对应仓库的 README、权限边界、许可证和兼容范围。\n\n## 一站式入口：Wanbinyu DSH Toolbox\n\n网站：**https://wanbinyu.github.io/wanbinyu-harness-toolbox/**  \n源码：https://github.com/Wanbinyu/wanbinyu-harness-toolbox\n\nToolbox 在一个中英"
+ },
+ {
+  "number": 2039,
+  "title": "Proposal: Zero-loss pruning (spill-copy-on-prune)",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: Zero-loss pruning (spill-copy-on-prune)\n\n## Context\n\nDeepSeek Harness's `compaction-tool-result-pruner` (threshold 8192, head 4096, tail 1024) and `spill-policy` (maxInlineBytes 50000) are independent mechanisms:\n\n- **Prune tier** (8K–50K): permanently drops the middle with a fixed marker `[... tool result middle pruned ...]` — no recovery path.\n- **Spill tier** (>50K): writes full out"
+ },
+ {
+  "number": 2004,
+  "title": "Plugin Category Guidelines",
+  "score": 19,
+  "cls": "E_社区流程渠道",
+  "preview": "Welcome to the DeepSeek Harness plugin category. Please follow these rules:\r\n\r\n1. One project per discussion.\r\n2. Projects must have a real integration with DSH. Unrelated promotion, name-dropping, or duplicate posts will be removed.\r\n3. Use this title format: DSH | Project Name | One-line description\r\n4. Include the project URL, a short introduction, screenshots, and how it integrates with DSH.\r\n"
+ },
+ {
+  "number": 1115,
+  "title": "强烈建议尽快建立官方的插件市场，做好标准和安全规范，并有审核奖励等机制",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "官方需要尽快建立官方的插件市场，不仅是做好标准和规范，安全问题也是重中之重，严格审核插件投毒，否则很快就会和龙虾当年那样，大量的 Skill 投毒事件泛滥成灾了..."
+ },
+ {
+  "number": 358,
+  "title": "Proposal: Electron desktop client (apps/desktop) + one-click Windows launcher",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\nI implemented an Electron desktop client for DeepSeek Harness and would like to contribute it upstream. Fork pull requests are disabled for this repository, so I'm posting the contribution here — the commit is ready to merge on my fork (ahead of upstream master by exactly this one commit).\r\n\r\n- **Commit:** `91ac9a1599` — `feat(desktop): Electron desktop client and one-click launcher`"
+ },
+ {
+  "number": 336,
+  "title": "edit/write results give the model zero visibility into what actually changed — the diff exists in the log but never reac",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "I'm evaluating dsh as a serious coding-agent runtime and noticed something that seems like a blind spot worth discussing (I checked the source before posting, so this is grounded):\r\n\r\nObservation. After a successful edit or write, the model receives only a one-line acknowledgement — The file <path> has been updated successfully. (see formatEditOutput in packages/fs/tool-fs/src/edit.ts). The full b"
+ },
+ {
+  "number": 291,
+  "title": "Undefined behaviour when headless hits an approval-required tool",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "# Undefined behaviour when headless hits an approval-required tool\n\n**Category:** Q&A  **Reproduction:** inferred (from PRD O1 + FR-S4/FR-E5)\n\n**Summary**\n`dsh --profile headless \"task\"` has no UI to satisfy `interaction` approvals (`PRD.md §6.5 FR-S4`);\nwhen a tool requires user approval/permission, the run's behaviour is unspecified — it may hang, abort,\nor fail silently. This is the un-converge"
+ },
+ {
+  "number": 247,
+  "title": "Proposal: bound MCP connection and tool discovery with one total timeout",
+  "score": 19,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\n`@deepseek-ai/dsh-mcp-client` currently inherits the MCP SDK's request timeout behavior during startup. That leaves two gaps:\n\n1. The transport start phase is not bounded by the SDK request signal.\n2. Each paginated `tools/list` request receives its own timeout, so total discovery time can grow with the number of pages.\n\nAn unresponsive server can therefore delay plugin activation and "
+ },
+ {
+  "number": 200,
+  "title": "[提案]增加类似OpenCode的回退功能",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "OpenCode有个很好用的回退功能，可以回退到在当前会话的任意一次输入位置。然后当前工作区的所有修改都会同步回退。这样让agent尝试方案和回归变得和git reset一样简单。\r\n不过这个功能的具体实现和状态管理肯定很复杂，稍微少测了一下，不太指望用创造模式能vibe许愿出高质量好用的插件，只能期待官方或者社区大手子做一个了。"
+ },
+ {
+  "number": 173,
+  "title": "[提案] produced-file 打开动作可拦截 (含补丁分支与测试)",
+  "score": 19,
+  "cls": "B_社区标准RFC",
+  "preview": "## 提案：produced-file 打开动作可拦截（含补丁分支）\n\n### 问题\n`ui-deliverables` 的 ProducedFiles 行打开动作硬编码调用 Host opener（`openFile`），客户端插件无法把点击路由到自己的视图（例如在侧边栏打开而非系统查看器）。这与 README 的插件化理念（\"everything is a plugin\"）不符。\n\n### 方案（已实现 + 测试，补丁在分支）\n- `routeFileOpen(interceptors, fallback, path)`：零依赖纯函数——第一个返回 `true` 的拦截器接管，否则回退 Host opener\n- `ProducedFiles` 经 inject face 接收 `fileOpenInterceptors`；文件 chip 与「在文件夹中显示」都走拦截路由\n- `reg"
+ },
+ {
+  "number": 5875,
+  "title": "[RFC] Native Headless & Container Support: --no-auth, configurable workspace root, and flexible workbench width",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "### Feature Request / RFC: Native Headless & Container Support (`--no-auth`), Configurable Workspace Root, and Extended Workbench Width\r\n\r\n#### 1. Problem Statement\r\nWhen running DeepSeek Harness (`@deepseek-ai/dsh`) inside Docker containers, remote development workstations, or behind local reverse proxies (OrbStack, Docker Desktop, WSL2), several ergonomics issues arise:\r\n\r\n1. **Browser Token Exc"
+ },
+ {
+  "number": 5781,
+  "title": "无法切换到[标准模式」:resume failed for session \"session-e6cfd30b-c43a-4266-9957-3c2e75b2ddc3\": RemoteError: agent-presets: preset",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "<img width=\"587\" height=\"84\" alt=\"ec8c5e3cae67b78665cebd124dc415d2\" src=\"https://github.com/user-attachments/assets/e67c68e4-73a2-442d-b333-de193fa7eddd\" />\r\n无论是切换模式还是切换模型亦或是切换工作权限都无效且报这个错误该怎么解决啊"
+ },
+ {
+  "number": 5488,
+  "title": "Feature request: a first-class message interception/routing point before an agent consumes an inbox message (plugin rela",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "\n## Background\n\nWe maintain a third-party host plugin (`dsh-bots`) that manages a roster of resident bots, each backed by an agent created via `ctx.agents.create()` in its own canonical session. The plugin already implements bot-to-bot DM relay (`followup` + `whenIdle` + transcript diffing) successfully.\n\nThe missing piece is **user-typed @-routing**: when the user types `@beta ...` inside bot Alp"
+ },
+ {
+  "number": 4988,
+  "title": "Proposal: annotate documented benign non-zero exit codes in bash/pwsh results",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "## The problem\n\nThe shell tools tell the model to check the `[exit code: N]` marker on every result and *\"investigate failures before moving on\"*. But several common tools exit non-zero as their **documented meaning**:\n\n- `grep` / `egrep` / `fgrep` / `rg` / `ack` exit `1` when nothing matches\n- `git diff --exit-code` / `--quiet` exit `1` when differences exist\n- `test` / `[` exit `1` when a condit"
+ },
+ {
+  "number": 4909,
+  "title": "[Architecture] Lifecycle handoff contract is missing — parent agent disposes, child agents are orphaned (production-cons",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "---\r\n\r\n\r\n\r\n> **Context — community convergence + upstream status (read this first)**\r\n\r\nSeveral of us have independently been converging on the same pattern from different angles: a *weak cross-module lifecycle contract*. On #4793, Jstn-1g reproduced it against `0.1.2-alpha.1` and shipped a reference fix (cleanup bound to the **parent Agent's own scope**; 146 tests green). argszero confirmed the *"
+ },
+ {
+  "number": 4590,
+  "title": "Proposal: make PowerShell console hiding configurable on Windows",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nOn Windows, DSH PowerShell tool calls can briefly flash a console window because ordinary local subprocesses are launched without Node's `windowsHide` option. This is especially distracting in the Web GUI, where tool calls happen in the background.\n\n## Proposed configuration\n\nExpose a PowerShell-specific option with a hidden-by-default behavior:\n\n```yaml\n- name: '@deepseek-ai/dsh-pwsh-"
+ },
+ {
+  "number": 4456,
+  "title": "插件  ———卡了———崩了———丢了———收录插件———插件问题进来可以留言———谁也别来发广告——",
+  "score": 18,
+  "cls": "C_生态基础设施",
+  "preview": "下边的库是我整理的内容 。为了增加大家插件开发的速度。 鼓励创新。\r\n库：https://github.com/leenkcool/Blue-Whale-Harness\r\n该库展示：https://leenkcool.github.io/    \r\n\r\n直接提ISSUE插件6家市场就会收录。 \r\nhttps://github.com/leenkcool/Blue-Whale-Harness/issues/new?template=catalog-intake.yml\r\n\r\n如果你是插件作者，请关注我的项目。这样起码不会和别人的插件做重复了。不要重复造轮子。如果你的插件没被我收录,直接提PR。我会审查后收录。\r\n如果你不是插件作者。只需要关注项目链接就可以了。\r\n\r\n为了更好的开发与应用。应对不稳定。我们需要协作起来。 \r\n\r\n\r\n\r\n\r\n\r\n"
+ },
+ {
+  "number": 4381,
+  "title": "【deepSea】搓个 `热点聚合+多端互联` 的dsh周边生态开源项目",
+  "score": 18,
+  "cls": "C_生态基础设施",
+  "preview": "# deepSea（deepc.cn）—— 潜入深海🌊专注养鲸 🐋 ![stars](https://img.shields.io/github/stars/evil7/deepSea?style=social&label=Star)\r\n\r\n> 这域名买了好些年，总算让它真的下海了（笑）。就是调价后有点烧得钱包疼... 考虑工作日成为\"不梁\"少年，待周末再\"梁\"力而行。\r\n\r\n[https://deepc.cn](https://deepc.cn) \r\n\r\n**deepSea** 是面向 **DeepSeek Harness（DSH）插件生态**的聚合站 + 多端互联控制台：把散落在 GitHub 各处的 `dsh` / `dsh-plugin` / `cordis` 插件汇聚到同一个「入海口」——**发现、安装、管理、互联，一站式搞定**。站点、控制端页面、插件代码全部开源，单仓库 mo"
+ },
+ {
+  "number": 4341,
+  "title": "Fix proposal: retry transient Codex WebSocket failures",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "I prepared a tested fix for transient Codex WebSocket failures being surfaced as terminal `PI_AI_ERROR` turns instead of entering the default retry policy.\n\nThe repository currently exposes no Pull Requests endpoint for external contributors (the REST endpoint returns 404 and the GraphQL repository reports zero PRs), so I am sharing the ready-to-cherry-pick branch here:\n\n- Branch: https://github.c"
+ }
+]

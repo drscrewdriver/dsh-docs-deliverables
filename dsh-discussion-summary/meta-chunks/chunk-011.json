@@ -1,0 +1,100 @@
+[
+ {
+  "number": 2984,
+  "title": "DSH | dsh-plugin-bridge | Cross-preset session migration with fixed-schema handoff summaries",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "\r\n![Uploading bridge-demo.en.gif…]()\r\n> Unofficial project, independently developed and maintained by community members.\r\n> 非官方项目，由社区成员独立开发和维护。\r\n\r\n**Project URL**: https://github.com/Totoro-qaq/dsh-plugin-bridge\r\n\r\n**Introduction**\r\n\r\nThe preset lock is the right call — a session's history is only legal under the tool set that produced it, and a hard lock beats silent degradation. But once locked,"
+ },
+ {
+  "number": 2876,
+  "title": "DSH｜dsh-argp｜双引擎上下文压缩：逐原子守卫缩放 + 引用图确定性剪枝——LLM 只提议、守卫裁决，压缩率精确兑现",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "> **_非官方项目，由社区成员独立开发和维护。_**\r\n\r\n> **项目地址：** https://github.com/yoza10635/dsh-argp\r\n\r\n**项目介绍：**\r\n\r\ndsh-argp 是一个双引擎上下文压缩引擎（**当前 1.0.0，2026-08-29 发布**；1.0.0 形态与新增验证详见文末更新评论），作为第三方 CompactionEngine 后端，与 dsh 自带的摘要式压缩不同：它把对话拆成原子...压缩时按引用依赖拓扑（逻辑链）做决策——\"被依赖\"的原子按图保留、\"孤立\"的原子按反向拓扑序摘除——Stage-2 剪枝 0 次 LLM 调用。\r\n\r\n核心特性：\r\n\r\n- **基于分级逻辑链决策**：剪枝依据是引用依赖拓扑（\"谁被依赖谁活\"），不是新旧位置、不是模型偏好；引用带四级分级（isolated/contextual/supporting/"
+ },
+ {
+  "number": 2580,
+  "title": "提议:把插件文件拖入对话的拖拽 MIME(application/x-dsh-path)收为壳级契约",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "来源:[dsh-compass](https://github.com/Happy2Git/dsh-compass) 的实现经验 + 上游 master 代码对照,发布帖在 #1989。\n\n## 现状\n\n上游 master 的 `ui-conversation` InputBar 已经有一套 document 级文件接收(`Files` 类型,图片附件)。但插件提供的文件面(文件树、搜索结果、桌面包)拖出的文件不走 OS 通道——以 [dsh-compass](https://github.com/Happy2Git/dsh-compass) 为例,面板文件行的 HTML5 dragstart 写入自定义 MIME `application/x-dsh-path`,值是宿主侧绝对路径(浏览器不见字节):\n\n```ts\nevent.dataTransfer.setData(\"applicat"
+ },
+ {
+  "number": 2437,
+  "title": "[Show & Tell] dsh-lab：只发真机实测结论的 DSH 插件实验室（四关法 + 完整日志可复现）",
+  "score": 15,
+  "cls": "E_社区流程渠道",
+  "preview": "## 中文正文\n\n大家好，分享一个围绕 DeepSeek Harness 的社区实验室：**dsh-lab**。\n\n出发点很简单：官方仓库已有 12 万+ star，社区插件目录 800+ 条且每天在涨，但生态现状是 **收录 ≠ 能用，star 高 ≠ 安全，自动榜单 ≠ 实测**。没有任何一个地方在回答最基本的问题——这个插件装得上吗？跑起来了吗？代码里写了什么？\n\n所以我们的立场是：**不收录任何未经真机测试的条目**。\n\n**四关实测法**（每个条目逐项标注 ✅ / ❌ / ⏳，绝不模糊）：\n\n1. **安装** —— 在隔离的 `DSH_HOME` 中执行官方安装命令，记录完整日志与退出码；\n2. **冒烟** —— 带最小任务的 headless 会话运行，验证不导致启动/运行崩溃；\n3. **安全快检** —— 对安装后的实际代码做静态模式扫描（网络 / 子进程 / 动态执行"
+ },
+ {
+  "number": 2135,
+  "title": "dsh-acp rejects non-empty `mcpServers` in session/new, which breaks ACP clients that always inject MCP servers (e.g. Pas",
+  "score": 15,
+  "cls": "D_功能API提案",
+  "preview": "`dsh-acp`'s `validateSessionParams` throws `invalidParams(\"mcpServers is not supported\")` for any non-empty `mcpServers` in `session/new`. Paseo's ACP integration (`extends: \"acp\"` providers) always sends `mcpServers` — it injects its configured MCP server into every `session/new` (daemon config `mcp.injectIntoAgents`). Result: agent creation fails with `Invalid params: mcpServers is not supported"
+ },
+ {
+  "number": 2021,
+  "title": "DSH | dsh-plugin-web-search-tavily | Tavily backend for the built-in web_search / 给内置 web_search 换上 Tavily 后端",
+  "score": 15,
+  "cls": "D_功能API提案",
+  "preview": "> Unofficial project, independently developed and maintained by community members. / 非官方项目，由社区成员独立开发和维护。\n\n**Project URL:**\nhttps://github.com/coderdailyone/dsh-plugin-web-search-tavily · [npm](https://www.npmjs.com/package/dsh-plugin-web-search-tavily) (`dsh-plugin-web-search-tavily@0.1.1`, MIT)\n\n## Introduction / 项目介绍\n\nA [Tavily](https://tavily.com) search provider for dsh's built-in `web_search`"
+ },
+ {
+  "number": 1934,
+  "title": "Show and tell: orchestration-skill — 长任务不该贵到必须用前沿模型 / Long tasks shouldn't cost like they need a frontier model",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "# Show and tell: orchestration-skill — 长任务不该贵到必须用前沿模型 / Long tasks shouldn't cost like they need a frontier model\n\n**orchestration-skill** 是一个给 DeepSeek Harness 的 Agent Skill：让**廉价模型**跑出**前沿模型**的长任务可靠性——把可靠性从模型身上搬进结构里。\n\n> 仓库：https://github.com/pridesong/orchestration-skill\n> 发布：v0.3.0 · https://github.com/pridesong/orchestration-skill/releases/tag/v0.3.0\n> 类型：Agent Skill（`SKILL.md` + 纯 Python 标准库脚"
+ },
+ {
+  "number": 1745,
+  "title": "subagent-codex: expose Codex thread/start execution policy as deployment config",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "## Problem\n\nThe stock Codex subagent provider hard-codes `thread/start` to\n`{ cwd, ephemeral: true }` and exposes only `env` and `disposeGraceMs`.\n\nCodex app-server's `ThreadStartParams` already accepts native execution-policy\nfields — `approvalPolicy` (`AskForApproval`) and `sandbox` (`SandboxMode`) —\nbut the provider does not expose or forward them.\n\nIn unattended deployments where the host Code"
+ },
+ {
+  "number": 1310,
+  "title": "DeepSeek Harness 与无政府主义：谁还有资格替 Agent 决定它应该是什么？",
+  "score": 15,
+  "cls": "C_生态基础设施",
+  "preview": "![DeepSeek Harness 与无政府主义](https://homura-tokido.com/img/og-deepseek-harness-anarchism.png)\n\nDeepSeek Harness 看起来像一个 Agent 框架。但如果只把它放进“谁比 Codex 更好用”的产品评测里，我觉得我们从一开始就问错了问题。\n\n我真正想问的是：当 Agent 已经能够开发软件以后，组织 Agent 的框架究竟应该继续由厂商集中决定，还是也应该成为 Agent 可以观察、替换和演化的对象？\n\n官方架构文档写道：[“There is no privileged core to patch”](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md)。贡献说明又进一步强调，官"
+ },
+ {
+  "number": 1308,
+  "title": "Community extensions: Codex-style annotations/Side Chat and todo freshness Guard",
+  "score": 15,
+  "cls": "D_功能API提案",
+  "preview": "We built two community extensions while evaluating the current out-of-tree plugin contract.\n\n## 1. DSH Codex Experience community fork\n\nhttps://github.com/lamost423/dsh-codex-experience\n\nThis adds Codex-style answer annotations, multi-annotation staging, linked references, and an ephemeral Side Chat that stays inside the current conversation surface. It also includes a todo freshness Guard.\n\nThe S"
+ },
+ {
+  "number": 1109,
+  "title": "[Show & Tell] Mindspace Local RAG：ARPM 双路检索、可治理双资料库与会话隔离",
+  "score": 15,
+  "cls": "C_生态基础设施",
+  "preview": "大家好，我们把 Mindspace 的长期记忆实验拆成了两个彼此独立、可单独安装/卸载的 DeepSeek Harness 社区插件。本帖重点发布基于 ARPM 检索实践衍生的 Local RAG；结构化会话记忆作为配套能力放在后半部分说明。\n\n> 两个项目均为社区插件，不属于 DeepSeek 官方项目。\r\n\r\n# Mindspace DeepSeek Harness 本地 RAG\n\n[English README](https://github.com/Spirtxiaoqi7/mindspace-dsh-local-rag/blob/main/README.md)\n\n这是一个面向 DeepSeek Harness 的独立、本地 RAG 插件。它不会在每一轮对话里强塞召回内容，而是给所有支持工具调用的聊天模型提供一个明确的 `search_local_memory` 入口，由当前模型判"
+ },
+ {
+  "number": 839,
+  "title": "Show and tell: 首周生态观察 — 780 帖讨论区告诉你 dsh 的四个真相（含 Windows 痛点/社区补位/安全审计）",
+  "score": 15,
+  "cls": "C_生态基础设施",
+  "preview": "## 发布首周生态观察：780 帖讨论区告诉你 dsh 的四个真相\n\n(Show and tell — 我们爬了官方讨论区全部 780 帖做的首周生态分析，供大家参考)\n\n### 1. Windows 是第一大痛点（60+ 帖）\n最高频是**原生目录选择器截断中文路径**——同一根因（`readUtf16` 只查低字节 0x00）被 15+ 帖独立复现（#107 #151 #210 #244 #295 #396 #428 #488 #563 #580 #617 #643 #644 #701 #727 #761 #800）。其次是目录选择器 worker 崩溃（koffi 相关，6+ 帖）。\n> 想要 workaround：临时用纯英文路径 + 等 rc 修复；完整记录见我们手册第 12 章。\n\n### 2. \"官方没做，社区全做\"\n官方无 CLI/TUI/桌面端/memory/视觉，社区两"
+ },
+ {
+  "number": 755,
+  "title": "[Bug report] 通过 `http://<局域网IP>:3080` 访问 Web UI 时，打开文件夹（选择工作区）报\"无法打开文件夹\"",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "## 问题\r\n\r\n通过 `http://<局域网IP>:3080` 访问 Web UI 时，打开文件夹（选择工作区）报\"无法打开文件夹\"，显示 error 文字：\r\n\r\n```\r\nTypeError: crypto.randomUUID is not a function\r\n```\r\n\r\n## 复现方法\r\n1. 在本地3080端口启动\r\n2. 将本地端口转发到局域网 IP，比如 192.168.0.1\r\n3. 此时通过 192.168.0.1:3080 访问，创建工作区时报错 TypeError: crypto.randomUUID is not a function\r\n\r\n## 根因\r\n\r\n`crypto.randomUUID()` 只在所谓的安全上下文（HTTPS 或 localhost）可用。明文 HTTP + 非本机地址不是安全上下文，`window.crypto.randomUU"
+ },
+ {
+  "number": 458,
+  "title": "[bug] fs-local 的 writeFileAtomic 在 link/rename 发布后缺少父目录 fsync，与仓库自身持久化契约不一致",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "## 概述\n\n`packages/fs/fs-local` 的 `writeFileAtomic` 只对临时文件内容做了 `handle.sync()`，发布（`link` / `rename`）之后**没有对父目录 fsync**。POSIX 崩溃持久性语义下，目录项（rename/link 的结果）不随文件内容的 fsync 落盘：断电窗口内，write/edit 工具**已返回成功**的写入可能整体丢失——新建文件彻底消失，或被替换的文件回退为旧内容。\n\n## 位置\n\n`packages/fs/fs-local/src/fsio.ts:570-600`（基于 master `47f943859`）\n\n- `await handle.sync()`（:571）是整个包中唯一的 fsync（grep 验证）\n- `await linkFile(tempPath, absolutePath"
+ }
+]

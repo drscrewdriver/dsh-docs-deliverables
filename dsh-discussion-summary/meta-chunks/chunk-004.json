@@ -1,0 +1,212 @@
+[
+ {
+  "number": 2400,
+  "title": "【展示】实测优先的三个社区基础设施：dsh-lab / awesome-dsh-skills / awesome-dsh-presets",
+  "score": 23,
+  "cls": "C_生态基础设施",
+  "preview": "三个仓库，同一个标准：**先验证，再发布。**\n\n**为什么做这些**：社区插件已近千（目录 972 个且仍在涨），但「收录 ≠ 能用、star 高 ≠ 安全、自动榜单 ≠ 实测」。我们搭了隔离测试环境（独立 DSH_HOME，不碰真实配置），用官方 `dsh plugin add` 真机安装，每个条目过四关：安装 → 冒烟 → 安全快检 → 兼容钉版。\n\n**1. dsh-lab — 插件实测实验室** https://github.com/hackerFish/dsh-lab\n- 10 份实测报告：完整安装日志 + 静态扫描命中清单（逐条人工判读）+ 复现命令\n- 6 个「目录收录但仓库已消失」的失效条目记录\n- 4 个真实安装摩擦及解法：pnpm 9 的 ERR_PNPM_ADDING_TO_ROOT、git 协议网络拦截、大依赖树 registry 超时（npmmirror 解法）"
+ },
+ {
+  "number": 1825,
+  "title": "把「插件市场」本身做成一个插件（Plugin Marketplace as a Plugin）",
+  "score": 23,
+  "cls": "C_生态基础设施",
+  "preview": "来自社区用户的建议，投在这里是希望和社区一起把它打磨成形，而非求立即实现。文中几处已刻意留白，标在\"开放问题\"里，欢迎维护者和社区一起讨论工程取舍。若我对现状理解有误，也请直接指出。\r\n\r\n> 价值假设：将插件的发现、下载、安装、卸载封装成一个**官方内置、可启停的元插件**，让「一切皆插件」从技术事实变成可被普通用户使用的生态事实。\r\n\r\n## 背景与动机\r\n\r\nDeepSeek Harness 的「一切皆插件」在**技术层面**已经成立——`ctx.registry` / `ctx.plugin` / `ctx.inject` 让每个能力都是可替换的插件。但在**分发层面**，插件仍只能通过本地文件扫描被发现，没有下载、安装、卸载的用户路径：\r\n\r\n- 现有插件设置页 `ui-settings-plugin-inventory` 是**只读的 Loader 清单**，其 Known L"
+ },
+ {
+  "number": 5565,
+  "title": "MCP client rejects content-only tool results (missing structuredContent) - breaks interop with servers declaring structu",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "## Summary (EN)\n\ndsh 0.1.2-rc.1's MCP client rejects tool results that contain only `content` blocks without `structuredContent`, even when the server explicitly declared `structured_output=false` for that tool (i.e. no `outputSchema`). This breaks interop with MCP servers whose tools legitimately return unstructured text/media output — allowed by the MCP spec, where `structuredContent` is optiona"
+ },
+ {
+  "number": 5286,
+  "title": "[Ecosystem] Should deterministic execution boundaries be a first-class Harness capability?",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "# [Ecosystem] Should deterministic execution boundaries be a first-class Harness capability?\r\n\r\nI recently went through a number of DeepSeek Harness community reports together with the trajectories from our own experiments.\r\n\r\nAt first these looked like unrelated problems:\r\n\r\n* tool-call loops\r\n* expired MCP sessions\r\n* repeated deterministic failures\r\n* long-lived runtime readiness\r\n* workspace-s"
+ },
+ {
+  "number": 5174,
+  "title": "[RFC] 让 Agent 以确定性的方式观察 DSH Runtime",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "# [RFC] 让 Agent 以确定性的方式观察 DSH Runtime\r\n\r\n## 背景\r\n\r\n最近在 DSH 的不同社区实践中，开始反复出现一类看起来并不相同、但底层结构比较接近的问题：\r\n\r\n> **Harness Runtime 已经知道很多关于当前执行环境的事实，但 downstream Agent / Plugin 往往需要通过多个 API、event、log、probe 或 side effect 自己重建这些事实。**\r\n\r\n例如：\r\n\r\n- 工具 surface 发生变化之后，如何知道具体变了什么；\r\n- 某个 plugin 到底属于哪个 Agent / scope；\r\n- MCP、environment、LSP、terminal 等资源究竟由哪个 workspace / session 持有；\r\n- 插件已经“挂载”是否意味着它真的已经进入可工作的运行树；\r\n- 一个"
+ },
+ {
+  "number": 4934,
+  "title": "[Proposal] str_replace_editor: tolerant old_str matching + closest-region hint for local models (cherry-pickable branch)",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\n`str_replace_editor` locates `old_str` with a bare `content.indexOf(old_str)` and, on a miss, answers only \"did not appear verbatim\". Local models driven through dsh miss that literal contract constantly — not because of whitespace in the file, but because they re-type the target lines from memory. Each miss costs a `grep -n` round trip before the model can retry, which at local deco"
+ },
+ {
+  "number": 4888,
+  "title": "RFC: dragon-engine V2.5 asset mirror + 4 Cordis packages",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "## Summary\n\nThis is a proposal to integrate the [dragon-engine V2.5](https://github.com/guilinleolee/dragon-engine) asset mirror (1,224 indexed assets across 843 skills / 187 agents / 156 commands / 90 hooks / 7 plugins) into DSH as a data layer plus 4 Cordis packages.\n\n## Why a discussion (not a PR)\n\nThe base \\deepseek-ai/deepseek-harness\\ has \\has_pull_requests: false\\ and \\has_issues: false\\, s"
+ },
+ {
+  "number": 4879,
+  "title": "[Web GUI] 侧边栏缺少『视图切换』的官方 seam —— 附纯插件形态的完整实证与提案",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "## 背景\n\nWeb GUI 左侧栏的浏览区（`WorkspaceBrowser`）目前只有一个内容视图。第三方插件若想提供**平行视图**（例如按 IM 渠道分组的会话视图，见 discussions/3897 与 RFC-0001），没有任何官方注册面可用——`sidebar.footer.action` 等 slot 只能追加控件，不能与既有视图并列切换。\n\n我们以纯插件形态做了完整实证（[RGarvel/dsh-channel-view](https://github.com/RGarvel/dsh-channel-view)，README 有演示截图），**不改宿主**确实能拼出来，但代价全部落在对宿主实现细节的逆向锚定上。\n\n## 实证做了什么\n\n- 从 `sidebar.footer.action` 拿 `wide` 状态，用 `react-dom` portal 在 `Wo"
+ },
+ {
+  "number": 4828,
+  "title": "dsh-user-addons — drop-upload any file into the DSH web chat + archive manager + usage dashboard（社区插件：拖拽上传任意文件/归档管理/用量面板",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "# dsh-user-addons — 拖拽上传任意文件 + 归档管理 + 用量面板（社区插件）\n\n大家好！按 [CONTRIBUTING](https://github.com/deepseek-ai/deepseek-harness/blob/master/CONTRIBUTING.zh.md) 里\"为生态做插件\"的指引，分享一个我自己在重度使用的 Web 插件：\n\n**仓库**：https://github.com/Yur0918/dsh-user-addons （topic: `dsh-plugin`）\n\n## 它解决什么问题\n\nDSH Web 目前只有官方 `ui-attachment` 的**图片**拖放（`canAcceptDrop` 之外直接拒绝，且 hero 首屏没有 dock）。这个插件把体验补齐到\"什么文件都能拖进来\"：\n\n- **拖拽 / 粘贴 / 点击选择**任意"
+ },
+ {
+  "number": 4372,
+  "title": "Proposal: user-defined model policy, complementary to provider entitlement filtering",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\r\n\r\nDSH has two different model-availability questions:\r\n\r\n1. **Capability / entitlement:** can the configured credential use this model?\r\n2. **Policy:** does this user or deployment permit DSH to use this model?\r\n\r\nProvider-owned catalog filtering can answer the first question. It cannot answer the second.\r\n\r\nExamples of user policy:\r\n\r\n- prevent unattended subagents or background tasks"
+ },
+ {
+  "number": 3852,
+  "title": "RFC: 429 恢复是一条跨五层的缺陷链——#3128 必须晚于 #892 落地",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "## 为什么还要开一帖\r\n\r\n**这不是新的 bug 报告。** 8/13 以来至少有 15 帖在描述同一件事:429 或瞬时失败本该自愈却不自愈。据我核对,**每一帖都是对的**;但全部 ≤3 条回复,无官方回应。\r\n\r\n我的主张不同于它们:**这不是 15 个 bug,而是一条跨 5 层的缺陷链——而且两个最显然的修复谁先落地,决定一部分用户是变好还是变坏。**\r\n\r\n行号取自 `master` `b150a55`(`dsh-v0.1.1-rc.2`,8/21),当天核对。\r\n\r\n## 分层与归并\r\n\r\n分层不是我发明的,是源码里写明的契约:`llm-pi-ai/src/adapter.ts` 的 `profileOptions()` 写死 `maxRetries: 0`,注释 *\"The agent recovery layer owns visible attempts; one "
+ },
+ {
+  "number": 3400,
+  "title": "[建议] 任务卡在下载/安装时无法停止：不可中断的工具使 cancel 无法生效（协作式契约无强制力） [Suggestion] Non-interruptible tools make cancel ineffective: the co",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "## 摘要 / Summary\r\n\r\n当 agent 卡在一个长时间运行的前台工具调用上（例如 `pip install torch` 或 `curl -o` 在网络不稳定时下载 2.5GB 大文件），\r\n原生的「停止」按钮和 `session.cancel` 都无法及时终止任务。需要修正此前的表述：`session.cancel` 本身**不是被排队**——\r\n宿主调用 `agent.cancel({ kind: \"user\" }, { keepInbox: true })` 会立即返回 `{ accepted: true }`；但该确认只证明 agent 信号被中止，\r\n**不证明已启动的工具/子进程树/管道/插件 promise 已收敛（quiescence）**。不可中断的工具拒绝 settle，会话因此冻结到工具结束或超时。\r\n\r\nWhen the agent is stuck "
+ },
+ {
+  "number": 3173,
+  "title": "Proposal: revertible plugin loading — degrade gracefully instead of crash",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "Hi! I've been building on DeepSeek Harness and hit a rough edge I'd like to propose a fix for. Since external PRs aren't accepted right now, I'm sharing the idea here for feedback — a working implementation exists in my fork.\r\n\r\n## The problem\r\n\r\nA single failing plugin entry currently takes down the entire boot. When an entry fails to **import** (missing package) or **apply** (its `apply` throws "
+ },
+ {
+  "number": 2970,
+  "title": "Proposal: allow per-child reasoningEffort overrides in workflow agent()",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\nCould the workflow **agent(prompt, opts)** hook support an optional per-child\n**reasoningEffort**, alongside its existing **provider** and **model** overrides?\n\n    const result = await agent(prompt, {\n      provider: \"openai-codex\",\n      model: \"gpt-5.6-sol\",\n      reasoningEffort: \"max\",\n    });\n\nThis is a request for a public orchestration contract rather than for a specific\nprovid"
+ },
+ {
+  "number": 2936,
+  "title": "提案：为第三方可配置 Provider 提供通用 Web 编辑与图片模型选择",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "## 背景\r\n\r\nDeepSeek Harness 已允许 LLM 插件通过 configurable-provider directory 和 Settings namespace 暴露第三方 Provider，但 Web 的 Models 页面目前主要针对内置 DeepSeek / pi-ai 结构提供定制编辑器。树外 Provider 即使公开了合法 schema，仍很难在 Web 中安全完成以下配置：\r\n\r\n- 写入只读回显的 API Key 引用；\r\n- 编辑简单的字符串、数字和布尔配置；\r\n- 为明确标记的图片模型字段选择真正支持图片输入的模型；\r\n- 在不重建整个 settings section 的前提下保存局部字段。\r\n\r\n这和 #356、#1992 中暴露的“自定义 Provider 图片能力容易丢失或默认为 text-only”问题相关，但这里希望讨论的是一个更通用的"
+ },
+ {
+  "number": 2513,
+  "title": "dsh-quant 0.17：37 工具 · 6 域量化 R&D 工具箱 + Web 工作台（附社区循环）",
+  "score": 22,
+  "cls": "C_生态基础设施",
+  "preview": "给 DeepSeek Harness 的 agent-native 量化研究工具箱——从两天前 [dsh-quant-indicators 的 8 个工具](#2307) 起步，现在 **37 个工具 · 6 大域 · 0.17.1**，npm 自动发布 22 次。\n\n![dsh-quant UI](https://raw.githubusercontent.com/pengpengyi92/dsh-quant/master/demos/ui-demo-preview.png)\n\n## 六域架构（每个域一个独立模块）\n\n| 域 | 职责 | 代表工具 |\n|---|---|---|\n| `dsh-data` | 行情与数据质量 | 三所行情（Binance/OKX/Bybit 自动容错）、A 股 8 渠道知识库、缺值/异常/跳变标注 |\n| `dsh-alpha` | 指标与因子 | 12"
+ },
+ {
+  "number": 2509,
+  "title": "提案：文件工具\"三车道\"场景路由——完善\"用 read 别用 shell\"的指引（附实测数据）",
+  "score": 22,
+  "cls": "E_社区流程渠道",
+  "preview": "<details open>\n<summary><b>中文</b> 🇨🇳</summary>\n\n## 摘要\n\n当前 `read`/`edit` 的模型指引是绝对化的：\"Use the read tool — not shell commands like cat\"、\"Read the file first (the default fs-observation-policy requires it)\"。实践中，这个指引对「单点语义修改」正确，但对「探索」和「批量机械变换」是低效的——shell/脚本一次管线调用胜过几十次 read→edit 往返。`FS_NOT_OBSERVED` 摩擦的真正来源是**混用车道**：用 shell 读（黑盒子进程，从不登记 `fs/observed` 观察）然后再用 `edit` 工具（要求观察）。按场景路由的**三车道模型**可以在不削弱守卫的前提下消除"
+ },
+ {
+  "number": 2328,
+  "title": "[Docs proposal] document the multi-frame zstd session-log container format",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "**Proposal: document the session-log container format (concatenated zstd frames) in the official docs.**\n\n**Why this matters**\nThe on-disk session artifact is a concatenated-frame zstd container, not a single zstd stream. This is load-bearing for the ecosystem but currently undocumented: the one-shot `zstdDecompressSync` (and the `zstd` CLI's naive single-frame paths) silently yield only the FIRST"
+ },
+ {
+  "number": 2000,
+  "title": "【生态洞察】1800+ 插件数据：DSH 生态缺口与官方可优先建的能力缝（附框架对比）",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "### 一句话\n\n对社区整理的 DSH 插件生态做了一次数据化盘点（1804 个仓库），从行业 / 业务 / 产品 / 场景 / 框架对比五个视角，识别出高需求地带与明显缺口，并给出官方可优先建的能力缝建议，供方向参考。\n\n### 数据来源与口径（先说清，避免误导）\n\n- 来源：Blue-Whale-Harness 插件总表（[leenkcool.github.io](https://leenkcool.github.io/)），社区维护，2026-08 抓取。\n- 口径：共 1804 个仓库；其中 1663 个被标记为\"真 DSH\"，但该标记依据是 README 提及 dsh（`readme-mentions-dsh`），含部分仅提及而非真插件的仓库，数量仅作方向参考。\n- 主题热度为关键词粗筛，非精确统计。\n\n### 生态快照\n\n分类分布（插件数）：tools 569 · utilit"
+ },
+ {
+  "number": 1960,
+  "title": "Proposal: make WorkspaceRegistry.create path-only",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\nAt upstream `master` commit [`47f943859bef60e4160492346772ded9b24f765a`](https://github.com/deepseek-ai/deepseek-harness/commit/47f943859bef60e4160492346772ded9b24f765a), `WorkspaceRegistry.create(path, title?)` still exposes an optional creation-time title even though the shipped Host route calls it with `{ path }` only. Workspace naming already has the explicit `Workspace.setTitle("
+ },
+ {
+  "number": 1693,
+  "title": "Show and tell: dsh-plugin-doctor — the dsh plugin check from RFC #1629, now real",
+  "score": 22,
+  "cls": "C_生态基础设施",
+  "preview": "The `dsh plugin check` idea from RFC #1629 is now a real tool: **dsh-plugin-doctor** 🩺\n\nIt runs repeatable health checks on any DeepSeek Harness plugin bundle:\n\n- `manifest` — `package.json` + `dsh.bundle` + `dsh.bundle.patch` + `prepare` + `main`\n- `patch` — `cordis.patch.yml` parses and contains at least one `insert` row with an `id`\n- `entry` — the `main` target exists (warns when not built yet"
+ },
+ {
+  "number": 1585,
+  "title": "会话内热切换agent预设：Live agent-preset switching at turn boundaries — a community fork of DeepSeek Harness",
+  "score": 22,
+  "cls": "D_功能API提案",
+  "preview": "**Project** — Live agent-preset switching at turn boundaries (community soft fork of `dsh`)\r\n\r\n**GitHub repository** — https://github.com/HaoyanZhang123/deepseek-harness-live-preset-switch\r\n(branch `live-agent-preset-switch`; the feature lands as a single commit, 80 files / +1604 / -148)\r\n\r\n**What it does**\r\n\r\nAn agent preset is currently a session's *creation* fact: once a conversation starts, it"
+ },
+ {
+  "number": 569,
+  "title": "[Community Suggestion] 限制AI直接发起，未经人工审查复核的Discussion",
+  "score": 22,
+  "cls": "E_社区流程渠道",
+  "preview": "看了一眼社区讨论，被低质量的AI 评论覆盖了，很多反馈都是一股子AI味，Issue半天解释不清楚，附上一堆没有意义的干扰信息，贴上只存在于用户本地的参考文件。\r\n\r\n建议：仓库根添加Discussions.md ，约定社区讨论氛围，在dsh 里内置相关提示词注入片段，当用户一拍大脑就想让Ai自己反馈时，明确提醒用户审查内容，引导其手工提交。"
+ },
+ {
+  "number": 385,
+  "title": "Idea: 在《打包与安装插件》教程中加入社区组合包实例 visionDS / add a community bundle example (visionDS) to the publish tutorial",
+  "score": 22,
+  "cls": "B_社区标准RFC",
+  "preview": "## Idea: add a community bundle example (visionDS) to the \"Package and install a plugin\" tutorial\n\nThe [publish tutorial](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish) teaches GitHub installs with the `hello-plugin` tool example. A short subsection right after the tarball bullet could show a real no-build bundle that ships a **skill** instead of tools, complementing th"
+ },
+ {
+  "number": 5661,
+  "title": "Proposal: configurable OpenAI-compatible service tier for llm-pi-ai",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "## Motivation\n\n`@deepseek-ai/dsh-llm-pi-ai` can configure reasoning, transport, and cache behavior per provider, but there is no validated setting for the OpenAI-compatible `service_tier` request field. This prevents deployments from opting into `priority` or `flex` processing without patching the installed runtime.\n\n## Proposed shape\n\nAdd an optional provider-profile setting:\n\n```yaml\nserviceTier"
+ },
+ {
+  "number": 5335,
+  "title": "Proposal: per-entry continueOnError option for the Loader's patch rows",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: per-entry `continueOnError` option for the Loader's patch rows\n\n## Summary\n\nThe Loader mounts every entry in one transactional group: a single plugin that fails to import, start, or wait on a missing `inject` service rolls the whole group back, and the boot audit (`assertEntriesActivated`) aborts the entire process. That is the right default for harness-owned bundles, but for user-inst"
+ },
+ {
+  "number": 4070,
+  "title": "[Proposal] Additive non-overlapping right-side panel extension for plugins",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\nPlugins currently have two supported surfaces that are relevant to right-side panels:\r\n\r\n- `shell.overlay`, which is additive but rendered as a floating overlay\r\n- `details`, which participates in the real layout but is a single-occupant slot used by the first-party tool-details panel\r\n\r\nNeither currently provides a generic **additive, non-overlapping, width-reserving third-party pan"
+ },
+ {
+  "number": 4069,
+  "title": "[Proposal] Plugin extension points for global navigation and global pages",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\nPlugins today can register many additive surfaces inside a session (header rows, composer chrome, message actions, per-session views) and one frame-wide `shell.overlay`.\r\n\r\nThere is currently no supported contract for a **workspace-independent global navigation entry plus a global page**.\r\n\r\nA plugin that needs its own top-level destination — for example a task manager, search surfac"
+ },
+ {
+  "number": 3703,
+  "title": "[Community integration · prototype] dsh-voice-gate v0.1: a phone text-input bridge for DSH",
+  "score": 21,
+  "cls": "B_社区标准RFC",
+  "preview": "> Correction (2026-08-21, following community review): this post previously described features from an unpublished newer local build as if they were in the repository. They are not. Rewritten below to match the actual public HEAD (`9dbb454`). Thanks to the reviewer for the detailed audit.\n\n## What this is\n\n`dsh-voice-gate` is a **community sidecar/gateway integration**, not a native DSH plugin (no"
+ },
+ {
+  "number": 3567,
+  "title": "Proposal: Generic Models settings editor for third-party configurable LLM providers / 提议：为第三方 configurable LLM provider ",
+  "score": 21,
+  "cls": "D_功能API提案",
+  "preview": "中文\r\n目前第三方 configurable LLM provider 已经可以通过 Harness 的公开接口提供：\r\nsettings.describe 配置 schema\r\ncredentials service\r\nmodel discovery\r\nlive settings update\r\n但在 Settings → Models 中，未知 provider family 仍缺少一个通用、可提交的配置界面，通常只能退回手动编辑 settings.yaml。\r\n提议\r\n保留 DeepSeek、pi-ai 等内置 provider 的 curated editor，同时为未知 configurable provider 增加一个 schema-driven fallback editor。\r\n第一阶段只需要支持常见 schema：\r\nstring\r\nboolean\r\nenum / li"
+ }
+]

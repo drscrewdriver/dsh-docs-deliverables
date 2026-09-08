@@ -1,0 +1,212 @@
+[
+ {
+  "number": 1828,
+  "title": "Show and tell: dsh-subscribe v2 ? Steam-style plugin marketplace (535-plugin registry, one-command sync, in-chat market ",
+  "score": 16,
+  "cls": "C_生态基础设施",
+  "preview": "# Show and tell: dsh-subscribe v2\n\n> English below · 中文见后\n\n**dsh-subscribe v2 — a Steam-style plugin marketplace for DeepSeek Harness: subscribe once, sync with one command.**\n\nRepo: [zoahdev/dsh-subscribe](https://github.com/zoahdev/dsh-subscribe) · Storefront: https://zoahdev.github.io/dsh-subscribe/\n\n## What's new in v2\n\n- **536+ plugin registry** — full mirror of [awesome-dsh-plugin.com](https"
+ },
+ {
+  "number": 1717,
+  "title": "💡 Proposal: Configurable base URL for 'web_search' endpoint to support custom API proxies",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "Hi DeepSeek Team,\r\n\r\nCurrently, the default ' web_search'  plugin routes requests strictly to the official endpoint. When running ' dsh web' behind custom enterprise gateways or self-hosted API proxies, requests to this service fail with 403/authentication errors.\r\n\r\nSuggested improvement:\r\nAllow ' web_search'  to read custom endpoint configurations from the environment or settings file (e.g., 'DS"
+ },
+ {
+  "number": 1604,
+  "title": "DeepSeek Harness with 1,000 MCP tools: should every schema stay model-visible?",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "On **August 14, 2026**, I measured one concrete question in DeepSeek Harness: what is the standing request cost of leaving a large MCP catalog model-visible on every turn?\n\nI kept the setup narrow on purpose:\n- same DeepSeek Harness `0.1.0-rc.6`\n- same generated 1,000-tool stdio MCP fixture\n- same three tool-use tasks\n- same 25 shared non-MCP Harness tools in both arms\n- provider-reported usage, w"
+ },
+ {
+  "number": 1477,
+  "title": "[持续更新] DeepSeek Harness 插件实战指南共建与测试记录",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "DeepSeek Harness 刚开源，我最近看了几组公开测试，挑了两张比较直观的放上来。图片不是我跑的，只作为讨论参考。\r\n\r\n第一张是同一个计时器任务的四组结果。截图里四组配置都通过了当前检查，这里只记录结果，不当成模型排名。\r\n\r\n<img width=\"1672\" height=\"941\" alt=\"dsh-test-01-final\" src=\"https://github.com/user-attachments/assets/e5a5d832-5275-446c-9cb3-c0b995101f63\" />\r\n\r\n\r\n第二张是同一个游戏场景下，DeepSeek Harness、Reasonix 和 Codex 的结果对比。\r\n\r\n<img width=\"1541\" height=\"1021\" alt=\"dsh-test-02-final\" src=\"https://githu"
+ },
+ {
+  "number": 1385,
+  "title": "Proposal: Reintroduce terminal frontend (TUI) as a plugin — following the four re-entry conditions",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Proposal: Reintroduce a terminal frontend (TUI) as a plugin — meeting the four re-entry conditions\n\nHi maintainers — I'd like to propose reintroducing a TUI frontend, **as a new plugin package, not a revival of the removed implementation**. This directly follows the re-entry conditions documented in the 2026-08-04 removal decision (`2026-08-04-remove-tui-package.md`).\n\n### How each condition is"
+ },
+ {
+  "number": 1045,
+  "title": "Showcase: dsh-plugins community catalog for DeepSeek Harness",
+  "score": 16,
+  "cls": "E_社区流程渠道",
+  "preview": "I renamed the catalog to `deepseek-harness-community-catalog`, an independent community catalog for DeepSeek Harness plugins and companion tools:\n\nhttps://github.com/Wanbinyu/deepseek-harness-community-catalog\n\nCurrent projects:\n\n- [`dsh-billing`](https://github.com/Wanbinyu/dsh-billing) - per-model cost accounting, session quota progress, and a composer cost strip. It now ships an installable bun"
+ },
+ {
+  "number": 670,
+  "title": "插件生态缺乏中心化治理",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "\r\n"
+ },
+ {
+  "number": 604,
+  "title": "多会话 UI 插件的渲染器扩展点（按 id 绑定会话 + 会话列包裹缝）",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "# 多会话 UI 插件的渲染器扩展点（按 id 绑定会话 + 会话列包裹缝）\n\n**背景：** 外部客户端插件（例如 PiUI 风格的多窗格对话界面）需要当前 web 客户端没有暴露的两项渲染器能力，且无法纯插件实现。本文是对两个最小、纯新增扩展点的提案。\n\n## 缺口\n\n分屏插件需要：\n\n1. **包裹原生会话列**（在其表面之上托管 N 个窗格）。\n2. **把对话子树渲染到任意会话 id 上**（每个窗格固定自己的会话，而全局选择独立移动）。\n\n目前从插件侧两者都做不到：\n\n- `conversation` 槽是 single、被 ui-conversation 的 `ConversationRoot` 独占，它声明了内部全部座位（`conversation.session`、`conversation.composer`、`conversation.input.*` 等）。阴影接管"
+ },
+ {
+  "number": 528,
+  "title": "社区插件 dsh-email 发布：让 DSH 查收件箱/读邮件/搜邮件/代发信（6 工具 + Web 设置页）",
+  "score": 16,
+  "cls": "C_生态基础设施",
+  "preview": "**dsh-email —— 给 DeepSeek Harness 装上邮件能力：查收件箱、读邮件、搜邮件、代发信（6 工具 + Web 设置页）**\n\n做这个插件的起因：公测首日看到 #14 求 memory，扫了一遍生态发现 memory 已被社区做穿，但**邮件工具是几百个 dsh-plugin 仓库里的真空**。于是从零写了一个，期间还在原生模式（标准/极简/创造预设）下踩出并修复了工具参数 schema 的坑。\n\n**六个工具**\n- email_list / email_read / email_search —— 收件箱列表、读全文（HTML 自动转纯文本、超长截断）、按主题/发件人/收件人搜索\n- email_send —— 代发邮件。**默认走审批门**：弹框显示收件人和主题，你批准才发出；Full Access 模式下被安全拒绝\n- email_folders / em"
+ },
+ {
+  "number": 492,
+  "title": "[RFC] 增加评测隔离模式：当前 workspace 缺少读取隔离能力",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "## TL;DR\n\n- **现状**：DSH 当前三档权限（`read-only` / `workspace-write` / `danger-full-access`）限制的是文件修改范围，读取仍然可以访问 workspace 以外的内容。选择一个空的 workspace，并不能保证 Agent 只看到这个目录里的东西。\n- **影响**：在评测任务里，机器上其他目录的代码、答案、历史会话都可能被 Agent 读到，评测结果因此会受运行环境影响。只是给每个任务分开 workspace 和会话 ID，并不够。\n- **建议**：增加一个可选的评测隔离模式，并在评测文档中写明当前的隔离范围。\n\n## 我们遇到的情况\n\n我们最近在用 DSH 作为评测基底，运行 GPU kernel 优化任务。每个任务里，Agent 会围绕一个算子反复修改实现、运行测试、比较性能结果。\n\n一次测试中，我们特意选"
+ },
+ {
+  "number": 392,
+  "title": "建议：将社区 TUI 插件纳入官方 examples 目录",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "## 价值假设\n\n官方仓库的 `examples/` 已有 headless-agent、jsonrpc-agent、web-cordis、acp-agent 等示例，但缺少一个**交互式终端 UI 示例**。社区已有实现（https://github.com/gxinxing/deepseek-harness-tui），展示了如何用 Ink + Cordis 插件机制构建终端原生 TUI。\n\nShow and tell 帖：https://github.com/deepseek-ai/deepseek-harness/discussions/391\n\n## 现有 examples 目录\n\n```\nexamples/\n├── acp-agent/       # ACP 自动化服务器\n├── headless-agent/  # 非交互式 agent\n├── jsonrpc-agent/ "
+ },
+ {
+  "number": 383,
+  "title": "[RFC] 跨对话引用：先挂现成工具，不要为 GUI 开基座",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "用户要在当前对话里用上其他对话。有两条路，别混。\n\n**1. Agent 自己去查（推荐，已有插件）**  \n挂 `@deepseek-ai/dsh-tool-session-query`。五个只读工具：搜会话、搜事件、读事件、看谱系。走 `ctx.sessionQuery`，按调用方 `cwd` 授权。默认组合没挂，opt-in 一行。不改 loop，不改 `session.prompt`，不做 Web `@`。\n\n用户说「看昨天那个修 sandbox 的」，模型自己搜。卸掉插件，工具就没了。\n\n不要用 bash 读 `~/.dsh` jsonl：会绕过授权和 compaction 表层。\n\n**2. 输入框点选某一段对话**  \n这才要动 host。今天 `session.prompt` 只能投递一条用户消息；浏览器调不到 `inject()`。要做 `@` chip，得给 host "
+ },
+ {
+  "number": 357,
+  "title": "Proposal: allow image uploads in GUI when the main model is text-only but vision tools are installed",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\nWhen using DeepSeek Harness with a **text-only main model** (e.g. DeepSeek V4 Flash via the deepseek-official provider) together with the vision plugin (dsh-vision-toolkit: vision_glance / vision_detect / vision_pixel_diff etc.), the GUI **rejects image uploads** with:\r\n\r\n> 当前模型不支持图片，请切换支持图片的模型 (reason: `MODEL_DOES_NOT_SUPPORT_IMAGES`)\r\n\r\n## Why this is a gap\r\n\r\nThe vision tools read"
+ },
+ {
+  "number": 201,
+  "title": "[BUG] spamming Error: sandbox escalation to \"workspace-write\" is not strictly wider than this call's current \"danger-ful",
+  "score": 16,
+  "cls": "A_治理反馈",
+  "preview": "<img width=\"493\" height=\"994\" alt=\"image\" src=\"https://github.com/user-attachments/assets/21988c26-723e-4a2b-a612-8e9c39c9eee5\" />\r\n\r\nModel GPT-5.6-Sol(Max) (CliProxyAPI)\r\n\r\n我明确告诉他Inspect里面的不同(毕竟前面ds toolcall我试了没问题)"
+ },
+ {
+  "number": 5693,
+  "title": "DSH | OwnDsh | 团队身份、模型授权与额度管理",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "> **非官方项目，由社区成员独立开发和维护。与 DeepSeek AI、Anywhere Labs 不存在隶属或背书关系。**\n\n项目地址：https://github.com/boe1900/owndsh\n\n## 项目介绍\n\n大家好，我在做 OwnDsh，想邀请有团队使用 DeepSeek Harness / DSH Desktop 需求的朋友一起体验、反馈和共建。\n\n**项目还在早期开发阶段，已经实现身份接入、模型授权、配额和用量管理，但兼容性与部署体验仍在完善，存在已知问题，也可能遇到尚未发现的 Bug。欢迎在测试环境探索，目前不建议直接承载生产业务。**\n\n如果团队已经在用 DSH，可能会遇到这些问题：模型 API Key 分散在各台电脑上，成员能用哪些模型不好统一管理，额度和用量也不方便集中查看。\n\nOwnDsh 把这些管理能力放到一个可自托管的服务端：管理员配置模型、保管供应"
+ },
+ {
+  "number": 5636,
+  "title": "How should DeepSeek Harness plugins disclose and manage permissions?",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "DeepSeek Harness is built around a powerful idea: everything is a plugin.\r\n\r\nThat flexibility also means plugins can operate close to local files, environment variables, model routing, session data, tool registries, and shell execution.\r\n\r\nThe AgentGuard team recently conducted a sample-based security study of the DeepSeek Harness plugin ecosystem.\r\n\r\nWe selected **659 plugins** from a marketplace"
+ },
+ {
+  "number": 5581,
+  "title": "[bug] cordis_define: typeless plugin parameter schema makes the web client stringify the object argument",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "# [bug] cordis_define: typeless `plugin` parameter schema makes the web client stringify the object argument\n\n*Merged draft — evidence consolidated by AICORE (Linux) + JKDTPC (Windows), 2026-09-03. E2E validation completed 2026-09-04 (§ Evidence 5-7).*\n\n## Environment\n\n- `@deepseek-ai/dsh` **0.1.1-rc.2** (npm install), observed on **Windows 11** (dsh web process, `dsh web --patch …`, GUI on :3080)"
+ },
+ {
+  "number": 5466,
+  "title": "[Bug/提案] 纯推理轮到 content or tool_calls must be set，毒死整会话：(serialize) 层缺少对 reasoning-only 空 content 的兜底",
+  "score": 15,
+  "cls": "E_社区流程渠道",
+  "preview": "# 症状 一个会话里某个 turn 之后，该会话之后每一轮都立即失败：\r\n\r\n```bash\r\nThis turn failed: Invalid assistant message: content or tool_calls must be set   [code: INVALID_REQUEST, status: 400]\r\n```\r\n即使只回 \"hi?\" 也一样，整会话报废、无法续用。\r\n## 复现\r\n配置：llm-deepseek 指向平台代理（多厂商网关，Anthropic 兼容），model: deepseek-v4-flash-vision-exp，reasoningEffort: high。\r\n触发：模型某一轮只返回了 reasoning（思维链），没有正文、也没有工具调用（实验版模型 + 高推理时容易出现）。该纯推理轮被当作普通 assistant 消息持久化。\r\n下一"
+ },
+ {
+  "number": 5361,
+  "title": "Show & Tell: dsh-forge — DeepSeek Harness 的\"官方不好用问题\"修补套件",
+  "score": 15,
+  "cls": "C_生态基础设施",
+  "preview": "# Show & Tell: dsh-forge — DeepSeek Harness 的\"官方不好用问题\"修补套件\r\n\r\n> **本楼原为一份经隔离复核后确认非上游缺陷的问题报告，现改为项目展示。** 感谢本帖讨论中回复过的 @zoahdev、@Electricitysheep——你们关于 steer 通道、RFC 与手册收录的建议对我们的实验很有价值。\r\n\r\n## 一句话定位\r\n**DeepSeek Harness 很好，但我们日常用下来有一串\"官方不好用\"的缺口—— dsh-forge 就是把这些缺口一个个补上（或正在补）的运行时套件。** 它不做\"换掉 Harness\"，只做\"让 Harness 按我们的用法更好用\"。\r\n\r\n## 我们修补的\"官方不好用\"清单（真实使用中撞到的）\r\n\r\n| 官方缺口（我们撞到的） | dsh-forge 的修补 | 状态 |\r\n|---|---|-"
+ },
+ {
+  "number": 5257,
+  "title": "llm-pi-ai: no extension point for credential transport (Authorization: Bearer vs protocol-native headers)",
+  "score": 15,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nA pi-ai provider route in `dsh-llm-pi-ai` resolves its `apiKeyEnv` credential through the harness credential seam and hands it to pi-ai as the request-level `apiKey` option. That delegates header selection to the protocol implementation — Anthropic Messages sends `x-api-key`, OpenAI Chat Completions sends `Authorization: Bearer`.\n\nGateways that implement a protocol but require differen"
+ },
+ {
+  "number": 4955,
+  "title": "dsh-v0.1.2-alpha.1 this exact revision produced an empty manifest",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh-v0.1.2-alpha.1 serves __DSH_BOOT__ with entries: [] and batches: [],                                                                                                         \r\n   causing “HTML did not preload @deepseek-ai/dsh-client-modules/client.js”."
+ },
+ {
+  "number": 4736,
+  "title": "[Community Plugin] dsh-verified-market —— 装之前就知道能不能用（只收录雷达实测可用的 DSH 插件市场）",
+  "score": 15,
+  "cls": "C_生态基础设施",
+  "preview": "社区插件分享：**dsh-verified-market** —— 一个只收录\"运行级实测可用\"插件的 DSH 插件市场。\r\n\r\n**为什么有它**：DSH 插件越来越多，但装之前谁也没法保证\"能装上、能跑起来\"。\r\nawesome-dsh-plugins 雷达用 k8s 容器逐个对插件做运行级实测并给出判定（verdict: ok / incompatible / …），\r\n这个市场把结论直接做成了体验：\r\n\r\n- 默认只展示雷达实测 **ok** 的插件（当前 1000+），装之前就知道能不能用\r\n- **白名单安装**：不在 ok 清单里的安装直接拒绝，防装错包/防抢注\r\n- **安装源互证解析**：仓库 package.json ↔ npm registry 双向核对一致才走 npm，否则回退\r\n  `github:owner/repo`（仓库-only 插件也能装）\r\n- 每张卡"
+ },
+ {
+  "number": 4612,
+  "title": "Bug report draft: native read_image tool fails with \"cannot get property 'fs' without inject\" (all presets)",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "**Environment**: dsh 0.1.0-rc.6, Windows, web profile. Reproduces on `freedom` (user preset) and should reproduce on every preset mounting `@deepseek-ai/dsh-tool-fs`, since the defect is in the package itself.\r\n\r\n## Symptom\r\n\r\nCalling the native `read_image` tool fails immediately:\r\n\r\n```\r\nError: cannot get property \"fs\" without inject\r\n```\r\n\r\n`read`, `write`, and `edit` work normally — only `read"
+ },
+ {
+  "number": 4540,
+  "title": "A cordis config change adds a model-facing tool while its 30-test suite stays green — three edits, two files",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "## `cordis` is the only shipped preset whose tool list is checked with `arrayContaining`\n\n`apps/cli/tests/web-agent-presets.e2e.ts` composes the four shipped presets and checks what each\none offers the model. For `cordis` — and only `cordis` — that check is written with\n`expect.arrayContaining`, a subset assertion. On a clean tree at `0.1.0-rc.8`, Linux, no API key:\n\n```bash\npnpm install --frozen-"
+ },
+ {
+  "number": 4057,
+  "title": "DSH | dsh-learning-bundle | 让纠正只在该用处生效 · Explicit, scoped correction learning",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "> **非官方社区项目 / Unofficial community project.**\n\n## 解决什么 / What it solves\n\n让 DSH 记住你明确确认过的纠正，只在对应 profile、workspace 或 session 生效；当前指令永远优先，所有模型可见送达都能从 session log 重建。\n\nRemembers explicitly adopted corrections only in the matching profile, workspace, or session. Current instructions win, and every model-visible delivery is reconstructable.\n\n**项目 / Project:** https://github.com/B1lli/dsh-learning-bundl"
+ },
+ {
+  "number": 3698,
+  "title": "DeepSeek harness：评论区说「1-2 字中文 trigram 必 0 命中」——我验证了，然后修好了（附完整对照表）",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "# 评论区说「1-2 字中文 trigram 必 0 命中」——我验证了，然后修好了（附完整对照表）\r\n\r\n> 发布地址：https://github.com/deepseek-ai/deepseek-harness/discussions （点 New discussion，分类选 **Ideas** 或 **General**）\r\n> 标题与正文如下，可直接复制粘贴。\r\n\r\n---\r\n\r\n## 标题\r\n\r\n**评论区说「1-2 字中文 trigram 必 0 命中」——我验证了，然后修好了（附完整对照表）**\r\n\r\n## 正文\r\n\r\n### 0. TL;DR\r\n\r\n上帖（#3671）报告了 `dsh-session-query-sqlite` 的 `unicode61` tokenizer 不切中文、查询整体包成单短语，导致中文子串召回必然失败；我们 fork 出 `dsh-sessi"
+ },
+ {
+  "number": 3635,
+  "title": "crypto.randomUUID is unavailable on non-secure contexts, breaking the Web UI over plain-HTTP LAN/Tailscale access",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "## 问题摘要\n\nWhen the dsh Web UI is served over **plain HTTP from a non-loopback address** (LAN IP, Tailscale IP, or a hostname), the frontend crashes on every RPC, because `crypto.randomUUID` only exists in **secure contexts** (HTTPS, `http://localhost`, `http://127.0.0.1`). Symptom: the page shell loads, but workspaces/sessions/models never render — the workspace selector spins forever (\"正在加载工作区\"), "
+ },
+ {
+  "number": 3539,
+  "title": "DSH | dsh-backup | 定时/手动自动备份 DSH 数据为标准 zip，轮转保留",
+  "score": 15,
+  "cls": "B_社区标准RFC",
+  "preview": "> **Unofficial project**: independently developed and maintained by a community member, not an official DeepSeek product.\n\n**dsh-backup** — automated backups of your DSH data, packed as standard `.zip` archives.\n\n- **What is backed up**: `~/.dsh/sessions` (conversation history), `~/.dsh/profiles` (config, excluding node_modules), `~/.dsh/AGENTS.md`, plus any custom directories you add (e.g. your m"
+ },
+ {
+  "number": 3422,
+  "title": "pi2dsh：给 DeepSeek Harness 接上 Pi 生态；Codex 订阅生图/改图已跑通",
+  "score": 15,
+  "cls": "C_生态基础设施",
+  "preview": "# pi2dsh：给 DeepSeek Harness 接上 Pi 生态；Codex 订阅生图/改图已跑通\n\n分享一下 [pi2dsh](https://github.com/weijiafu14/pi2dsh)：它不是把某一个 Pi 插件重写成 DSH 插件，而是在 DeepSeek Harness 上实现一层 Pi Host ABI。引擎安装一次，之后直接安装 Pi 社区发布的原包。\n\n这次跑通的是一个很直观的例子：把 [`@crazygit/pi-codex-image-gen`](https://github.com/crazygit/pi-codex-image-gen) 原包装进 DSH，使用 ChatGPT Plus/Pro 的 Codex OAuth 登录态直接调用 `gpt-image-2` 生图和改图，不需要再买图片 API Key。\n\n## 安装\n\n```sh\ndsh"
+ },
+ {
+  "number": 3363,
+  "title": "llm-pi-ai: expose supportsDeveloperRole / maxTokensField in PiAiCompatProfile for OpenAI-compatible gateways",
+  "score": 15,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nFor a hand-declared `openai-completions` route pointing at an OpenAI-compatible gateway, `dsh-llm-pi-ai` relies on pi-ai's URL-derived compat detection. An unrecognized gateway URL is treated as a standard OpenAI endpoint, so the adapter sends:\n\n- the system prompt as `role: \"developer\"`, and\n- the output cap as `max_completion_tokens`\n\nClassic OpenAI-compatible gateways reject the fir"
+ }
+]

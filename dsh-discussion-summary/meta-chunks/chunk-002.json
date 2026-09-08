@@ -1,0 +1,212 @@
+[
+ {
+  "number": 5040,
+  "title": "[RFC] 解决文件版本令牌因“仅查看”而误报冲突的问题——支持基于内容 hash 的可选策略",
+  "score": 32,
+  "cls": "B_社区标准RFC",
+  "preview": "# [RFC] 解决文件版本令牌因“仅查看”而误报冲突的问题——支持基于内容 hash 的可选策略\r\n\r\n## 摘要\r\n\r\n`@deepseek-ai/dsh-fs-local` 当前基于 stat 时间戳（`dev:ino:size:mtimeNs:ctimeNs`）构造乐观并发控制的版本令牌。这导致一个严重误判：**用户仅仅“打开”Agent 生成的交付文档或中间脚本（内容未变）**，编辑器/操作系统就会触碰元数据，DSH 随即报错 `FS_STALE_VERSION`，强制 Agent 重新读取整个文件。\r\n\r\n**查看（View）≠ 修改（Edit）**。在 Agent 交付成果、用户审查中间产物等核心人机协作场景中，这种误判直接中断工作流，且无法绕过（只能手动改 `node_modules`）。\r\n\r\n本提案新增 `versionStrategy` 配置项，提供 `stat`（当"
+ },
+ {
+  "number": 2088,
+  "title": "Proposal: add real-host release lifecycle validation to the plugin-development Skill / 建议增加真实宿主发布门禁",
+  "score": 32,
+  "cls": "B_社区标准RFC",
+  "preview": "## Proposal\n\nAdd a short, vendor-neutral **release lifecycle gate** to the official [`cordis-plugin-development` Agent Skill](https://github.com/deepseek-ai/deepseek-harness/blob/master/apps/cli/config/agent-presets/cordis/skills/cordis-plugin-development/SKILL.md).\n\nThe current Skill is strong at inspecting live capabilities, defining immutable Cordis Packages, running/updating them, and handling"
+ },
+ {
+  "number": 1881,
+  "title": "[RFC / Proposal] Triple-Layer Persistent Memory (Markdown Rules + Vector Embeddings + Hybrid Vitality Ranking) for DeepS",
+  "score": 32,
+  "cls": "D_功能API提案",
+  "preview": "# RFC Proposal: 4-Tier Cognitive Long-Term Memory & Self-Correction Engine for DeepSeek Harness\n\n> **Status**: Production-Ready & Open-Sourced (v0.3.1)  \n> **Reference Implementation**: [`@shion-lab/dsh-plugin-memory`](https://github.com/avaritiachaos/dsh-plugin-memory) (MIT License, 100% Passing Live TypeScript Test Suite)  \n> **Origin**: Distilled from the companion AI cognitive architecture of "
+ },
+ {
+  "number": 1174,
+  "title": "Proposal: where should community translations live? (starting with Japanese)",
+  "score": 32,
+  "cls": "B_社区标准RFC",
+  "preview": "I've translated the root `README.md` and `CONTRIBUTING.md` into Japanese. The files are on a branch in my fork: https://github.com/eltociear/deepseek-harness/tree/add-ja-doc\r\n\r\nI'm not opening a pull request — `CONTRIBUTING.md` says external PRs can't be accepted right now, so I'm raising it here instead, as that document suggests.\r\n\r\nI don't think \"merge two files\" is the real question, though. R"
+ },
+ {
+  "number": 5479,
+  "title": "提案：针对大历史会话环境的 Web GUI 首屏活跃会话乐观即时水合 / Proposal: Optimistic active-session hydration on startup",
+  "score": 31,
+  "cls": "D_功能API提案",
+  "preview": "# 提案：针对大历史会话环境的 Web GUI 首屏活跃会话乐观即时水合\n\n## 1. 概述\n\n当用户的历史会话累积较多时（例如跨多个项目累积了 500 至 800+ 个会话），在启动或重启 DSH Web GUI 时，活跃会话与侧边栏会出现明显的 **2 到 3 秒等待卡顿**。\n\n本提案在 `@deepseek-ai/dsh-api-session-controller` 中引入**首屏活跃会话乐观即时水合**（Optimistic Hydration）机制，将活跃会话的主屏渲染与全量历史会话的磁盘扫描解耦，将主聊天区的可交互时间从 **~2400ms 降低至 ~45ms**。\n\n---\n\n## 2. 痛点问题\n\n当重新加载 Web GUI 页面时：\n1. **项目列表（Workspaces）秒出**：工作区数据（`~/.dsh/storages/workspace.json`）只有几"
+ },
+ {
+  "number": 3350,
+  "title": "「社区实验」dshlib —— DSH 插件图书馆：装前可见\"可信几级、扫描过没有、多少人真在用\"（呼应 #3192）",
+  "score": 31,
+  "cls": "B_社区标准RFC",
+  "preview": "## dshlib —— DSH 插件图书馆（实验）：装前可见\"可信几级\"\n\n> **dshlib** 是一个**社区实验**：DSH 插件图书馆——收录、验证、展示 DSH 插件，每插件带 **CHA2A 认证徽章 + 安全扫描状态**，装前可见\"谁发布的、是否被改、可信几级、扫描过没有、多少人真在用\"，以及**边界的诚实**（可信 ≠ 无漏洞）。\n>\n> 图书馆：https://compliancehub.cn/store/\n> 提交通道：https://github.com/dshlib/dshlib（Issue 模板）\n> 开源：数据 + 验证/扫描工具全部开放\n>\n> **这不是一个成品，是一个实验——邀请社区一起来做。**\n\n**为什么做这个实验**：社区对插件安全的呼声（#1115 投毒担忧、provenance 缺失）。我们想验证一个**技术框架**：插件可信度能不能\"可验"
+ },
+ {
+  "number": 3276,
+  "title": "Proposal: support nullable JSON Schema type arrays in @deepseek-ai/dsh-tools",
+  "score": 31,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\nDSH uses `@deepseek-ai/dsh-tools` to process schemas for tool parameters and outputs, Code Mode SDKs, structured subagent and workflow outputs, and dynamic tool registration. The package supports a subset of JSON Schema, but it doesn’t support nullable `type` arrays such as the following:\r\n\r\n```json\r\n{\r\n  \"type\": [\"integer\", \"null\"]\r\n}\r\n```\r\n\r\nJSON Schema defines this syntax, and sch"
+ },
+ {
+  "number": 1814,
+  "title": "Proposal: adopt dsh-plugin-doctor as official dsh plugin check and dsh doctor",
+  "score": 31,
+  "cls": "C_生态基础设施",
+  "preview": "# Proposal: adopt dsh-plugin-doctor as official `dsh plugin check` and `dsh doctor`\n\n对应 #1629（`dsh plugin check`）与 #1719（`dsh doctor`）两个社区请求：实现已存在并经过验证，本提案给出可直接采纳的规格。\n\n## 为什么现在采纳\n\n1. 插件数量正在爆炸（topic 2,958 仓库），但**可验证安装的插件是稀缺品**——官方预检是生态质量的地基；\n2. 社区已有两个实现（dsh-plugin-doctor、moonquake2004/dsh-doctor）和完整教训（#1697/#1763/#1782 的\"能加载≠能用\"）；\n3. 实现无运行时依赖、输出稳定 JSON、已通过真实注册表可见性验证——收编成本极低。\n\n## 建议命令\n\n```text\ndsh p"
+ },
+ {
+  "number": 1629,
+  "title": "RFC: official plugin scaffold — template repo + pnpm create dsh-plugin to unblock the ecosystem",
+  "score": 31,
+  "cls": "C_生态基础设施",
+  "preview": "CONTRIBUTING.md encourages community plugins and states community packages are as important as official ones. The publish guide describes the bundle format well, but the manual setup still creates real friction:\n\n- Plugin authors must hand-write `package.json` (`dsh.bundle` manifest), `cordis.patch.yml`, `prepare` script, tsconfig, and tests with no official starting point. The publish guide point"
+ },
+ {
+  "number": 3992,
+  "title": "RFC: Runtime-open root page, details, inbox, and plugin-event seams for external UI plugins",
+  "score": 30,
+  "cls": "D_功能API提案",
+  "preview": "### Motivation\n\nExternal DSH plugins can contribute Host behavior and Client bundles, but an external plugin that needs a persistent root-level UI currently has no generic way to:\n\n- add a navigation action without replacing the workspace browser;\n- show a main page instead of the current conversation;\n- reuse the root details column for plugin-owned details;\n- present a global decision inbox abov"
+ },
+ {
+  "number": 1922,
+  "title": "Show and tell: DSH 1024Store — 开源社区插件目录、自动校验与设置页内市场",
+  "score": 30,
+  "cls": "C_生态基础设施",
+  "preview": "# DSH 1024Store\n\n大家好，我们做了一个面向 DeepSeek Harness 生态的开源社区插件目录和设置页内市场：**DSH 1024Store**。\n\n- 在线目录：https://deepseek1024.com/\n- 开源仓库：https://github.com/imsai-sh/awesome-deepseek-harness-plugins\n- DSH 内市场 npm 包：https://www.npmjs.com/package/dsh-1024store\n\n这是一个**非官方社区项目**。我们的目标不是替代 DSH 的插件机制，而是在官方 `dsh plugin`、profile bundle 和 `dsh.bundle.patch` 契约之上，补齐发现、校验、提交和安装体验。\n\n## 它目前做了什么\n\n- 定期发现带有 `dsh-plugin` GitH"
+ },
+ {
+  "number": 3937,
+  "title": "RFC: Local-first work continuity layer as a SessionPersistence backend",
+  "score": 29,
+  "cls": "B_社区标准RFC",
+  "preview": "Hi all — I built **ai-workroot**, a local-first work-continuity substrate, and I'd like to propose it as a candidate for DSH's storage/session plugin slots. The full design doc is available on request; this post is the short version.\r\n\r\n## What it is\r\n\r\nMost \"agent memory\" projects answer *\"what does the agent remember?\"* ai-workroot answers a different question: *\"where is this piece of work righ"
+ },
+ {
+  "number": 3176,
+  "title": "关于DeepSeek Harness插件生态分层模型 Plugin Layering Model简称(PLM)",
+  "score": 29,
+  "cls": "C_生态基础设施",
+  "preview": "author: @szx-a\r\n\r\n# 关于DeepSeek Harness插件生态分层模型的一个初步探讨（简称 PLM）\r\n\r\n> **Plugin Layering Model (PLM)** —— 本文尝试提出一种插件分层模型，旨在为 Harness 插件生态提供一个结构化的认知架构，以促进插件之间的协作与生态的有序发展。\r\n\r\n## 一、背景与动机\r\n\r\nDeepSeek Harness 基于 Cordis 框架，采用 **“一切皆插件”** 的架构。产品的每一部分都是插件，包括模型适配器、工具注册表、会话日志，以及 agent loop 本身。不存在需要打补丁的特权内核——扩展 dsh 的方式就是把插件挂载到其他插件旁边。\r\n\r\n然而，随着插件数量激增（社区插件市场已收录较多插件），当前生态面临一个结构性问题：**所有插件在概念层面被平等对待，缺乏对其“角色”的区分**。这导致："
+ },
+ {
+  "number": 2698,
+  "title": "请确认 dsh preset add URL / 预设一键安装协议契约",
+  "score": 29,
+  "cls": "B_社区标准RFC",
+  "preview": "## 背景\n\n我们在做 DeepSeek Harness Desktop（社区桌面打包版，内置 Node 与官方 `@deepseek-ai/dsh`）与 cordis.run 插件市场。桌面版已按上游 `dsh plugin --profile web add <package>` 契约实现插件一键安装，并已和 cordis.run 定稿浏览器深链协议：\n\n```text\ndsharness://plugin/install?v=1&name=<npm-package>&source=<cordis.run 插件页>\n```\n\n现在我们想为 **preset（`.dshpreset` / `.agent-presets/<id>`）** 做同样的「cordis.run 一键安装」，需要先和上游把契约逐字节对齐。以下问题请帮忙答复；能附上源码文件/分支/commit 或协议文档最好。\n\n#"
+ },
+ {
+  "number": 2099,
+  "title": "The dsh-plugin topic is polluted by non-DSH repos — worth adding a guideline?",
+  "score": 29,
+  "cls": "B_社区标准RFC",
+  "preview": "Hi DeepSeek Harness team 👋\n\nWe run **dshbase**, a community plugin directory for DeepSeek Harness. While auditing our own catalog, we discovered that the `dsh-plugin` GitHub topic is significantly polluted: many repos tag themselves `dsh-plugin` for visibility but are **not actually DSH plugins**.\n\n**A few concrete examples (all currently in the topic, all high-star):**\n\n- `openhanako` (~6k★) — a "
+ },
+ {
+  "number": 5695,
+  "title": "Proposal: recognize official Typert protocol metadata in third-party plugin packages",
+  "score": 28,
+  "cls": "B_社区标准RFC",
+  "preview": "## Background\n\nOpenBKN is an open-source business knowledge-network platform. Its DeepSeek Harness integration is being developed as a formally publishable, out-of-tree plugin: https://github.com/openbkn-ai/bkn-dsh\n\nThe plugin uses the documented Typert pattern: a Host service extends TypertRemoteService and marks safe Client-facing methods with Remote. The methods cover only authentication status"
+ },
+ {
+  "number": 2418,
+  "title": "Proposal: three minimal seams to enable a multi-session split-pane community plugin (with working prototype)",
+  "score": 28,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\nWe prototyped a **multi-session split-pane UI** for the DeepSeek Harness Web GUI (up to 4 panes: 2×2 / left-1-right-2 / side-by-side presets, per-pane session binding, persistence, empty-pane session picker reusing the sidebar's own session rows) by patching the published `0.1.0-rc.x` packages. It works and is validated by an 18-assertion real-browser E2E suite plus unit/smoke/render t"
+ },
+ {
+  "number": 2259,
+  "title": "[Proposal] propagate the repo-declared engines field into published @deepseek-ai/* manifests",
+  "score": 28,
+  "cls": "B_社区标准RFC",
+  "preview": "**Refined ask (thanks to @sjh9714's correction): propagate the already-declared Node floor into the published package manifests.**\n\nOriginal premise corrected: the floor EXISTS and is machine-readable — the monorepo root package.json declares it at line 8:\n\n```json\n\"engines\": { \"node\": \"^22.19.0 || >=24.0.0\" }\n```\n\nThe gap is distribution, not definition: of the 61 published @deepseek-ai/* package"
+ },
+ {
+  "number": 1822,
+  "title": "提案：把「一锅乱炖」的记忆拆成可挂载的「记忆体」插件",
+  "score": 28,
+  "cls": "D_功能API提案",
+  "preview": "来自社区用户的建议，投在这里是希望和社区一起把它打磨成形，而非求立即实现。文中几处已刻意留白，标在\"开放问题\"里，欢迎维护者和社区一起讨论工程取舍。若我对现状理解有误，也请直接指出。\r\n\r\n> 价值假设：给 Harness 引入一个**跨会话、隔离、由用户显式挂载**的记忆单元（Memory Body），让不同场景各自挂载各自的记忆，既省 token、又不丢跨会话的经验。\r\n\r\n## 背景与动机\r\n\r\nDeepSeek Harness 的「一切皆插件」哲学（cordis seam：Service Definition / Provider / Consumer）已经让**存储后端**、**压缩策略**、**上下文注入**三者分别插件化。但记忆的**组织形态**仍然是一锅乱炖：\r\n\r\n- 记忆按**会话**隔离成事件日志（`session-persistence`），会话结束，那条日志就是全"
+ },
+ {
+  "number": 1493,
+  "title": "Feature proposal: product-session attribution and observability envelope for subagent providers",
+  "score": 28,
+  "cls": "D_功能API提案",
+  "preview": "# Feature proposal: product-session attribution and observability envelope for subagent providers\n\n## Summary\n\n`@deepseek-ai/dsh-subagent-codex` is a one-shot bridge: each run starts\n`codex app-server --stdio`, creates one ephemeral thread, submits one task, and\nreturns only the final answer. What it does **not** retain is any durable\npointer back to the product's own session artifact. We run a lo"
+ },
+ {
+  "number": 5618,
+  "title": "Proposal: recognize the published Typert protocol in external plugins",
+  "score": 27,
+  "cls": "B_社区标准RFC",
+  "preview": "## Context\r\n\r\n[OpenBKN](https://github.com/openbkn-ai) is an open business knowledge-network platform. Its independently published [DeepSeek Harness bundle](https://github.com/openbkn-ai/bkn-dsh) lets a business user sign in to OpenBKN, bind one DSH session to one authorized knowledge network, and analyze that network through scoped platform OSDK operations.\r\n\r\nThe bundle needs a typed Host-to-Cli"
+ },
+ {
+  "number": 4001,
+  "title": "[Contribution] examples: add computer-use MCP interoperability example (ready to cherry-pick)",
+  "score": 27,
+  "cls": "B_社区标准RFC",
+  "preview": "**Contribution ready for review/import**\n\nPer CONTRIBUTING.md (external PRs not currently accepted), posting here as the documented engagement channel. A small, verified contribution is ready to cherry-pick or import into an upstream branch.\n\n### Purpose\nDefault-off interoperability example connecting a third-party computer-use MCP server (mouse, keyboard, screenshot) to the harness through the ex"
+ },
+ {
+  "number": 1804,
+  "title": "[Feature request] 插件权限声明（Plugin Permission Manifest）：让\"装插件=装可执行代码\"这件事变得显式、可审查、可授权",
+  "score": 27,
+  "cls": "D_功能API提案",
+  "preview": "\n> 建议分类：Ideas\n> 环境：DeepSeek Harness 0.1.0-rc.6\n\n## 问题\n\nDSH 的口号是 \"Everything is a Plugin\"，但**插件 = 在 harness 进程内执行的全权限代码**：能读凭据、发网络、起子进程、改配置。目前的防线只有两道：\n\n1. **安装前**：社区工具（如 `dsh-plugin-vetting`）做**静态启发式扫描**——但它没有足够置信度去拦停，只能当绊线（\"误伤比漏检更危险\"）；\n2. **安装后**：`dsh plugin add` 无签名、无来源校验、无权限边界——插件一旦装上，它的所有行为都在进程内、无约束。\n\n结果：**\"装插件\"和\"装可执行代码\"之间没有一道用户能看懂、能决策的闸**。用户只能靠\"信不信任这个作者\"来赌。\n\n## 提案：插件权限声明（manifest）\n\n插件在 `packag"
+ },
+ {
+  "number": 1530,
+  "title": "Proposal: integrate persistent token-usage tracking into DeepSeek Harness",
+  "score": 27,
+  "cls": "D_功能API提案",
+  "preview": "## Proposal\n\nI built **[dsh-token-usage](https://github.com/LeemanCheung/dsh-token-usage)**, an MIT-licensed DeepSeek Harness plugin that provides persistent, privacy-preserving token-usage analytics. I would like to propose integrating this capability into the official project—either as an officially maintained optional plugin or as a built-in feature.\n\n![Token usage dashboard](https://raw.github"
+ },
+ {
+  "number": 288,
+  "title": "Seam-stability annotations for early adopters",
+  "score": 27,
+  "cls": "B_社区标准RFC",
+  "preview": "# Seam-stability annotations for early adopters\n\n**Status:** Draft  **Category:** Ideas  *(addresses PRD risk R1)*\n\n**Context**\n`PRD.md R1` and `tech.md §12.1` state pre-release may make breaking changes freely;\n`SESSION_FORMAT_VERSION = 0` carries \"no compatibility promise\", and `AGENTS.md` keeps a pre-release\ndeclaration until M2. The current branch even carries `fix/settle-timeout-policy-name`\n"
+ },
+ {
+  "number": 5402,
+  "title": "DSH | dshpluginhub.ai Profiles | Share an entire Harness as a versioned, reproducible Release",
+  "score": 26,
+  "cls": "C_生态基础设施",
+  "preview": "> **Unofficial community project.**  \r\n> dshpluginhub.ai and DSH Hub CLI are independently developed and maintained. They are not affiliated with or endorsed by DeepSeek.\r\n\r\n# Share an entire DSH Harness as a versioned, reproducible Profile\r\n\r\nSharing one DSH plugin is straightforward. Sharing the complete Harness you have already tuned is harder.\r\n\r\nA working setup is more than a package list:\r\n\r"
+ },
+ {
+  "number": 4818,
+  "title": "三方插件生态实践三件套：QQ 渠道 PR 栈 + 渠道视图参考实现 + RFC-0001",
+  "score": 26,
+  "cls": "B_社区标准RFC",
+  "preview": "近三轮迭代把「按渠道管理会话」这件事从需求推进到了可运行，分享三块拼图：\n\n**1️⃣ 参考实现：dsh-channel-view**（npm `dsh-channel-view`，GitHub [RGarvel/dsh-channel-view](https://github.com/RGarvel/dsh-channel-view)）\n\n侧栏「工作区」旁平行 Channels tab，按渠道分组全部会话。零宿主改动，纯官方扩展面（bundle client + footer.action 插槽 + sessionProjections 投影 + portal）。含归档折叠组、迁移同名去重、孤儿标注、运行指示。当前为 spike 版本线（0.0.x-spike），README 明示局限。\n\n| 工作区常态 | Channels 激活态 |\n|---|---|\n| ![tab-normal"
+ },
+ {
+  "number": 4583,
+  "title": "SDK proposal: versioned capabilities and server-to-client requests",
+  "score": 26,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: versioned SDK capabilities and server-to-client requests\n\nStatus: proposed upstream on 2026-08-26. This document is a downstream design\nrequest, not an implemented or private dshc protocol.\n\n## Motivation\n\nThe public SDK protocol at `@deepseek-ai/dsh-sdk-protocol@0.1.1-rc.2` exposes\nthree client requests (`initialize`, `session/prompt`, `shutdown`) and four\nserver notifications. A real"
+ },
+ {
+  "number": 3322,
+  "title": "[Proposal] Decision continuity: scoped retrieval and revalidation for long-running agent engineering / 长期 Agent 工程的决策连续性",
+  "score": 26,
+  "cls": "D_功能API提案",
+  "preview": "### Summary / 摘要\n\nDeepSeek Harness already has two strong foundations for durable engineering work:\n\n1. the append-only session event log, where model-visible inputs must be reconstructable; and\n2. Agent Notes, which preserve important codebase decisions, rationale, rejected alternatives, and lifecycle state.\n\nI would like to propose a complementary capability: **Decision Continuity** for long-run"
+ },
+ {
+  "number": 2454,
+  "title": "Proposal: task-conditioned Harness evolution with evaluable Plugin Packs",
+  "score": 26,
+  "cls": "B_社区标准RFC",
+  "preview": "\n## Summary\n\nDSH can already inspect and change its own runtime through Cordis, and\ndevelopers can distribute those changes as plugins. The current specification\ndoes not bind the developer's task, exact active composition, execution trace,\nevaluation, and outcome into reusable evidence. The platform can distribute\nplugin artifacts, but it cannot systematically accumulate evidence about how\nthey p"
+ }
+]

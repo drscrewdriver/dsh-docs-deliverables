@@ -1,0 +1,212 @@
+[
+ {
+  "number": 4253,
+  "title": "生态实测:9,873 个插件里 553 起工具名冲突会导致启动失败,以及三个可以消除它们的小改动",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "## 背景\n\n我扫描了 GitHub 上 12,630 个 dsh 相关仓库,其中 **9,873 个是真实插件**(带 `package.json#dsh` 声明、`cordis.patch.yml`,或含实际注册调用)。分析是静态的:用与 dsh 相同的 `applyEntryPatches` 算法重放各插件的补丁,再从源码/构建产物提取注册调用点。\n\n完整数据、方法与可复现脚本:**https://github.com/anweat/dsh-ecosystem-conflicts**\n\n结果里有一个结构性问题,我想先确认理解是否正确,再提三个具体的小改动。\n\n## 一、生态整体站在了 host 平面\n\n```\n插入到根的 entry 行:9,216    插入到分组下:0\n```\n\n**没有任何一个第三方插件挂在分组下。**\n\n而出厂架构把模型可见的行放在 agent 平面。定量佐证"
+ },
+ {
+  "number": 4235,
+  "title": "DSH｜SolidForge｜让 Coding 流程更具确定性（Claude Code 插件移植）",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "> 非官方项目，由社区成员独立开发和维护。\n\n**项目地址**：\n- GitHub：https://github.com/maskshell/solidforge-dsh\n- npm：https://www.npmjs.com/package/@maskshell/solidforge\n\n**项目介绍**：\n\nSolidForge 是论文 *Specification Gaming as an Orthogonal Failure Axis in Autonomous Coding Loops* 参考实现（SolidForge for Claude Code）的 **DeepSeek Harness 原生移植**——一套让\"测试绿了\"不等于\"你做对了\"的双轴收敛纪律：\n\n- **轴 A · 流控完备**：双环收敛（确定性内环门禁 + 对抗外环评审），快速门/架构契约门/终态计数器全程看护；"
+ },
+ {
+  "number": 4128,
+  "title": "[Offer] Protocol-layer mount (optional)",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "尊敬的 deepseek-ai/deepseek-harness 项目方：\n\n我们注意到贵项目与 TDCA 协议层在审计与分账能力上存在互补空间，特致函说明一种可选的合作方式。TDCA 提供轻量级 MCP 适配器，仅在贵项目外部挂载协议层，不修改贵项目任何代码（只赋能不改码）。是否了解、是否采用，完全由贵方决定——这是贵方的配置权，本函不构成任何强制或诱导。\n\n如贵方有兴趣进一步了解：协议层调用产生的收益按动态分润处理，默认版权被调用方 15%，以贵方开源授权规定为优先；无明确收费约定时按开源规则合法挂载，收益默认支付 15% 版税给贵方或贵方社区基金会。涉及跨境支付的情形，将依照相关外汇管理法规完成相应流程后办理。\n\n本函仅为合作意向的情况说明，不构成要约或承诺；具体条款以双方另行协商签署的正式协议为准。（存证：NCA-ECOSCAN-20260823-INV-B74834CB3B0A）"
+ },
+ {
+  "number": 4035,
+  "title": "[Community Plugin] GraphGPT workflows as native Harness tools",
+  "score": 18,
+  "cls": "E_社区流程渠道",
+  "preview": "I built **dsh-plugin-graphgpt**, an independent community plugin that exposes reviewed [GraphGPT](https://github.com/BrucePayton/GraphGPT) YAML workflows as a native DeepSeek Harness model-facing tool.\\n\\nRepository: https://github.com/BrucePayton/dsh-plugin-graphgpt\\nRelease: https://github.com/BrucePayton/dsh-plugin-graphgpt/releases/tag/v0.1.0\\n\\n### What it provides\\n\\nThe plugin registers `gr"
+ },
+ {
+  "number": 4002,
+  "title": "Show Your Plugins!: MedSeek — clinical documentation bundle (drafts, de-ID, cited lookups)",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "**MedSeek** is a clinical documentation bundle for DSH, built for the daily work of physicians, APPs, nurses, and residents. Free, Apache-2.0, zero telemetry, not a medical device.\n\n**11 tools**\n\n- Drafts from pasted text: SBAR / I-PASS handover, SOAP / APSO progress note, admission H&P, discharge summary\n- Hard checklist enforcement: discharge refuses to pass while pending results are unowned; al"
+ },
+ {
+  "number": 3686,
+  "title": "DSH | dsh-plugin-reducer (external CLI) | Find the minimal plugin set that reproduces a failure",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "> **Unofficial project, independently developed and maintained by a community\n> member.**\n\nProject URL: <https://github.com/ArmyWas/dsh-plugin-reducer>\n\n## Introduction\n\n`dsh-plugin-reducer` is an external diagnostic CLI for DeepSeek Harness. It\nanswers one narrow question: **which installed profile bundles are actually\nrequired to reproduce this failure?**\n\nThe difficult case is an interaction: A"
+ },
+ {
+  "number": 3574,
+  "title": "DeepSeek Harness Ultimate: a reproducible, deduplicated community profile",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "The DSH ecosystem now has enough plugins that discovering them is easy, but choosing a coherent set is becoming real work. Users have to resolve feature overlap, license boundaries, version drift, platform differences, and installation guidance before they can run their first useful task.\n\nI have published **DeepSeek Harness Ultimate**, a community-maintained profile installer that turns those cho"
+ },
+ {
+  "number": 3487,
+  "title": "DSH｜dsh-nested-followups｜会话树插件：在任意历史回答上分叉出隔离的多级追问分支以避免非主要信息污染主对话",
+  "score": 18,
+  "cls": "A_治理反馈",
+  "preview": "> 非官方项目，由社区成员独立开发和维护。\r\n> Unofficial project, independently developed and maintained by community members.\r\n\r\n![banner](https://raw.githubusercontent.com/sluminositys/dsh-nested-followups/main/assets/banner.png)\r\n\r\n**项目地址 / Project URL:**\r\n\r\n- GitHub: https://github.com/sluminositys/dsh-nested-followups\r\n- npm: https://www.npmjs.com/package/dsh-nested-followups\r\n\r\n**项目介绍 / Introduction:**\r\n\r\nDSH 的对"
+ },
+ {
+  "number": 3437,
+  "title": "[Proposal] WebUI 应具备插件故障隔离：非核心插件加载失败不应导致整个 WebUI 无法启动",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "## 问题描述\r\n\r\nDeepSeek Harness 的 Web 应用（`dsh web`）在启动时会按 profile 配置（`dsh.profile.bundles`、`cordis.patch.yml`、`--patch` 覆盖层）加载组合中的全部插件。目前任何一行插件在加载或初始化阶段出错（例如：依赖缺失、配置错误、`apply()` 抛异常、代码语法/运行时错误），都会导致整个应用启动失败：\r\n\r\n- 整个 WebUI 无法启动；\r\n- 终端输出的错误信息非常简短，通常只有几条笼统的异常，难以判断是哪个插件、来自哪个配置层（bundle / `cordis.patch.yml` / `--patch`）出错；\r\n- 只能手动排查（逐行注释 `cordis.patch.yml`、卸载插件等）并重启，恢复成本高。\r\n\r\n在「多个 bundle + 用户 patch 覆盖」的大规模组"
+ },
+ {
+  "number": 3166,
+  "title": "ui-theme: stable third-party theme manifest and listing API",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "## Context\nThird-party themes register through `ThemeRuntime.register()` in-process, but there is no cross-package manifest contract and no list API, so a theme marketplace cannot validate or enumerate installed themes without executing them.\n\n## Proposal\nA minimal static theme manifest (id, package/wiring id, `--dsw-alias-*` palette per mode, contrast declarations) read without executing code, pl"
+ },
+ {
+  "number": 3097,
+  "title": "Proposal(with code): make sandbox escalation denials actionable when the call already runs at the widest mode / 当tool ca",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\r\n\r\nWhen a session's effective sandbox mode is already `danger-full-access`, no escalation target can be\r\n*strictly wider*, so every `sandbox_permissions`/`justification` retry is rejected with the bare text:\r\n\r\n> `sandbox escalation to \"<mode>\" is not strictly wider than this call's current \"<mode>\" mode`\r\n\r\nThis gives the model no actionable way out. In a real session it produced an un"
+ },
+ {
+  "number": 2490,
+  "title": "K3 报告原文核心论述（Section 3） Training with a single fixed agent harness can cause a model to overfit to a particular tool sche",
+  "score": 18,
+  "cls": "C_生态基础设施",
+  "preview": "在灰测时，模型在非dsh的agent（例如opencode)下表现优秀；正式版在相同条件下表现下降，甚至dsh官方框架下的非极简模式调用非官方工具会导致deepseek-v4-pro-0831性能极具下降”\r\n\r\n与K3论文的警示高度吻合\r\n\r\nkimi K3的论文里就有写相关问题：\r\n一、K3 报告原文核心论述（Section 3）\r\nTraining with a single fixed agent harness can cause a model to overfit to a particular tool schema, system prompt, context management mechanism, or interaction protocol.\r\n（使用单一固定的 Agent Harness 进行训练，会导致模型严重过拟合到特定的工具 Schema、系统提示词、"
+ },
+ {
+  "number": 1999,
+  "title": "Feature proposal: configurable FTS5 tokenizer for session search (Chinese support)",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "## Feature proposal: configurable FTS5 tokenizer for session search (Chinese support)\n\n**中文摘要**：`session-query-sqlite` 的全文索引目前硬编码 `tokenize = 'unicode61'`（SQLite 默认分词器）。`unicode61` 不做中文分词，一段连续中文（含中英混排）会被当成**一个超长 token**，导致中文 session 搜索几乎无法命中。建议给该包增加 `tokenizer` / `tokenizerExtension` 两个配置项，允许加载第三方分词扩展（如 [wangfenjin/simple](https://github.com/wangfenjin/simple)，SQLite FTS5 中文+拼音分词，MIT/GPLv3 双许可），并顺"
+ },
+ {
+  "number": 1448,
+  "title": "dsh-agent-memory v0.7.2:面向 DeepSeek Harness 的跨会话长期记忆插件",
+  "score": 18,
+  "cls": "E_社区流程渠道",
+  "preview": "## 摘要\n\nDeepSeek Harness(DSH)当前缺乏跨会话长期记忆:现有能力(`storage domain`、`session-query-sqlite`、`agent-instructions`)均为文件型或会话级存储,会话间沉淀的动态知识——用户偏好、既定决策、历史教训——无法跨会话保留。本文实现 `dsh-agent-memory` v0.7.2:基于 DSH 原生 cordis 机制的跨会话记忆插件,提供 schema 校验持久化、确定性检索、容量淘汰/近重复合并/TTL/删除守卫治理,以及按需注入与自我纠错闭环。已发布 npm(`dsh-agent-memory@0.7.2`),源码 GitHub(`Culeot/dsh-agent-memory`,MIT)。\n\n## 1. 背景\n\nDSH 现有记忆能力:\n\n- `dsh-agent-instructions`:静态"
+ },
+ {
+  "number": 1403,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token 占"
+ },
+ {
+  "number": 1400,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token"
+ },
+ {
+  "number": 1396,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token"
+ },
+ {
+  "number": 1395,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n## 一、三条放大路径（我观察到的机制）\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token 占比"
+ },
+ {
+  "number": 1394,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token"
+ },
+ {
+  "number": 1392,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token 占比"
+ },
+ {
+  "number": 1391,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token"
+ },
+ {
+  "number": 1390,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token 占"
+ },
+ {
+  "number": 1389,
+  "title": "多插件架构会放大 LLM 幻觉吗？——拆解三条放大路径与对策",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "dsh 开源三天就 8.5 万星，插件生态也在飞速生长。这让我忍不住想聊一个生态层面的问题：**插件越多，LLM 幻觉是不是越严重？** 我的初步判断：方向是，但归因要拆开。\n\n**一、三条放大路径（我观察到的机制）**\n\n1. **决策空间爆炸**：工具从 1 个变 20 个，LLM 每次要\"20 选 1\"。而工具选择恰恰是 LLM 最弱的环节——读 description、区分相似能力、决定用哪个，这个环节的错误率随选项数非线性上升。选错工具 = 用错工具得出貌似合理的结果，这是一种\"功能性幻觉\"。\n\n2. **信息源污染**：社区插件质量参差，劣质插件可能返回过时数据、错误计算甚至编造的输出。而 agent 机制是把工具输出当事实吸收进上下文——垃圾进料口越多，模型越\"自信地胡说\"。\n\n3. **注意力稀释**：每个插件的定义/schema/说明都占上下文，插件多了，干活 token"
+ },
+ {
+  "number": 1365,
+  "title": "DSH Trust Layer: four privacy-minimal observability plugins",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "我做了四个可以独立安装的社区插件，尝试回答一个问题：**怎样让 DeepSeek Harness 的运行过程更容易检查，同时避免把提示词、工具参数和结果正文复制进另一个日志系统？**\n\n> 这是社区项目，不是 DeepSeek 官方插件或安全认证。\n\n![DSH Trust Layer preview](https://raw.githubusercontent.com/030611/dsh-verification-receipt/main/docs/social-preview.jpg)\n\n### 四个独立插件\n\n- [`dsh-telemetry-redactor`](https://github.com/030611/dsh-telemetry-redactor)：在已配置遥测后端收到导出副本前，对受支持的凭证模式脱敏；不改写规范会话日志，也不承诺识别任意未知秘密格式。\n- [`d"
+ },
+ {
+  "number": 1311,
+  "title": "Improve instruction following and stop unproductive agent searches",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "## 问题\r\n\r\n我在实际使用中遇到了两个反复出现的问题。\r\n\r\n第一，Agent 的指令遵循较弱。我要求它先分析或给出方案，它却跳过确认，直接开始实施。\r\n\r\n第二，Agent 容易过度思考和反复检索。一次任务中，它连续搜索了 45 次；我提供官方来源后，它又搜索了 14 次。后续搜索没有增加有效信息，任务也没有自行停止，最后只能由我手动中止。\r\n\r\n我的出发点很简单：\r\n\r\n> DeepSeek 的弱点很明显：指令遵循弱，以及过度思考。\r\n>\r\n> 我们要想驾驭它，好马还需配好鞍。\r\n\r\n我认为这不是某个具体任务的特殊问题。无论是开发完整应用、实现普通需求、修复 Bug，还是只做分析，Agent 都需要准确理解用户当前要求，并在已经得到足够信息时停止检索。\r\n\r\n## 建议\r\n\r\n我希望优先补全 Hermes 已有的提示词、Agent 配置和插件功能，不另外增加一套复杂的控制系统。\r\n"
+ },
+ {
+  "number": 1024,
+  "title": "DSH Meme Hub，社区整活/趣味插件精选导航，带截图预览",
+  "score": 18,
+  "cls": "C_生态基础设施",
+  "preview": "大家好 👋\n\nDSH 发布这 24 小时，社区的脑洞实在太大了，有人在侧栏挂页游广告，有人把界面整个换成 QQ2006，角落里还趴着一只等投喂的鲸鱼娘。我逛了一圈，把这些整活项目整理成了一个精选导航。说实话第一次打开 dsh-ads 我愣了好几秒，满屏都是贪玩蓝鲸和财神大转盘，好家伙。\n\n**🐋 DSH Meme Hub**（github.com/the-beating-light-of-the-nail/dsh-meme-hub）\n\n目前收录 28 个社区项目，按趣味分类归档，每个都配了实拍截图，方便大家快速逛一圈\n\n- 📺 **巅峰离谱区**，dsh-ads 把 DSH 变成 2005 年门户网站，贪玩蓝鲸海报加财神抽奖转盘，连「关闭按钮热区比看起来小」这种上古流氓软件精髓都还原了\n- 🎨 **换皮组**，QQ2006 皮肤（356 张素材）、深海女仆工坊鲸鱼娘皮肤、伪装成 Excel"
+ },
+ {
+  "number": 941,
+  "title": "[RFC] Workspace-scoped configuration and runtime state for MCP, environment overlays, and project services",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "## Summary\n\nDeepSeek Harness currently has a process/profile-wide Cordis composition and per-agent scoped registrations, but it does not have a workspace-scoped configuration and runtime plane.\n\nThis becomes visible with MCP:\n\n- an `@deepseek-ai/dsh-mcp-client` row added through a profile patch creates one long-lived MCP client/server instance;\n- its `cwd` and `env` are fixed when the plugin insta"
+ },
+ {
+  "number": 431,
+  "title": "[RFC] LLM Provider Fallback Router — Automatic failover between providers",
+  "score": 18,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\r\n\r\nI've implemented a multi-provider fallback router for dsh's LLM streaming calls. When one provider fails with a transient error, the router automatically switches to the next provider in the chain — completely transparent to the caller.\r\n\r\n**Fork**: `chancelu/deepseek-harness:feat/llm-router`\r\n**Package**: `packages/llm/llm-router`\r\n\r\n---\r\n\r\n## Why this matters\r\n\r\nIn production autom"
+ },
+ {
+  "number": 365,
+  "title": "[RFC] Guard Failure-Mode Detection Plugin — One-shotting, Premature Victory, Unverified Done",
+  "score": 18,
+  "cls": "B_社区标准RFC",
+  "preview": "## Summary\r\n\r\nI've implemented a new guard plugin for dsh that detects three empirically validated agent failure modes. The code is ready in my fork and I'd love to get feedback / shepherd it into the mainline once PRs are re-opened.\r\n\r\n**Fork**: `chancelu/deepseek-harness:feat/guard-failure-modes`\r\n**Package**: `packages/guard/failure-modes`\r\n\r\n---\r\n\r\n## The Three Detectors\r\n\r\n### 1. One-shotting"
+ },
+ {
+  "number": 5669,
+  "title": "Proposal: suppress repeated pressure summaries after non-converging compaction",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "## Motivation\n\nA pressure-triggered compaction can complete successfully yet leave the routed request above its configured threshold because the retained tail, request envelope, or generated checkpoint remains large. The current engine then throws after its bounded attempts. The automatic pre-step listener continues the turn, so the next step can generate another summary at nearly the same token c"
+ }
+]

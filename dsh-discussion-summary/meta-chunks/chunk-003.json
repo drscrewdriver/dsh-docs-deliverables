@@ -1,0 +1,212 @@
+[
+ {
+  "number": 781,
+  "title": "Proposal: add diagnostics/formatDocument/completion to the ctx.lsp seam",
+  "score": 26,
+  "cls": "D_功能API提案",
+  "preview": "This is a seam-extension proposal. Pull requests are disabled on this repository, so it is posted here as a discussion instead. Everything is ready to become a PR the moment they are enabled.\n\n- Fork branch (committed, gates green): https://github.com/PerryLink/deepseek-harness/tree/agent/lsp-action-seam\n- Patch file: https://github.com/PerryLink/dsh-lsp-actions/blob/main/upstream/lsp-action-seam."
+ },
+ {
+  "number": 5444,
+  "title": "[Proposal] dsh-roadmap-board: human-AI shared execution roadmap overlay",
+  "score": 25,
+  "cls": "D_功能API提案",
+  "preview": "# [Proposal] dsh-roadmap-board: a human-AI shared execution roadmap overlay\n\n**Repo:** https://github.com/2092372408-pixel/dsh-roadmap-board\n**License:** MIT\n\n## Summary\n\nMulti-round agents drift and their progress is invisible unless someone babysits the chat.\n`dsh-roadmap-board` is a human-AI shared execution roadmap: the plan lives as a plain\nfile (`<project-root>/.progress/roadmap.json`) that "
+ },
+ {
+  "number": 5033,
+  "title": "Proposal: ordered atomic edits[] for single-file batch editing",
+  "score": 25,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\nI propose extending the native `edit` tool with an optional ordered `edits[]` form for multiple literal replacements in one file, while preserving the existing `old_string` / `new_string` single-edit form.\n\nThe goal is to reduce model round trips for several deterministic edits in one observed file without switching to an opaque shell script or weakening `fs-observation-policy`.\n\n```js"
+ },
+ {
+  "number": 4848,
+  "title": "deepsea站点已更新，增加对广告、低质贴过滤",
+  "score": 25,
+  "cls": "A_治理反馈",
+  "preview": "## 让社区由用户自助自治\r\n\r\nhttps://deepc.cn/community/dsh\r\n\r\n更新后站点对汇集的官方讨论区增加了“点踩”👎贴子自动过滤屏蔽（默认3个就过滤掉，可在个人设置页设定）。同时可在快速对频繁打扰到的发帖者直接按用户屏蔽不看他的贴。\r\n\r\n虽然无法完全处置官方广告贴、低质贴，但我可选择不看🙈\r\n\r\n官方社区明确了主要用来反馈问题，相互讨论需求、分享优秀插件。但目前看来官方无心经营维护，仅提供场地，那不如就做一个带“滤镜可自治的社区”壳净化这个“菜市场”乌烟瘴气的环境。\r\n\r\n## 自治共识倡议\r\n\r\n1、在官方社区仅对优秀plugin分享、初步形成的插件或主题UI/UX共识、关于cordis构架分析、开发方案分享进行参与和点赞、投票。其他QA、bug report、feat request类型，用户不应代表官方进行猜测或答复，仅阅读学习、参考反馈内容，在自己开"
+ },
+ {
+  "number": 4793,
+  "title": "Agent disposal does not propagate to continuable subagents — two independent lifecycle managers lack a dispose handoff c",
+  "score": 25,
+  "cls": "B_社区标准RFC",
+  "preview": "## Summary\n\nDisposing an agent does **not** dispose its continuable subagents — the `agent/disposed` event listener in `SubagentContinuationManager` only cleans up tracking references (`closingScopes`), never calls `this.dispose(activation)` on the disposed agent's children. Orphaned subagents continue running, consuming API quota, producing `PARENT_UNAVAILABLE` errors, and blocking the continuati"
+ },
+ {
+  "number": 4509,
+  "title": "【社区公告禁止】这么发广告，也没人管。飞书群进去就是广告，都来割韭菜是吧。",
+  "score": 25,
+  "cls": "A_治理反馈",
+  "preview": "<img width=\"966\" height=\"1152\" alt=\"guanggao0_16\" src=\"https://github.com/user-attachments/assets/2ea4d6fb-6ef2-45d9-96b5-c3954db1100a\" />\r\n<img width=\"905\" height=\"664\" alt=\"c1918a9f-774b-4a9d-bc05-e55fb35e491b\" src=\"https://github.com/user-attachments/assets/9ab3a08e-9775-4f8f-a948-d98bcfd62361\" />\r\n<img width=\"945\" height=\"598\" alt=\"234a3ffb\" src=\"https://github.com/user-attachments/assets/9cd4"
+ },
+ {
+  "number": 3665,
+  "title": "dsh-capmark-gate: hold an agent to a declared capability manifest",
+  "score": 25,
+  "cls": "B_社区标准RFC",
+  "preview": "A plugin declares what it may do, in Markdown, and the harness holds it to that.\r\n\r\n```markdown\r\n---\r\ncapmark: 0.1\r\nplugin: dsh-vision-toolkit\r\n---\r\n\r\n# Capabilities\r\n\r\n​```cap\r\ngrant fs:read scope=workspace\r\ngrant net:fetch\r\n​```\r\n\r\n# Contracts\r\n\r\n​```cap\r\nnever proc:spawn\r\nrequire approval for fs:write\r\n​```\r\n```\r\n\r\nThe file is Markdown first. A client that has never heard of the format still\r\nr"
+ },
+ {
+  "number": 2657,
+  "title": "Proposal: `!` trigger character for shell commands in the Web composer",
+  "score": 25,
+  "cls": "D_功能API提案",
+  "preview": "# Proposal: `!` trigger character for shell commands in the Web composer\r\n\r\n## Summary\r\n\r\nDeepSeek Harness's input pipeline currently supports two trigger characters: `/` (commands) and `@` (references). This proposal adds a third — `!` — so a leading `!` in the Web composer runs a shell command **directly, without sending it to the model**.\r\n\r\nMotivation: many quick checks (`pwd`, `git status`, `"
+ },
+ {
+  "number": 2639,
+  "title": "[RFC] Re-resolve continuable child policy on each new activation",
+  "score": 25,
+  "cls": "B_社区标准RFC",
+  "preview": "# DSH Continuable Activation Policy Re-resolution RFC\n\n状态：已发布上游讨论 [#2639](https://github.com/deepseek-ai/deepseek-harness/discussions/2639)  \n日期：2026-08-17  \n目标版本：DeepSeek Harness 0.1.0-rc.6\n\n## 摘要\n\nDSH 当前的可续聊子代理会把创建时的模型路由写入父子代理选项和持久描述记录。父会话后来切换模型时，新建子代理可能仍使用创建时的旧路由；如果旧端点或模型已经失效，冷恢复还会再次使用旧配置，导致恢复持续失败。\n\n本提案请求增加一个官方的“执行实例创建前策略解析”入口。它不改变正在运行的执行实例，只在创建、重试、后续追问或冷恢复时重新解析当前有效策略。\n\n## 现有证据\n\n- [讨论 #117：第三方接"
+ },
+ {
+  "number": 1563,
+  "title": "非官方社区：DeepSeek Harness 生态大全（mydsh.dev）诚邀共建",
+  "score": 25,
+  "cls": "B_社区标准RFC",
+  "preview": "# 给 DeepSeek Harness 加一个「定时任务」能力:到点自动跑(社区插件)\n\nDeepSeek Harness 的 agent 跑起来很能干活,但有个场景一直要人盯着:**\n想在固定时间自动做点什么**——比如每天凌晨整理一次工作区、定期跑个巡检脚本、到点提醒自己某件事。之前只能靠外部 cron,或者人肉记住。\n\n我们做了一个社区插件 **`dsh-schedule-tasks`**,把定时任务直接做进了 DSH:\n\n## 它做了什么\n\n- **5 段式 cron 解析**:`17 4 * * *` 这种标准写法,也支持自定义,不依赖系统 cron\n- **侧边栏任务面板**:在 Web GUI 侧边栏直接「新建 / 编辑 / 启停 / 删除 / 手动触发」定时任务,可视化看列表和日志\n- **host + headless 都能跑**:web profile 和 headl"
+ },
+ {
+  "number": 331,
+  "title": "Proposal: OSuite governance plugin for pre/post tool execution",
+  "score": 25,
+  "cls": "D_功能API提案",
+  "preview": "Hi DeepSeek Harness maintainers,\n\nOSuite is an agent runtime governance layer focused on action identity, approval binding, execution outcome recording, and replayable proof bundles. We are adding DeepSeek Harness to our runtime coverage roadmap and public action-boundary benchmark as a target runtime lane.\n\nI wanted to open this as a proposal before attempting a PR, because Harness is still in de"
+ },
+ {
+  "number": 5265,
+  "title": "【经验】从\"双目录分裂 + 8 小时宕机\"到一套可复制的工作区治理规范",
+  "score": 24,
+  "cls": "B_社区标准RFC",
+  "preview": "我的工作区被误建成了 `w<工作区名>`(多了个 w),UI 改名后底层 path 未同步 → 文件散落两处、会话绑死旧路径、系统反复自动重建旧目录。第一次迁移脚本引发 8 小时宕机(PS5.1 写 BOM + 只改会话目录名)。读源码重写后,现在三处(注册表/会话存储/物理目录)对齐,并沉淀出一套\"目录分级标准 + AGENTS.md 注入 + 项目索引\"的治理方案。分享给社区。\r\n\r\n### 一、事故机制(源码级确认)\r\n\r\n1. **会话身份强绑定**:`session.jsonl.zstd` 是多帧 zstd 流,头帧(frame 0)是单行 JSON 会话头;启动时 `assertStoredIdentity` 校验\"头帧 cwd 的转义名 ↔ 会话目录名\"。**只改目录名、不改头帧,必崩**。\r\n2. **注册表是派生的**:工作区记录在启动时按 `realpath(会话头 c"
+ },
+ {
+  "number": 4543,
+  "title": "Proposal: first-class bundle-to-bundle dependencies (in-box bundles already rely on this — third-party bundles can't)",
+  "score": 24,
+  "cls": "B_社区标准RFC",
+  "preview": "## The gap\n\nA third-party plugin bundle cannot declare \"installing me should also mount these other bundles\". Everything a suite/distribution-style plugin wants to carry has to be installed by the user as a separate top-level `dsh plugin add` argument.\n\nWe hit this building [dsh-work-x](https://github.com/weijiafu14/pi2dsh) (a batteries-included capability suite): it wants to carry its engine (`pi"
+ },
+ {
+  "number": 4536,
+  "title": "[mcp-client] 单个工具 outputSchema 形状不规范 → 整台服务器的工具被全部注销",
+  "score": 24,
+  "cls": "B_社区标准RFC",
+  "preview": "## 环境\r\n\r\n- DSH 0.1.1-rc.2（master `b150a551`）\r\n- `@deepseek-ai/dsh-mcp-client` 0.1.1-rc.2，`@modelcontextprotocol/sdk` 锁定 1.29.0\r\n- 对端复现服务器：windbg-mcp v0.11.0（Rust / rmcp 3.1.2 + schemars 1.2.2，stdio）\r\n\r\n## 现象\r\n\r\n接入上述服务器后，该服务器的全部 `mcp__<server>__*` 工具都不出现；日志显示连接管理器按指数退避重试 10 次后放弃并注销该服务器所有工具。同机的其他普通 MCP 服务器（`{type:'object'}` 形状的 schema）一切正常。\r\n\r\n## 根因链\r\n\r\n1. rmcp 系服务器的 outputSchema 由 schemars 从 Rust 类"
+ },
+ {
+  "number": 4515,
+  "title": "针对 DSH 高频发布节奏的兼容性治理：升级门禁、兼容矩阵、按配置文件锁定",
+  "score": 24,
+  "cls": "C_生态基础设施",
+  "preview": "DSH ships fast (4 releases in 12 days) and every compatibility break is paid for by users — the rc.8 storage-format change already wiped sessions with no migration path. The community holds this together with manual discipline (hand-maintained compat matrices, pinned commits, blog posts).\n\nI built dsh-compat-guard (zero-dependency CLI + plugin) to turn that discipline into tooling, and I'm posting"
+ },
+ {
+  "number": 4172,
+  "title": "Proposal: add Russian (ru) locale to the Web UI (zh/en/ru)",
+  "score": 24,
+  "cls": "D_功能API提案",
+  "preview": "Proposal: add Russian (ru) locale to the Web UI (zh/en/ru)\n\nHi everyone,\n\nI've been using dsh with the Web UI and wanted to contribute a Russian translation. Since the repo currently doesn't accept external PRs, I'm posting this here as a proposal and would love feedback from the maintainers and the community.\n\n## What it does\n\nShips Russian as a full third GUI locale alongside zh and en. The Lang"
+ },
+ {
+  "number": 2884,
+  "title": "RFC: Agent as a 24×7 Background Service — Key Pool, Sandbox Awareness, Self-Evolution",
+  "score": 24,
+  "cls": "B_社区标准RFC",
+  "preview": "# RFC: Agent as a 24×7 Background Service — Provider Key Pool, Sandbox Awareness, and Self-Evolution Architecture\n\n**Status**: Draft  \n**Author**: Community contribution  \n**Related**: DeepSeek Harness (DSH)\n\n---\n\n## Abstract\n\nDeepSeek Harness currently runs as a web application where the agent's capabilities are tied to the browser session. Closing the browser stops the user's interaction surface"
+ },
+ {
+  "number": 2486,
+  "title": "RFC: verified upstream patch queue — 42 cherry-pick-ready fixes for the release train (root cause + minimal fix + tests)",
+  "score": 24,
+  "cls": "B_社区标准RFC",
+  "preview": "## 中文 TL;DR\n\nPR 通道重开后，这里有一份维护者可直接 cherry-pick 的补丁队列：**42 个修复**，\n每个都带根因、最小 diff、定向测试，以及它所对应的 discussion。不是「看看我的\n作品」，是一份带逐项验证证据的补丁账本。\n\n- 全绿编译 + typecheck；五补丁全量套件通过 **1146 个测试**（Windows / Node 24 / pnpm 11）。\n- #1697（模块实例遮蔽）有机制级证明：两份物理 `@deepseek-ai/dsh-tools@0.1.0-rc.6`\n  副本在同一进程，symbol 身份 `false → true`。\n- 逐项账本：https://github.com/zoahdev/dsh-docs/blob/main/docs/specs/upstream-patches.md\n\n优先的四类修复：模块实"
+ },
+ {
+  "number": 1699,
+  "title": "[Released] LoongSuite OpenTelemetry GenAI Observability Plugin for DeepSeek Harness",
+  "score": 24,
+  "cls": "C_生态基础设施",
+  "preview": "> **Release status (2026-08-17):** Stable version `0.1.1` is available. Install with `dsh plugin --profile web add @loongsuite/dsh-plugin`. Source and documentation: [`loongsuite/dsh-plugin`](https://github.com/loongsuite/dsh-plugin).\n\n## 背景\n\nDeepSeek Harness（DSH）采用“一切皆插件”的架构，并提供完整的 session、turn、step、LLM 和 tool 生命周期数据。仓库目前已经包含 [`dsh-session-telemetry-otel`](https://github.com/deepseek-ai/deepseek-"
+ },
+ {
+  "number": 1368,
+  "title": "Proposal: headless driver protocol (--session-id / --model / --mode / --jsonl)",
+  "score": 24,
+  "cls": "D_功能API提案",
+  "preview": "## Proposal: headless driver protocol (`--session-id` / `--model` / `--mode` / `--jsonl`)\n\n### Summary\n\nProposing a small extension to the `headless` bundle so external tools can drive dsh as a real agent backend: an explicit session id (create-or-resume), per-run model / permission-mode overrides, and a JSONL event stream with an interactive approval channel.\n\nMotivation: I integrated dsh into [c"
+ },
+ {
+  "number": 5735,
+  "title": "Proposal: Professional Arabic localization and RTL documentation support",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "I would like to contribute a professional Arabic localization for DeepSeek Harness documentation.\r\n\r\nThe current documentation system maintains English and Simplified Chinese as synchronized sibling files, with structural checks, localized links, and blob-hash consistency records. Adding isolated Arabic files would bypass those guarantees, so I propose discussing the localization architecture befo"
+ },
+ {
+  "number": 5668,
+  "title": "Proposal: provider-neutral Client Host clipboard capability",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "## Motivation\n\nShared browser UI can run inside a page-owning desktop or embedded shell whose native clipboard remains available when the Web Clipboard API is unavailable in an insecure context. Reading a product-specific preload global such as `ccDesktop` from shared UI would couple every consumer to one shell.\n\n## Proposed design\n\nExport provider-neutral `ClientHostCapabilities` and `HostClipboa"
+ },
+ {
+  "number": 5178,
+  "title": "Proposal: multi-surface ask-user routing — fan-out with first-answer-wins over the user-questions waterfall (reference i",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\nv0.1.2-alpha reworked the ask-user answer path: the rc-era single-provider slot is gone, and answerers now compose on the agent-scoped `'user-questions/request'` cordis waterfall (`@deepseek-ai/dsh-user-questions`) — return a value to answer, call `next()` to delegate, `NO_PROVIDER` when nobody accepts. That solves **coexistence**: two UIs in one profile no longer fight over a slot.\n\nW"
+ },
+ {
+  "number": 5177,
+  "title": "Proposal: keep llm-pi-ai provider route catalogs fresh through the settings seam — reference implementation shipped, rea",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\n`llm-pi-ai` provider catalogs are static, `generatedAt`-stamped JSON files shipped inside `@earendil-works/pi-ai`, pinned by a caret range in each dsh release. Whatever a user's install resolves to is the model universe for that route until a dependency bump lands. Meanwhile the underlying gateways keep moving: new models ship, old ones are renamed or retired, and capacity / reasoning-"
+ },
+ {
+  "number": 4602,
+  "title": "提案：会话历史按 seq 中心寻址（afterSeq）+ 打开锚点，支持搜索命中跳转真实会话",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "## 背景\n\n[dsh-session-explorer](https://github.com/Zn-Dk/dsh-session-explorer) 是会话消息级全文检索浏览器（本机实测：445 会话 / 22.9 万条消息 / 索引 859MB，单会话最深 4,263 条消息，maxSeq ≈ 775k）。它已经能**精确搜到某一条消息**（正文 / 工具名 / 参数 / 错误摘要），但命中后只能**面板内预览**，无法「打开真实会话并滚动定位到该消息」——深会话靠手动翻页基本不可用。\n\n## 根因（源码级）\n\n1. **`session.history` 没有中心寻址**：只有 `beforeSeq/maxMessages`（尾部页 + 向前翻页）。见 `packages/host/apiproxy/src/api/sessions.schema.ts`（`sessionHisto"
+ },
+ {
+  "number": 4320,
+  "title": "DSH Community 上线：可选同步 Token Usage，参与社区排行榜（dsh-usage 0.2.2）",
+  "score": 23,
+  "cls": "E_社区流程渠道",
+  "preview": "大家好，之前我发布了 `dsh-usage`，用于在 DeepSeek Harness 中查看 Token 用量、费用估算、52 周热力图，以及按模型、Session 和单轮对话拆分的数据。\r\n\r\n现在，`dsh-usage 0.2.2` 增加了一个完全可选的 Community 层：\r\n\r\n👉 https://dshcommunity.com\r\n<img width=\"1267\" height=\"571\" alt=\"image\" src=\"https://github.com/user-attachments/assets/25833e01-28e5-4a83-8121-3cf6d69286dc\" />\r\n\r\n它不是把 Session 搬到云端，而是把本地已经计算好的聚合 Token 快照，在用户明确同意后同步到 Community，用于生成公开排行榜和个人主页。\r\n\r\n## DSH C"
+ },
+ {
+  "number": 4318,
+  "title": "Proposal: fullscreen zoom viewer for Mermaid diagrams(文档站 Mermaid 图全屏缩放查看器)— implemented, branch ready",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "## TL;DR\n\n文档网站的 Mermaid 图(如 [agent-lifecycle](https://deepseek-harness.github.io/deepseek-harness/reference/agent-lifecycle) 时序图,9 个 participant 多层 alt/loop)目前无法在浏览器里放大查看。本提案给全站图表加一个\"点击全屏 + 缩放平移\"查看器,**已完整实现并通过全部本地门禁**,分支就绪,欢迎合入:\n\n- 分支:<https://github.com/JuwanXu/deepseek-harness/tree/feat/docs-site-mermaid-zoom-viewer>(8 commits,基于 master `b150a551`)\n- 在线浏览 diff:<https://github.com/deepseek-ai/dee"
+ },
+ {
+  "number": 3390,
+  "title": "Proposal: Russian (ru) as a third GUI locale",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "## Proposal: Russian (ru) as a third GUI locale\r\n\r\nI implemented a complete Russian localization of the Web UI and would like to offer it to the project (per CONTRIBUTING.md, external PRs are not accepted at the moment, so I am posting it here).\r\n\r\n### What it includes\r\n- `ru` added to `LOCALE_IDS` / the shipped locale list + host settings schema — the Language row, browser auto-detection and the "
+ },
+ {
+  "number": 3351,
+  "title": "[Community Experiment] dshlib — DSH Plugin Library: see trust, scans, and real usage before installing (echoing #3192)",
+  "score": 23,
+  "cls": "B_社区标准RFC",
+  "preview": "## dshlib — DSH Plugin Library (experiment): see \"how trustworthy\" before installing\n\n> **dshlib** is a **community experiment**: a DSH plugin library that collects, verifies, and showcases DSH plugins, each with a **CHA2A certification badge** and **security scan status** — before installing you can see *who published it, whether it was modified, how trustworthy it is, whether it was scanned, and"
+ },
+ {
+  "number": 2501,
+  "title": "dsh-memento: approval-gated cross-session memory and the dsh-memory-protocol v1 rehearsal for DeepSeek Harness",
+  "score": 23,
+  "cls": "D_功能API提案",
+  "preview": "**dsh-memento** — bounded, layered, approval-gated, auditable cross-session memory for DeepSeek Harness; 0.4.0 rehearses **dsh-memory-protocol v1** as a candidate shape for an official ctx.memory seam.\\n\\n**What it solves / 解决什么问题**\\n\\n- A typed ctx.memory service seam + zero-dependency local SQLite provider + memory tool + frozen snapshot injection: the write approval gate lives inside the servic"
+ }
+]

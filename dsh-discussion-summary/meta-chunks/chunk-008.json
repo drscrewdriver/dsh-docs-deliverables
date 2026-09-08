@@ -1,0 +1,212 @@
+[
+ {
+  "number": 5498,
+  "title": "optional verifiable \"birth certificate\" for DSH plugin releases",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "**Category suggestion:** Plugins / Ecosystem · **Status:** idea for discussion, not a core change request\n\n## Why I'm bringing this up\n\nThe DSH plugin ecosystem is growing fast (285+ listed bundles in the community awesome-list at last count, 700+ topic repos), and plugins sit in a sensitive spot: they touch model API keys, MCP servers, local shells, and workspace files. The ecosystem already has "
+ },
+ {
+  "number": 5241,
+  "title": "首请求锚定 minimal 双工具面可稳定命中 V4 Pro 的高性能轨迹",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "> 以官方 minimal 双工具面为首请求、晋升后恢复全量注入的预设,40+ 会话全部命中 minimal-like 轨迹;首轮输出帽与锚定门会破坏该效果。\n\n<details>\n<summary>问题与证据标准</summary>\n\n- **核心问题**:DeepSeek V4 Pro 在 DSH 中的首请求表面(工具 schema、输出预算、注入内容)如何决定后续推理轨迹?能否做成无需用户判断的\"自动预设\"?\n- **证据标准**:\n  - 40+ 会话、10 个自建变体(DSH 0.1.1-rc.2,opencode go 订阅,deepseek-v4-pro,max);\n  - 轨迹指纹 = 推理块 `we/(we+let_me)` 出现比;任务完成度(16 项 git 场景等隐藏套件);\n  - 外部佐证:社区 Project2 报告 standard 91 / PTC 92 "
+ },
+ {
+  "number": 3966,
+  "title": "[Bug] Community Market discovery always empty under fake-IP DNS proxies - catalog requests rejected as blocked-address, ",
+  "score": 17,
+  "cls": "C_生态基础设施",
+  "preview": "### TL;DR (中文)\n\n在 Clash/Mihomo 类代理的 fake-ip DNS 模式下，DSH Desktop 2.0.1 内置「社区插件市场」的目录抓取会被自身的 SSRF 防护拦截（`CatalogNetworkError: blocked-address`），接口层又将错误吞成统一的 400，导致「发现 / 可安装」永远为空且无任何提示。目前可通过 hosts 钉真实 IP 临时绕过。建议将 `syntheticProxyHostnames` 开放为可配置项并预置合作来源域名。\n\n### Environment\n\n- DSH Desktop 2.0.1 win32 (desktop host run on node v24.18.1)\n- Windows 11 Pro；本机代理为 Clash 系工具，DNS 处于 **fake-ip 模式**（A 记录返回 `198."
+ },
+ {
+  "number": 3929,
+  "title": "[Bug/Fix proposal] Stats line truncates with \"…\" — two one-line fixes (padding / max-width), design question inside",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "## English\r\n\r\n*Since external PRs are not accepted at this stage (per CONTRIBUTING), filing this fix proposal here with a minimal, ready-to-take change.*\r\n\r\n### Problem\r\n\r\nThe session stats row (mounted on `conversation.composer.dock`) truncates with `…` when all stat groups are present (turns·steps | LLM/tool durations | TTFT·tok/s | cache hit | input/output tokens). Reproduced on `0.1.1-rc.x` so"
+ },
+ {
+  "number": 3806,
+  "title": "fix proposal: non-widening sandbox_permissions should be a no-op, not an error (GPT-family models loop on it)",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nGPT-family models are heavily trained on shell-tool conventions where escalation fields (`with_escalated_permissions` + `justification`) may ride any call speculatively. Under DSH they habitually attach `sandbox_permissions` to `bash` calls whose effective mode already suffices, and the verbatim error\n\n```\nError: sandbox escalation to \"danger-full-access\" is not strictly wider than thi"
+ },
+ {
+  "number": 3314,
+  "title": "Standard ACP session model selection from the adapter catalog",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "## Request\n\nPlease let the official automation-only ACP plugin optionally expose its configured provider's model catalog through the standard ACP session `configOptions` contract.\n\nToday an ACP host can run DeepSeek Harness, but `session/new` returns no configuration options and the Agent does not implement `session/set_config_option`. A host that needs a model picker must either show no model con"
+ },
+ {
+  "number": 3153,
+  "title": "FS_NOT_OBSERVED fires on every first edit of a bash-inspected file — the observation contract never says bash does not c",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "## What happened\n\nA real DSH session (standard mode, working on another repo) hit `FS_NOT_OBSERVED` **6 times in 3 clusters within one turn** — every time the agent edited a file it had previously inspected *via bash*:\n\n| step | target | prior inspection | outcome |\n|---|---|---|---|\n| s13 | `builtins.ts`, `packages/core/package.json` | `cat` via bash, several turns earlier | both edits rejected →"
+ },
+ {
+  "number": 3133,
+  "title": "DSH | dsh-plugin-reducer | Find the minimal plugin set that reproduces a failure",
+  "score": 17,
+  "cls": "E_社区流程渠道",
+  "preview": "> **Unofficial project, independently developed and maintained by a community\n> member.**\n\nProject URL: <https://github.com/ArmyWas/dsh-plugin-reducer>\n\n## Introduction\n\n`dsh-plugin-reducer` is an external diagnostic CLI for DeepSeek Harness. It\nanswers one narrow question: **which installed profile bundles are actually\nrequired to reproduce this failure?**\n\nThe difficult case is an interaction: A"
+ },
+ {
+  "number": 2866,
+  "title": "[Feature Proposal] Add git controls tab in web UI (like GitHub Desktop) / 在 Web 端增加类 GitHub Desktop 风格的 Git 控制与仓库检查标签页",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "I put together a third tab for the web client to handle Git controls (view changes, commits history, diff viewer, and branch switching) styled like GitHub Desktop.\r\n\r\n### Links\r\n- **Branch**: [rrb-rushikesh/deepseek-harness @ feat/web-git-controls-tab](https://github.com/rrb-rushikesh/deepseek-harness/tree/feat/web-git-controls-tab)\r\n- **Comparison**: [master...rrb-rushikesh:deepseek-harness:feat/"
+ },
+ {
+  "number": 2782,
+  "title": "Proposal: opt-in image export to text for text-only model sessions",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "## Problem\n\nWhen a browser prompt carries image parts but the current session model reports no `image` input modality, the gateway rejects the turn with `MODEL_DOES_NOT_SUPPORT_IMAGES`. That forces every text-only session to abandon GUI image attachments, even when a vision tool (local OCR, screenshot diff, image Q&A) could consume the image by file path.\n\nRecurring pain point for users who:\n- Run"
+ },
+ {
+  "number": 2445,
+  "title": "Community review: deepseek-harness @ master (v0.1.0-rc.5) — findings & suggestions",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "Superseded — this review was consolidated and reposted as a shorter version here: https://github.com/deepseek-ai/deepseek-harness/discussions/2450"
+ },
+ {
+  "number": 2341,
+  "title": "[Feedback] two small launcher error-message gaps (corrupt profile manifest, port conflict)",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "**Two small error-message quality gaps found while probing the launcher (rc.6).** Not critical — the overall error quality is good — but both are cheap wins for first-time users.\n\n**1. Corrupt profile manifest: the error does not name the file.**\n\n```bash\nmkdir -p ~/.dsh/profiles/broken && echo '{broken json' > ~/.dsh/profiles/broken/package.json\ndsh --profile broken --dump-config\n```\n\nResult: a r"
+ },
+ {
+  "number": 2307,
+  "title": "dsh-quant-indicators: a small quantitative toolkit built on dsh's tool contract",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "Hi everyone! After studying the dsh architecture (the `ctx.tools` pipeline, capability seams, and the canonical-output contract), I built a small plugin that gives agents a complete quant workflow: **fetch market data → compute technical indicators → backtest a strategy**. Everything is structured so Code Mode can consume it programmatically.\n\n**Repo:** https://github.com/pengpengyi92/dsh-quant-in"
+ },
+ {
+  "number": 2190,
+  "title": "Feature Request: 建立 Skill Hub 社区 + 预装常用 Skill",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "Hi DeepSeek team,\r\n\r\nI'm a DSH (DeepSeek Harness) user, and I'd like to propose two feature improvements:\r\n\r\n1. Build a Skill Hub / Marketplace\r\nCurrently, DSH loads skills only from the local ~/.agents/skills/ directory. There's no way to browse, search, or install skills from a community. I have 370 skills installed, but all of them were manually copied or pre-installed — there's no discovery me"
+ },
+ {
+  "number": 1808,
+  "title": "Fix proposal: keep replayed ask_user_question/approval waits across reconnect resync",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\nFork PRs are currently disabled on this repository, so I'm posting the proposal here. The branch is pushed and ready to open as a PR the moment pull requests are enabled.\n\n- **Branch**: [`feuvan/deepseek-harness:fix/web-question-replay-resync-race`](https://github.com/feuvan/deepseek-harness/tree/fix/web-question-replay-resync-race)\n- **Commit**: `c7e618905a` — `fix(client-runtime): ke"
+ },
+ {
+  "number": 1790,
+  "title": "Show and tell: the verification-first dsh plugin suite — 5 repos, 195+ tools, real-registry agent-visibility checks",
+  "score": 17,
+  "cls": "C_生态基础设施",
+  "preview": "# Show and tell: the verification-first dsh plugin suite\n\nOne round, five repos, 195+ tools — and every claim is backed by a real run, not a mock.\n\n## The suite\n\n| Repo | What it is | Latest |\n|---|---|---|\n| [dsh-github-intelligence](https://github.com/zoahdev/dsh-github-intelligence) | 195+ read-only tools across 15 ecosystems (GitHub, GitLab, Gitee, npm, PyPI, crates.io, Docker Hub, Hugging Fac"
+ },
+ {
+  "number": 1721,
+  "title": "💡 RFC: Mobile & responsive viewport adaptations for Web UI (`dsh web`)",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "Hello,\r\n\r\nCurrently, running `dsh web` on smaller screens (mobile viewports or narrow windows) causes layout overlapping, particularly with the sidebar expanding over the message composer area. \r\n\r\nA few targeted CSS/UI adjustments in `@deepseek-ai/dsh-web` could resolve this cleanly:\r\n\r\n1. **Collapsible drawer mode on narrow viewports:** Automatically collapse the left workspace/session sidebar i"
+ },
+ {
+  "number": 1644,
+  "title": "Proposal for a top level ui toggle button to switch between chat and agent mode.",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "To the devs at DeepSeek, thank you for a very versatile model. DeepSeek has been one of my main LLM's for the past year.\r\n\r\nI recently delved in agentic, so for the past year mostly used the web interface for coding. There is a strange benefit from working with the LLM in chat based ui, and that is token savings, the co-authoring with the LLM, and the general tightness of keeping the LLM on track."
+ },
+ {
+  "number": 1215,
+  "title": "[Feedback] Windows Codex CLI integration: fork patch and remaining upstream seams",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "我在 Windows 的 DSH Web 场景中接入本机官方 Codex CLI / 模型，整理了一个可审查的 fork 提交，以及随后实际遇到的几个集成问题。这里不包含 API key、网关地址或会话内容。\n\n## 可审查的 fork 提交\n\n- 上游基线：`47f943859bef60e4160492346772ded9b24f765a`（当前 `master`）\n- fork 分支：[`codex/fix-delegation-and-sandbox`](https://github.com/lyd123qw2008/deepseek-harness/tree/codex/fix-delegation-and-sandbox)\n- 已推送提交：[`36f2d61fcb0daa15d094a837a581424ff4f5e1c1`](https://github.com/lyd123q"
+ },
+ {
+  "number": 1101,
+  "title": "Idea: plugin-namespaced slash commands (/plugin:command)",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "## Problem\n\nSlash-command names are one flat namespace: the grammar is `^[a-z][a-z0-9_-]*$` (see `packages/interaction/commands`). Two consequences for plugin-style capability bundles:\n\n1. **No structural ownership.** Two plugins that both ship a `deploy` command collide with no domain qualifier available; who wins is decided by layer order / scoped shadowing, and neither author can prevent the co"
+ },
+ {
+  "number": 529,
+  "title": "[Show and tell] DeepSeek Desktop：DeepSeek Harness 的 Windows x64 社区安装包",
+  "score": 17,
+  "cls": "B_社区标准RFC",
+  "preview": "大家好，我做了一个面向 Windows x64 的 DeepSeek Harness 社区发行项目：**DeepSeek Desktop**。\n\n它基于已发布的 `@deepseek-ai/dsh` 构建，不是 DeepSeek 官方桌面客户端，也不包含任何 API Key。目标是让 Windows 用户通过普通安装程序使用 Harness，不必手动准备 Node.js、命令行启动服务或管理浏览器标签页。\n\n![DeepSeek Desktop 中文界面](https://raw.githubusercontent.com/121103qwq/deepseek-desktop/main/docs/images/deepseek-desktop-main.png)\n\n### 默认可以免登录使用\n\n安装向导默认选择 **Kilo Auto Free**。它使用 Kilo 提供的匿名免费路线，不"
+ },
+ {
+  "number": 516,
+  "title": "[Plugin] Editable, session-isolated memory governance",
+  "score": 17,
+  "cls": "E_社区流程渠道",
+  "preview": "I built a tree-out community plugin that adds editable, session-isolated personalization memory to DeepSeek Harness without patching Harness source.\n\nRepository: https://github.com/Spirtxiaoqi7/mindspace-dsh-session-memory\nRelease: https://github.com/Spirtxiaoqi7/mindspace-dsh-session-memory/releases/tag/v0.1.0\nTopics: `dsh-plugin`, `memory`, `agent-memory`, `session-memory`\n\n## What it contribute"
+ },
+ {
+  "number": 258,
+  "title": "Proposal: add a Windows packed-install and Web startup release probe",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "I found a release-validation gap in the current repository HEAD (`47f943859bef60e4160492346772ded9b24f765a`, 2026-08-13) that may leave Windows npm artifacts insufficiently verified.\n\n## Observation\n\n`scripts/publish-npm-baseline.ts` explicitly aborts the installed-Web probe on Windows:\n\n```ts\nif (process.platform === 'win32') {\n  throw new Error('installed dsh Web probe requires a POSIX host with"
+ },
+ {
+  "number": 248,
+  "title": "Proposal: fall back to rename() when atomic-publish link() fails (EACCES/EPERM) - hard links unavailable on some Android",
+  "score": 17,
+  "cls": "D_功能API提案",
+  "preview": "**Proposal: fall back to `rename()` when the atomic-publish `link()` fails — hard links are unavailable on some Android ROMs**\r\n\r\nWhile setting up dsh on Termux (aarch64), session persistence fails at runtime with:\r\n\r\n```\r\nEACCES: permission denied, link '.../session.jsonl.zstd.d4846aa9e424.tmp' -> '.../session.jsonl.zstd'\r\n```\r\n\r\n**Root cause (device-side, not a dsh bug):** some Android custom RO"
+ },
+ {
+  "number": 5569,
+  "title": "没有广告，清净多了",
+  "score": 16,
+  "cls": "A_治理反馈",
+  "preview": "1"
+ },
+ {
+  "number": 5434,
+  "title": "Withdrawn: repeated sandbox mode proposal",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "Withdrawn by the author. The patch and implementation notes are retained locally only."
+ },
+ {
+  "number": 5433,
+  "title": "Withdrawn: partial ripgrep EACCES proposal",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "Withdrawn by the author. The patch and implementation notes are retained locally only."
+ },
+ {
+  "number": 5230,
+  "title": "v0.1.2-alpha.1 插件生态反馈：恳请保留 subagent 扩展点（plugin dev 视角）",
+  "score": 16,
+  "cls": "E_社区流程渠道",
+  "preview": "[Release dsh-v0.1.2-alpha.1](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.2-alpha.1)\n\n你好，我是 DSH 插件开发者，插件 dsh-subagent-default-model（https://github.com/dingminhua/dsh-subagent-default-model）的作者。\n\n这次 v0.1.2-alpha.1 把\"子代理模型选择/推理力度配置\"直接做进了核心，对我的插件造成了实质性影响——插件的核心功能被原生覆盖了。\n\n我理解平台需要完善基础体验，但我想指出一个生态层面的问题：如果平台方不断把社区插件验证过的需求收进核心，且没有提前沟通、也没有保留扩展点，插件开发者的投入就没有保障，大家会不敢做深度插件。这对刚起步的 DSH 生"
+ },
+ {
+  "number": 5227,
+  "title": "Poor prompt-cache hit rate on z.ai GLM Coding Plan: prefix is stable, hits still collapse (evidence + proposal to expose",
+  "score": 16,
+  "cls": "D_功能API提案",
+  "preview": "## Summary\n\nWhen DSH talks to `glm-5.3-flash` through the built-in `zai` provider (OpenAI-compatible endpoint `https://api.z.ai/api/coding/paas/v4`), prompt-cache hit rates are poor even though DSH itself constructs a perfectly stable request prefix. Measured on a real working session (DSH 0.1.2-alpha.2): **70.5% hit over the first user turn, 3.4% on a single step, and 0% on two consecutive reques"
+ },
+ {
+  "number": 5192,
+  "title": "Expose atomic Session and conversation-view navigation for Web plugins",
+  "score": 16,
+  "cls": "B_社区标准RFC",
+  "preview": "## Summary\r\n\r\nWeb plugins can open a durable Session through `ctx.sessions.open(sessionId)`, but they cannot atomically select the target Session's conversation view through a supported public API.\r\n\r\nDiscussion #2346 proposed this capability and was later marked as resolved and closed. However, neither `dsh-v0.1.2-alpha.2` nor the current GitHub master exposes `openSession(sessionId, viewId)`, `s"
+ }
+]
