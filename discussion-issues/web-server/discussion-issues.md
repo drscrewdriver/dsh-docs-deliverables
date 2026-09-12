@@ -317,6 +317,92 @@ transport failure for /api/host.pickDirectory: HTTP 403; dsh Web 目前**明确�
 
   #437
 
-
 ---
 
+## 增量补充 — #5886–#6442（2026-09-12）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-09-12/增量分析报告.md`。
+
+### 升级后 client bundle 陈旧失效　`client-bundle-stale`
+
+- **规模**: 13 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6081](https://github.com/deepseek-ai/deepseek-harness/discussions/6081) | Web bundle should declare modules -> webServer activation dependency | 3485 | 3 |
+| [#5999](https://github.com/deepseek-ai/deepseek-harness/discussions/5999) | [0.1.5-alpha.1] 升级既有 profile 后 client combo 缺失新增 bundle 模块（ui-sidebar-* 404 / loaded without re | 3651 | 2 |
+| [#6280](https://github.com/deepseek-ai/deepseek-harness/discussions/6280) | [Feature] 正文内容宽度升级为一等设置项：可持久化 + 上限可调（当前自适应封顶 920px） | 3502 | 1 |
+| [#6180](https://github.com/deepseek-ai/deepseek-harness/discussions/6180) | 【Bug】0.1.5-rc.1 Web 客户端必然加载失败：dsh-client-ui-sidebar-right 对未随版本发布的 @deepseek-ai/dsh-client-ui-d | 3236 | 1 |
+| [#6369](https://github.com/deepseek-ai/deepseek-harness/discussions/6369) | [性能] dsh web 启动 6-7s：client-modules bundle 组装逐字符扫描约 15MB 源码（附 CPU profile 数据） | 2394 | 1 |
+| [#6374](https://github.com/deepseek-ai/deepseek-harness/discussions/6374) | [Bug] Served index.html missing Cache-Control: no-store — cached documents break boot after reb | 2161 | 1 |
+| [#6373](https://github.com/deepseek-ai/deepseek-harness/discussions/6373) | [Bug] pnpm run build silently does nothing under tsx (import.meta.main guard never true) | 1630 | 1 |
+| [#6398](https://github.com/deepseek-ai/deepseek-harness/discussions/6398) | [Bug] 0.1.5 模型目录缓存失败状态，“重试”无法重新加载第三方模型 | 1099 | 1 |
+| [#6232](https://github.com/deepseek-ai/deepseek-harness/discussions/6232) | [生态观察 #002] DeepSeek Harness v0.1.5 生态影响实测:零兼容破坏、Node 静默坑与 1522 插件的分层时刻 | 4323 | 0 |
+| [#6362](https://github.com/deepseek-ai/deepseek-harness/discussions/6362) | # [BUG]在Chromium版本<122时，Web shell无法启动：ui-sidebar-documentpreview中的eagerly-evaluated pdf.js会中止插件 | 4272 | 0 |
+| [#6202](https://github.com/deepseek-ai/deepseek-harness/discussions/6202) | Fail soft on client-module registration mismatch: validate at dsh plugin add + isolate single-m | 4232 | 0 |
+| [#6217](https://github.com/deepseek-ai/deepseek-harness/discussions/6217) | Bug: Web GUI file preview shows "file resource service unavailable" on Chromium <= 125 — protoc | 3965 | 0 |
+
+其余：#6128
+
+### dsh web 进程静默死亡　`web-process-death`
+
+- **规模**: 18 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6124](https://github.com/deepseek-ai/deepseek-harness/discussions/6124) | [Bug] dsh 0.1.5-rc.1 在 Node.js < 24 上完全静默失败(import.meta.main 守卫 + 未声明 engines) | 2106 | 5 |
+| [#6338](https://github.com/deepseek-ai/deepseek-harness/discussions/6338) | 关于疑似卡巴斯基 HTTPS 扫描导致 Node.js 访问 api.deepseek.com 报 SELF_SIGNED_CERT_IN_CHAIN 的反馈 | 3544 | 4 |
+| [#6259](https://github.com/deepseek-ai/deepseek-harness/discussions/6259) | [Bug] revealNativePath ("Show in File Explorer") silently fails for non-ASCII/CJK paths on Wind | 4851 | 3 |
+| [#6115](https://github.com/deepseek-ai/deepseek-harness/discussions/6115) | npx 启动不成功程序直接退出 `@deepseek-ai/dsh` (published package) silently exits with code 0 on Node < 24. | 4425 | 3 |
+| [#6201](https://github.com/deepseek-ai/deepseek-harness/discussions/6201) | [Bug] dsh web 0.1.5-rc.1: silent process death (0xC0000409) loses in-flight turns - 12 deaths / | 19075 | 1 |
+| [#6288](https://github.com/deepseek-ai/deepseek-harness/discussions/6288) | [Bug] 版本0.1.5-rc.1 Windows 沙盒下原生命令输出无法被 PowerShell 变量捕获（静默返回空值 + 0xC0000142 弹框） | 6948 | 1 |
+| [#5962](https://github.com/deepseek-ai/deepseek-harness/discussions/5962) | [Windows] Host process exits on uncaughtException (ENOENT) when the subprocess spill dir is del | 5196 | 1 |
+| [#6415](https://github.com/deepseek-ai/deepseek-harness/discussions/6415) | [dsh] 非法 preset 配置 → cordis 无限 reload + ~2GB 内存泄漏（~20 分钟后 OOM），且完全静默 | 3430 | 1 |
+| [#5995](https://github.com/deepseek-ai/deepseek-harness/discussions/5995) | harness 进程内存随会话事件数持续增长，长批次约 8 小时后堆触顶 OOM 退出（附测量与采样归因） | 1639 | 1 |
+| [#6373](https://github.com/deepseek-ai/deepseek-harness/discussions/6373) | [Bug] pnpm run build silently does nothing under tsx (import.meta.main guard never true) | 1630 | 1 |
+| [#6225](https://github.com/deepseek-ai/deepseek-harness/discussions/6225) | [Bug] PM2 托管下 `dsh web` 静默空转：PM2 的 fork 容器用 `import()` 加载 `bin.ts`，`import.meta.main` 为 false（o | 11248 | 0 |
+| [#6001](https://github.com/deepseek-ai/deepseek-harness/discussions/6001) | [Bug] Cross-process cold attach: observeSession/promote commits crash-repair closers against a  | 8887 | 0 |
+
+其余：#6267, #6232, #6006, #5994, #6273, #6341
+
+### dsh web 启动性能退化　`web-startup-perf`
+
+- **规模**: 14 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6081](https://github.com/deepseek-ai/deepseek-harness/discussions/6081) | Web bundle should declare modules -> webServer activation dependency | 3485 | 3 |
+| [#6391](https://github.com/deepseek-ai/deepseek-harness/discussions/6391) | [性能/根因] dsh web 启动 2.7s → 17s：0.1.5 的 feat: electron 打包 让 client-modules 全量重组合由 1 次变 8 次（附单文件隔离 | 8947 | 2 |
+| [#5999](https://github.com/deepseek-ai/deepseek-harness/discussions/5999) | [0.1.5-alpha.1] 升级既有 profile 后 client combo 缺失新增 bundle 模块（ui-sidebar-* 404 / loaded without re | 3651 | 2 |
+| [#6427](https://github.com/deepseek-ai/deepseek-harness/discussions/6427) | [Bug][性能] 0.1.5-rc.2 Web UI 空闲态主线程占用约 50%、布局约 144 次/秒（≈每帧一次），拖拽窗口 resize 明显卡顿 | 2678 | 2 |
+| [#6196](https://github.com/deepseek-ai/deepseek-harness/discussions/6196) | [BUG] dsh web 启动到打印 URL 约 18s，其中约 9.3s 来自 client-modules 每次启动重复 8 次全量重建组合包 | 21748 | 1 |
+| [#6415](https://github.com/deepseek-ai/deepseek-harness/discussions/6415) | [dsh] 非法 preset 配置 → cordis 无限 reload + ~2GB 内存泄漏（~20 分钟后 OOM），且完全静默 | 3430 | 1 |
+| [#6180](https://github.com/deepseek-ai/deepseek-harness/discussions/6180) | 【Bug】0.1.5-rc.1 Web 客户端必然加载失败：dsh-client-ui-sidebar-right 对未随版本发布的 @deepseek-ai/dsh-client-ui-d | 3236 | 1 |
+| [#5957](https://github.com/deepseek-ai/deepseek-harness/discussions/5957) | Feature Request: Official extension directory for user plugins with stable service injection | 2836 | 1 |
+| [#6369](https://github.com/deepseek-ai/deepseek-harness/discussions/6369) | [性能] dsh web 启动 6-7s：client-modules bundle 组装逐字符扫描约 15MB 源码（附 CPU profile 数据） | 2394 | 1 |
+| [#6374](https://github.com/deepseek-ai/deepseek-harness/discussions/6374) | [Bug] Served index.html missing Cache-Control: no-store — cached documents break boot after reb | 2161 | 1 |
+| [#5910](https://github.com/deepseek-ai/deepseek-harness/discussions/5910) | [Bug] Commands/list Flood Pins CPU / 自持式 commands/list 洪泛占满 CPU | 14095 | 0 |
+| [#6202](https://github.com/deepseek-ai/deepseek-harness/discussions/6202) | Fail soft on client-module registration mismatch: validate at dsh plugin add + isolate single-m | 4232 | 0 |
+
+其余：#6128, #6346
+
+### Composer 输入法/翻译干扰　`composer-ime`
+
+- **规模**: 13 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6231](https://github.com/deepseek-ai/deepseek-harness/discussions/6231) | [Bug] Web composer stuck in IME composition — Enter stops submitting, keystrokes duplicate (Win | 7072 | 1 |
+| [#6284](https://github.com/deepseek-ai/deepseek-harness/discussions/6284) | 第三方宿主（Obsidian 插件）嵌入 DSH Web UI 的若干集成障碍：输入框无可编程写入接口、iframe 嵌入缺少支持的认证方式、插件注入消息缺少身份会污染会话、会话格式容错不足 | 2732 | 1 |
+| [#6360](https://github.com/deepseek-ai/deepseek-harness/discussions/6360) | Composer breaks under browser translation: IME input becomes garbled/reordered while paste work | 8290 | 0 |
+| [#6052](https://github.com/deepseek-ai/deepseek-harness/discussions/6052) | [Bug] Web composer: Lexical error #14 (infinite transform loop) and amber/missing text when typ | 7939 | 0 |
+| [#5959](https://github.com/deepseek-ai/deepseek-harness/discussions/5959) | [Computer Use][电脑操控]:让Agent直接操控你的Windows 桌面（输入+鼠标） | 7297 | 0 |
+| [#6258](https://github.com/deepseek-ai/deepseek-harness/discussions/6258) | [Feature Request] Configurable composer send shortcut: Ctrl/Cmd+Enter to send, Enter inserts a  | 4040 | 0 |
+| [#5938](https://github.com/deepseek-ai/deepseek-harness/discussions/5938) | DSH \| Session Notes \| Highlight & annotate conversation messages with sticky notes | 3774 | 0 |
+| [#6271](https://github.com/deepseek-ai/deepseek-harness/discussions/6271) | Composer: with an IME, the Enter that ends a composition inserts a newline instead of sending ( | 3527 | 0 |
+| [#6061](https://github.com/deepseek-ai/deepseek-harness/discussions/6061) | [Bug] 桌面端（dev:desktop / 打包版）在 macOS 上 ⌘V 粘贴失效，导致无法输入 API Key 配置模型 | 3155 | 0 |
+| [#6269](https://github.com/deepseek-ai/deepseek-harness/discussions/6269) | [Bug] 启用带连字（ligature/calt）的字体后，Web 输入框开头字符不显示 | 2805 | 0 |
+| [#6347](https://github.com/deepseek-ai/deepseek-harness/discussions/6347) | [Feature] Composer 输入历史回溯：PageUp/PageDown + 上下方向键 | 2540 | 0 |
+| [#5895](https://github.com/deepseek-ai/deepseek-harness/discussions/5895) | [Bug] Composition-adjacent events can slip past the guard within the old 10ms window | 1825 | 0 |
+
+其余：#6313

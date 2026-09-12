@@ -178,6 +178,29 @@ subagent 和 subagent_fork 工具在调用时只接受 description、prompt 和 
 
   #4158
 
-
 ---
 
+## 增量补充 — #5886–#6442（2026-09-12）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-09-12/增量分析报告.md`。
+
+### Fork 会话继承父会话队列　`fork-inbox`
+
+- **规模**: 18 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6141](https://github.com/deepseek-ai/deepseek-harness/discussions/6141) | [Bug]分叉正在运行的或者发送消息但是终止运行的会话的行为和以前不一致了 | 725 | 9 |
+| [#6314](https://github.com/deepseek-ai/deepseek-harness/discussions/6314) | [Bug][0.1.5-rc.x] Fork 出的会话发送新消息时重放源会话旧 prompt（A），新 prompt（B/C）永久滞留队列不执行 | 7276 | 3 |
+| [#6197](https://github.com/deepseek-ai/deepseek-harness/discussions/6197) | [Bug] 分叉（fork）会继承父会话"已入队未执行"的消息并在子会话自动重跑，且没有任何干预窗口 | 8588 | 2 |
+| [#6277](https://github.com/deepseek-ai/deepseek-harness/discussions/6277) | [Bug] session/fork inherits the source's pending inbox — a branch's first new message is answer | 11989 | 1 |
+| [#6262](https://github.com/deepseek-ai/deepseek-harness/discussions/6262) | [Bug Report] session.fork 的 seed 多带一条 user prompt：turn/end 与下一个 turn/start 之间的事件被扫进子会话，子会话重跑父会话 | 5905 | 1 |
+| [#6402](https://github.com/deepseek-ai/deepseek-harness/discussions/6402) | [Bug] 「在新对话中分支」会把分叉点之后的下一条用户消息带进新会话，并在新会话里重新执行它 | 4412 | 1 |
+| [#6316](https://github.com/deepseek-ai/deepseek-harness/discussions/6316) | [Bug][0.1.5-rc.1] Cold session list titles seeded sessions with the workspace folder name until | 3402 | 1 |
+| [#6022](https://github.com/deepseek-ai/deepseek-harness/discussions/6022) | [Bug] Forking a session inherits the parent's queued prompts — the child executes them on first | 1728 | 1 |
+| [#6336](https://github.com/deepseek-ai/deepseek-harness/discussions/6336) | [Bug] Pending inbox queue is inherited by forked sessions, so stale prompts get re-sent 排队输入跨会话 | 8419 | 0 |
+| [#6386](https://github.com/deepseek-ai/deepseek-harness/discussions/6386) | 【疑似bug】分叉子代理会话整份复制父会话日志，且列举子代理目录时会整读全文 —— 长会话上导致数 GB 内存峰值 | 7949 | 0 |
+| [#6147](https://github.com/deepseek-ai/deepseek-harness/discussions/6147) | [Bug] Forked session inherits the parent's queued next message and runs it as a phantom turn | 6644 | 0 |
+| [#6244](https://github.com/deepseek-ai/deepseek-harness/discussions/6244) | [bug] Forked session inherits the source session's queued (pending) input — the child's first n | 5924 | 0 |
+
+其余：#6327, #6301, #6295, #6245, #6150, #6339

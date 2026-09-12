@@ -137,6 +137,50 @@ type PathCutOffBug = 'readUtf16 checks low byte of UTF-8 string'
 
   #953, #5097
 
-
 ---
 
+## 增量补充 — #5886–#6442（2026-09-12）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-09-12/增量分析报告.md`。
+
+### Windows「在资源管理器中显示」静默失败　`windows-reveal`
+
+- **规模**: 14 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6259](https://github.com/deepseek-ai/deepseek-harness/discussions/6259) | [Bug] revealNativePath ("Show in File Explorer") silently fails for non-ASCII/CJK paths on Wind | 4851 | 3 |
+| [#6438](https://github.com/deepseek-ai/deepseek-harness/discussions/6438) | [Bug] "Show in File Explorer" on Windows reveals the file in an invisible window (and never rev | 7499 | 1 |
+| [#5964](https://github.com/deepseek-ai/deepseek-harness/discussions/5964) | [Bug] WSL 下启动的 dsh，「在应用中打开」无法唤起 VS Code / 资源管理器（应用目录表缺少 WSL 感知） | 3072 | 1 |
+| [#5921](https://github.com/deepseek-ai/deepseek-harness/discussions/5921) | dsh-file-explorer: 轻量级可扩展的 DSH Web 的文件浏览器插件：浏览工作区文件树、预览文件，支持通过插件扩展预览器。 | 2954 | 1 |
+| [#6293](https://github.com/deepseek-ai/deepseek-harness/discussions/6293) | [Windows] "Show in File Explorer" produces no window but reports success | 8622 | 0 |
+| [#6349](https://github.com/deepseek-ai/deepseek-harness/discussions/6349) | [Bug] Windows：「在本地打开」不打开目录，反而把已打开的目录窗口隐藏 | 6982 | 0 |
+| [#6234](https://github.com/deepseek-ai/deepseek-harness/discussions/6234) | [bug] Windows: "reveal in file manager" is a silent no-op — percent-encoded file URL falls back | 6916 | 0 |
+| [#6182](https://github.com/deepseek-ai/deepseek-harness/discussions/6182) | [Bug] Windows: revealNativePath never shows a window, and opens the Desktop instead of the targ | 5176 | 0 |
+| [#6159](https://github.com/deepseek-ai/deepseek-harness/discussions/6159) | [Feature] 右侧 Sidebar 文件树缺少「在资源管理器中显示」（主机侧能力已就绪，仅客户端未接） | 4416 | 0 |
+| [#6154](https://github.com/deepseek-ai/deepseek-harness/discussions/6154) | [Bug] Web 交付卡片的「在文件资源管理器中显示」只创建隐藏窗口（Windows） | 2910 | 0 |
+| [#6235](https://github.com/deepseek-ai/deepseek-harness/discussions/6235) | DSH｜dsh-reveal-fix｜修掉 Windows 上「在文件资源管理器中显示」的静默失败 | 2806 | 0 |
+| [#6187](https://github.com/deepseek-ai/deepseek-harness/discussions/6187) | [Bug] Windows 上「在文件资源管理器中显示」在含中文/非 ASCII 的路径下只打开默认文件夹，不定位文件 | 2094 | 0 |
+
+其余：#6442, #6384
+
+### Windows 沙箱/TLS/代理环境问题　`sandbox-windows`
+
+- **规模**: 42 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6259](https://github.com/deepseek-ai/deepseek-harness/discussions/6259) | [Bug] revealNativePath ("Show in File Explorer") silently fails for non-ASCII/CJK paths on Wind | 4851 | 3 |
+| [#6107](https://github.com/deepseek-ai/deepseek-harness/discussions/6107) | [Bug] TOOL_OUTCOME_UNKNOWN / TOOL_NOT_STARTED 合成结果缺少恢复语义：用户与模型都误判为真实工具失败（0.1.5-rc.1） | 2993 | 3 |
+| [#6035](https://github.com/deepseek-ai/deepseek-harness/discussions/6035) | Bug: Tool call with empty name/id → Error: unknown tool "" (UNKNOWN_TOOL) | 2166 | 3 |
+| [#5952](https://github.com/deepseek-ai/deepseek-harness/discussions/5952) | [Bug] 会话日志损坏：长工具调用执行期间中断回合，导致 seq 重复（中断修复路径使用了过期的 seq 基线） | 895 | 3 |
+| [#6015](https://github.com/deepseek-ai/deepseek-harness/discussions/6015) | [Proposal] Make sandbox escalation session-aware and ignore redundant same-mode requests | 2208 | 2 |
+| [#6215](https://github.com/deepseek-ai/deepseek-harness/discussions/6215) | Bug/Design: approveEscalation 在 effectiveMode 为 danger-full-access 时拒绝同级/降级升级导致模型死锁循环 | 2106 | 2 |
+| [#6100](https://github.com/deepseek-ai/deepseek-harness/discussions/6100) | 审批层 fail-closed 时工具文案写作 "user rejected"，会让模型误归因到用户 | 1110 | 2 |
+| [#6196](https://github.com/deepseek-ai/deepseek-harness/discussions/6196) | [BUG] dsh web 启动到打印 URL 约 18s，其中约 9.3s 来自 client-modules 每次启动重复 8 次全量重建组合包 | 21748 | 1 |
+| [#6426](https://github.com/deepseek-ai/deepseek-harness/discussions/6426) | [Windows] Case-duplicate proxy variables in the child environment break PowerShell Env: provide | 9598 | 1 |
+| [#6288](https://github.com/deepseek-ai/deepseek-harness/discussions/6288) | [Bug] 版本0.1.5-rc.1 Windows 沙盒下原生命令输出无法被 PowerShell 变量捕获（静默返回空值 + 0xC0000142 弹框） | 6948 | 1 |
+| [#6209](https://github.com/deepseek-ai/deepseek-harness/discussions/6209) | [Bug]: Windows native Job subprocess flashes console windows under console-less GUI hosts | 5314 | 1 |
+| [#5962](https://github.com/deepseek-ai/deepseek-harness/discussions/5962) | [Windows] Host process exits on uncaughtException (ENOENT) when the subprocess spill dir is del | 5196 | 1 |
+
+其余：#6272, #6098, #5964, #6403, #6225, #6293, #6274, #6431, #6349, #5998, #6260, #6335, #6182, #6027, #6275, #6392, #6171, #6158, #6192, #6154, #5958, #6235, #6247, #5886, #6187, #6442, #6137, #6245, #6018, #6011

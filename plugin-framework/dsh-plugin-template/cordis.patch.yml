@@ -1,0 +1,6 @@
+# Assembly layer for the dsh profiles whose bundles list includes this package.
+# A pure addition: one insert row with an id no shipped entry uses. No shipped
+# row is disabled, renamed, or reconfigured here.
+- insert:
+    - id: dsh-plugin-template
+      name: dsh-plugin-template

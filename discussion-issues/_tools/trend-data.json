@@ -1,0 +1,412 @@
+{
+  "generatedAt": "2026-09-12T14:44:38.406Z",
+  "totalDiscussions": 6321,
+  "weekKeys": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "weekLabels": {
+    "0": "08-13~08-19",
+    "1": "08-20~08-26",
+    "2": "08-27~09-02",
+    "3": "09-03~09-09",
+    "4": "09-10~09-16"
+  },
+  "weekTotals": {
+    "0": 3386,
+    "1": 1206,
+    "2": 767,
+    "3": 607,
+    "4": 355
+  },
+  "famTrend": {
+    "session-migration": {
+      "name": "会话格式迁移失败",
+      "legacy": false,
+      "weeks": {
+        "0": 20,
+        "1": 9,
+        "2": 11,
+        "3": 15,
+        "4": 19
+      }
+    },
+    "session-history-unreadable": {
+      "name": "升级后历史会话无法加载",
+      "legacy": false,
+      "weeks": {
+        "0": 108,
+        "1": 53,
+        "2": 28,
+        "3": 25,
+        "4": 22
+      }
+    },
+    "fork-inbox": {
+      "name": "Fork 继承父会话队列",
+      "legacy": false,
+      "weeks": {
+        "0": 11,
+        "1": 2,
+        "2": 2,
+        "3": 4,
+        "4": 17
+      }
+    },
+    "windows-reveal": {
+      "name": "Windows 资源管理器定位失败",
+      "legacy": false,
+      "weeks": {
+        "0": 6,
+        "1": 4,
+        "2": 1,
+        "3": 2,
+        "4": 13
+      }
+    },
+    "web-startup-perf": {
+      "name": "dsh web 启动性能退化",
+      "legacy": false,
+      "weeks": {
+        "0": 21,
+        "1": 12,
+        "2": 18,
+        "3": 9,
+        "4": 11
+      }
+    },
+    "client-bundle-stale": {
+      "name": "client bundle 陈旧失效",
+      "legacy": false,
+      "weeks": {
+        "0": 43,
+        "1": 18,
+        "2": 13,
+        "3": 11,
+        "4": 15
+      }
+    },
+    "persona-preset-break": {
+      "name": "persona/preset 字段重命名破坏",
+      "legacy": false,
+      "weeks": {
+        "0": 20,
+        "1": 17,
+        "2": 4,
+        "3": 11,
+        "4": 7
+      }
+    },
+    "malformed-toolcall": {
+      "name": "畸形 tool-call 致会话不可恢复",
+      "legacy": false,
+      "weeks": {
+        "0": 120,
+        "1": 50,
+        "2": 27,
+        "3": 14,
+        "4": 10
+      }
+    },
+    "reasoning-loop": {
+      "name": "推理退化循环 / 空响应",
+      "legacy": false,
+      "weeks": {
+        "0": 20,
+        "1": 10,
+        "2": 5,
+        "3": 10,
+        "4": 5
+      }
+    },
+    "sandbox-windows": {
+      "name": "Windows 沙箱/TLS/代理",
+      "legacy": false,
+      "weeks": {
+        "0": 307,
+        "1": 89,
+        "2": 57,
+        "3": 42,
+        "4": 32
+      }
+    },
+    "composer-ime": {
+      "name": "Composer 输入法/翻译干扰",
+      "legacy": false,
+      "weeks": {
+        "0": 15,
+        "1": 12,
+        "2": 9,
+        "3": 8,
+        "4": 9
+      }
+    },
+    "web-process-death": {
+      "name": "dsh web 进程静默死亡",
+      "legacy": false,
+      "weeks": {
+        "0": 77,
+        "1": 43,
+        "2": 22,
+        "3": 12,
+        "4": 13
+      }
+    },
+    "npm-install-build": {
+      "name": "npm 安装/构建失败",
+      "legacy": false,
+      "weeks": {
+        "0": 101,
+        "1": 40,
+        "2": 38,
+        "3": 20,
+        "4": 13
+      }
+    },
+    "tool-visibility": {
+      "name": "工具/提示词节丢失",
+      "legacy": false,
+      "weeks": {
+        "0": 34,
+        "1": 13,
+        "2": 8,
+        "3": 8,
+        "4": 2
+      }
+    },
+    "legacy-session-corruption": {
+      "name": "会话日志损坏（seq gap / 并发写）",
+      "legacy": true,
+      "weeks": {
+        "0": 55,
+        "1": 21,
+        "2": 12,
+        "3": 6,
+        "4": 1
+      }
+    },
+    "legacy-sandbox-escalation": {
+      "name": "沙箱同模式提权被拒",
+      "legacy": true,
+      "weeks": {
+        "0": 30,
+        "1": 14,
+        "2": 18,
+        "3": 12,
+        "4": 2
+      }
+    },
+    "legacy-plugin-load-crash": {
+      "name": "插件加载失败拖垮启动",
+      "legacy": true,
+      "weeks": {
+        "0": 19,
+        "1": 6,
+        "2": 9,
+        "3": 5,
+        "4": 8
+      }
+    },
+    "legacy-auth-lan": {
+      "name": "Web 鉴权 / 局域网访问",
+      "legacy": true,
+      "weeks": {
+        "0": 463,
+        "1": 192,
+        "2": 135,
+        "3": 95,
+        "4": 47
+      }
+    },
+    "legacy-context-compaction": {
+      "name": "上下文压缩失效",
+      "legacy": true,
+      "weeks": {
+        "0": 137,
+        "1": 71,
+        "2": 64,
+        "3": 38,
+        "4": 24
+      }
+    },
+    "legacy-token-auth-pwa": {
+      "name": "PWA / 移动端 / 主题",
+      "legacy": true,
+      "weeks": {
+        "0": 234,
+        "1": 88,
+        "2": 56,
+        "3": 47,
+        "4": 19
+      }
+    }
+  },
+  "cmp": {
+    "session-migration": {
+      "name": "会话格式迁移失败",
+      "baseline": 50,
+      "increment": 24,
+      "delta": -26
+    },
+    "session-history-unreadable": {
+      "name": "升级后历史会话无法加载",
+      "baseline": 207,
+      "increment": 29,
+      "delta": -178
+    },
+    "fork-inbox": {
+      "name": "Fork 继承父会话队列",
+      "baseline": 18,
+      "increment": 18,
+      "delta": 0
+    },
+    "windows-reveal": {
+      "name": "Windows 资源管理器定位失败",
+      "baseline": 11,
+      "increment": 15,
+      "delta": 4
+    },
+    "web-startup-perf": {
+      "name": "dsh web 启动性能退化",
+      "baseline": 57,
+      "increment": 14,
+      "delta": -43
+    },
+    "client-bundle-stale": {
+      "name": "client bundle 陈旧失效",
+      "baseline": 84,
+      "increment": 16,
+      "delta": -68
+    },
+    "persona-preset-break": {
+      "name": "persona/preset 字段重命名破坏",
+      "baseline": 49,
+      "increment": 10,
+      "delta": -39
+    },
+    "malformed-toolcall": {
+      "name": "畸形 tool-call 致会话不可恢复",
+      "baseline": 204,
+      "increment": 17,
+      "delta": -187
+    },
+    "reasoning-loop": {
+      "name": "推理退化循环 / 空响应",
+      "baseline": 40,
+      "increment": 10,
+      "delta": -30
+    },
+    "sandbox-windows": {
+      "name": "Windows 沙箱/TLS/代理",
+      "baseline": 482,
+      "increment": 45,
+      "delta": -437
+    },
+    "composer-ime": {
+      "name": "Composer 输入法/翻译干扰",
+      "baseline": 39,
+      "increment": 14,
+      "delta": -25
+    },
+    "web-process-death": {
+      "name": "dsh web 进程静默死亡",
+      "baseline": 149,
+      "increment": 18,
+      "delta": -131
+    },
+    "npm-install-build": {
+      "name": "npm 安装/构建失败",
+      "baseline": 190,
+      "increment": 22,
+      "delta": -168
+    },
+    "tool-visibility": {
+      "name": "工具/提示词节丢失",
+      "baseline": 61,
+      "increment": 4,
+      "delta": -57
+    }
+  },
+  "legacyCmp": {
+    "legacy-session-corruption": {
+      "name": "会话日志损坏（seq gap / 并发写）",
+      "baseline": 92,
+      "increment": 3,
+      "delta": -89
+    },
+    "legacy-sandbox-escalation": {
+      "name": "沙箱同模式提权被拒",
+      "baseline": 71,
+      "increment": 5,
+      "delta": -66
+    },
+    "legacy-plugin-load-crash": {
+      "name": "插件加载失败拖垮启动",
+      "baseline": 38,
+      "increment": 9,
+      "delta": -29
+    },
+    "legacy-auth-lan": {
+      "name": "Web 鉴权 / 局域网访问",
+      "baseline": 859,
+      "increment": 73,
+      "delta": -786
+    },
+    "legacy-context-compaction": {
+      "name": "上下文压缩失效",
+      "baseline": 301,
+      "increment": 33,
+      "delta": -268
+    },
+    "legacy-token-auth-pwa": {
+      "name": "PWA / 移动端 / 主题",
+      "baseline": 411,
+      "increment": 33,
+      "delta": -378
+    }
+  },
+  "subset": {
+    "baseline": 5777,
+    "increment": 544
+  },
+  "versionHistogram": {
+    "0.1.0-rc.5": 3,
+    "0.1.0-rc.6": 16,
+    "0.1.0": 7,
+    "0.1.1-rc.2": 33,
+    "0.1.0-rc.12": 1,
+    "0.1.5": 9,
+    "0.1.6": 1,
+    "0.1.2": 7,
+    "0.1.0-rc.7": 4,
+    "0.1.1": 5,
+    "0.1.0-rc.8": 9,
+    "0.1.1-rc.1": 1,
+    "0.1.1-rc1": 1,
+    "0.1.1-rc": 1,
+    "0.1.0-alpha.4": 1,
+    "0.1.2-rc.1": 34,
+    "0.1.1-rc2": 2,
+    "0.1.2-alpha": 2,
+    "0.1.2-alpha.1": 14,
+    "0.1.2-alpha.2": 6,
+    "0.1.2-alpha.4": 2,
+    "0.1.2-alpha.3": 4,
+    "0.1.2-alpha.5": 2,
+    "0.1.3-alpha.1": 5,
+    "0.1.4": 1,
+    "0.1.2-alpha.": 1,
+    "0.1.2-rc1": 1,
+    "0.1.3-alpha.2": 7,
+    "0.1.3": 1,
+    "0.1.5-alpha.1": 8,
+    "0.1.5-alpha.2": 1,
+    "0.1.5-rc.1": 35,
+    "0.1.5-rc1": 1,
+    "0.1.5-rc.2": 10,
+    "0.1.5-rc.": 1
+  }
+}

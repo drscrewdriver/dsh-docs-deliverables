@@ -280,6 +280,8 @@ CI 应在不同 DSH 版本环境下分别测试：
 - [ ] npm publish 成功（`npm view` 验证）
 - [ ] 在 DSH 0.1.1 上测试 0.1.0 安装成功
 - [ ] 在 DSH 0.1.2 上测试 0.1.1 安装成功
+- [ ] 升级场景实测：旧 profile 升级后强制刷新浏览器（client combo 缓存陈旧会让插件整体不激活，见 [upgrade-pitfalls.md](upgrade-pitfalls.md) §3.1）
+- [ ] 若使用 RPC/HTTP 通道：在目标 DSH 版本实测通道往返（0.1.5-rc.1/rc.2 有 405 静默失效问题，见 [upgrade-pitfalls.md](upgrade-pitfalls.md) §2.1）
 
 ---
 

@@ -163,6 +163,50 @@ history unavailable f
 
   #393
 
-
 ---
 
+## 增量补充 — #5886–#6442（2026-09-12）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-09-12/增量分析报告.md`。
+
+### 升级后历史会话无法加载　`session-history-unreadable`
+
+- **规模**: 26 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#5909](https://github.com/deepseek-ai/deepseek-harness/discussions/5909) | [Bug] Broken sessions and v0→v1→v2 Migration Failure / 会话损坏及 v0→v1→v2 迁移失败 | 14290 | 12 |
+| [#6151](https://github.com/deepseek-ai/deepseek-harness/discussions/6151) | 升级到 0.1.5 后，以前的一些老会话打不开了 | 697 | 7 |
+| [#5911](https://github.com/deepseek-ai/deepseek-harness/discussions/5911) | 升级 0.1.2-rc.1 导致无法使用 | 639 | 4 |
+| [#6252](https://github.com/deepseek-ai/deepseek-harness/discussions/6252) | [BUG]升级到0.1.5-rc.1后原有会话无法正常读取和显示，报错提示原session中缺少surfaceOp | 108153 | 3 |
+| [#6311](https://github.com/deepseek-ai/deepseek-harness/discussions/6311) | [BUG] v2→v3 会话迁移对插件自定义的 message source kind 直接拒载，导致旧会话永久无法加载 | 5395 | 3 |
+| [#6393](https://github.com/deepseek-ai/deepseek-harness/discussions/6393) | [ACP] session/resume restores the agent but does not replay history; loadSession is missing, so | 3467 | 3 |
+| [#6010](https://github.com/deepseek-ai/deepseek-harness/discussions/6010) | [Bug] V2→V3 迁移拒绝含"中断轮次重启"的 v2 会话：turn/start N+1 does not open expected turn N（附根因与修复） | 2458 | 3 |
+| [#6324](https://github.com/deepseek-ai/deepseek-harness/discussions/6324) | [dsh-acp] ACP clients cannot rebuild a session transcript: no session/load, and session/resume  | 4306 | 2 |
+| [#6152](https://github.com/deepseek-ai/deepseek-harness/discussions/6152) | Empty tool calls (name/callId empty) are persisted without validation, then fail the whole sess | 3955 | 2 |
+| [#6189](https://github.com/deepseek-ai/deepseek-harness/discussions/6189) | [BUG] 0.1.5-rc.1 会话历史永久无法加载:v0→v1 拒绝已发布的 v0 形状(permission/preset 带 origin) | 3411 | 2 |
+| [#5978](https://github.com/deepseek-ai/deepseek-harness/discussions/5978) | [Bug] 更新到最新 master 后，部分历史会话无法加载（v0 迁移校验过度严格） | 2050 | 2 |
+| [#6236](https://github.com/deepseek-ai/deepseek-harness/discussions/6236) | sessions: one non-vocabulary turn/end abort cause makes the whole session unreadable, with no i | 7571 | 1 |
+
+其余：#6084, #6342, #6418, #5907, #6355, #6250, #6144, #6194, #6328, #5910, #6287, #6278, #6184, #6347
+
+### 畸形 tool-call 持久化导致会话不可恢复　`malformed-toolcall`
+
+- **规模**: 17 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6059](https://github.com/deepseek-ai/deepseek-harness/discussions/6059) | [Bug] Runaway tool-call arguments consume the full output budget before validation | 4014 | 9 |
+| [#5911](https://github.com/deepseek-ai/deepseek-harness/discussions/5911) | 升级 0.1.2-rc.1 导致无法使用 | 639 | 4 |
+| [#6035](https://github.com/deepseek-ai/deepseek-harness/discussions/6035) | Bug: Tool call with empty name/id → Error: unknown tool "" (UNKNOWN_TOOL) | 2166 | 3 |
+| [#6152](https://github.com/deepseek-ai/deepseek-harness/discussions/6152) | Empty tool calls (name/callId empty) are persisted without validation, then fail the whole sess | 3955 | 2 |
+| [#6322](https://github.com/deepseek-ai/deepseek-harness/discussions/6322) | [ACP] session/new never sends available_commands_update, so ACP clients show an empty command/s | 3167 | 2 |
+| [#5983](https://github.com/deepseek-ai/deepseek-harness/discussions/5983) | [Bug] Custom providers are hidden and cannot be added in web UI (`llm-pi-ai` namespace not expo | 2386 | 2 |
+| [#6015](https://github.com/deepseek-ai/deepseek-harness/discussions/6015) | [Proposal] Make sandbox escalation session-aware and ignore redundant same-mode requests | 2208 | 2 |
+| [#6300](https://github.com/deepseek-ai/deepseek-harness/discussions/6300) | [Bug][0.1.5-rc.1]畸形 tool-call（空 id/name）被持久化进会话日志，导致会话永久不可恢复（每次回放 400 `missing field tool_call_ | 19659 | 1 |
+| [#6218](https://github.com/deepseek-ai/deepseek-harness/discussions/6218) | Bug: reasoning-only completions are reported as successful - the EMPTY_RESPONSE guard tests ord | 10638 | 1 |
+| [#6406](https://github.com/deepseek-ai/deepseek-harness/discussions/6406) | [BUG] selectCompactableRange compares a real-window token budget against heuristic node prices | 5234 | 1 |
+| [#6366](https://github.com/deepseek-ai/deepseek-harness/discussions/6366) | 同一提示词四次实测：简单配置任务出现 33–50 轮「无界确认」行为（DeepSeek V4.1 + DSH） | 2266 | 1 |
+| [#5910](https://github.com/deepseek-ai/deepseek-harness/discussions/5910) | [Bug] Commands/list Flood Pins CPU / 自持式 commands/list 洪泛占满 CPU | 14095 | 0 |
+
+其余：#6216, #6295, #6068, #6127, #6351

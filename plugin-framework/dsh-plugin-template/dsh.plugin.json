@@ -1,0 +1,22 @@
+{
+  "id": "dsh-plugin-template",
+  "name": "dsh-plugin-template",
+  "version": "0.1.0",
+  "description": {
+    "en": "DSH Cordis bundle plugin — TypeScript-first template with cross-version compatibility.",
+    "zh": "DSH Cordis bundle 插件 — TypeScript 优先模板，支持跨版本兼容。"
+  },
+  "homepage": "https://github.com/<owner>/dsh-plugin-template",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<owner>/dsh-plugin-template.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "dsh": ">=0.1.2-alpha.1 <0.2.0-0"
+  },
+  "components": {
+    "host": "lib/index.js",
+    "client": "lib/client.js"
+  }
+}

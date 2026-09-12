@@ -503,6 +503,7 @@ v0.1.5 将 Session 格式从 V2 升级到 V3：
 - 如果你的插件读取 session 数据，需适配 V3 格式（内置自动迁移）
 - 如果使用 `ctx.inbox`，需改为订阅 agent-loop 投影
 - 如果依赖系统提示词消息语义，需适配 surface node zero
+- 🔴 **如果插件向会话写入自定义 message source kind，v2→v3 迁移会直接拒载旧会话**（[#6311](https://github.com/deepseek-ai/deepseek-harness/discussions/6311)）；写入 null turn/step 的 marker 会永久破坏 `/compact`（[#5920](https://github.com/deepseek-ai/deepseek-harness/discussions/5920)）。规避方式与完整陷阱清单见 [upgrade-pitfalls.md](upgrade-pitfalls.md) §一
 
 ### 13.2 Sidebar 完全重写
 

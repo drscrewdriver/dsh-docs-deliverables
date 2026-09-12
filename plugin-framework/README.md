@@ -43,6 +43,7 @@ dsh plugin --profile web add /path/to/your-plugin
 | [distribution-strategy.md](distribution-strategy.md) | 版本分发策略 | 同一 npm 包名适配不同 DSH 版本 |
 | [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径 |
 | **[v0.1.5-migration.md](v0.1.5-migration.md)** | **v0.1.5 迁移指南** | **Token/Permission/Inbox/Adapter 全面迁移** |
+| [upgrade-pitfalls.md](upgrade-pitfalls.md) | 升级适配陷阱（讨论区实证） | 升级后排障：会话拒载、RPC 405、client combo 缓存等真实踩坑 |
 | [submission-guide.md](submission-guide.md) | awesome-dsh-plugin 投稿 | 向市场提交插件的完整步骤 |
 
 ## 快速开始（文档阅读顺序）
@@ -51,7 +52,8 @@ dsh plugin --profile web add /path/to/your-plugin
 2. **配置兼容性**：参照 [compatibility-guide.md](compatibility-guide.md) 设置 `dsh.plugin.json` + peerDeps
 3. **版本策略**：参照 [distribution-strategy.md](distribution-strategy.md) 规划双版本分发
 4. **v0.1.5 迁移**：参照 [v0.1.5-migration.md](v0.1.5-migration.md) 完成 Token/Permission/Inbox/Adapter 适配
-5. **发布市场**：参照 [submission-guide.md](submission-guide.md) 向 awesome-dsh-plugin 投稿
+5. **升级排障**：升级后行为异常时查 [upgrade-pitfalls.md](upgrade-pitfalls.md)（讨论区实证陷阱 + 排障决策树）
+6. **发布市场**：参照 [submission-guide.md](submission-guide.md) 向 awesome-dsh-plugin 投稿
 
 ## 核心概念
 
