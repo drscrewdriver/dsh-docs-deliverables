@@ -11,7 +11,9 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | v0.1.1-rc.2 | `v0.1.1-rc.2/` | +207 | ⭐⭐ | 首个稳定版，增量改进 |
 | v0.1.2-rc.1 | `v0.1.2-rc.1/` | +1735 | ⭐⭐⭐⭐⭐ | **大重构**：Session V2、runtime→store、Apiproxy→Remote |
 | v0.1.3-alpha.2 | `v0.1.3-alpha.2/` | +644 | ⭐⭐⭐ | Settings 命名空间变更、Permission Presets |
-| v0.1.5-alpha.1 | `v0.1.5-alpha.1/` | +563 | ⭐⭐⭐⭐ | **Sidebar 重写**、Session V3、Electron 桌面 |
+| v0.1.5-alpha.1 | `v0.1.5-alpha.1/` | +563 | ⭐⭐⭐⭐⭐ | **Sidebar 重写**、Session V3、Electron 桌面、Token Meter 扩展、Permission Presets 统一、LLM Adapter 7 方法、子代理目录 |
+| v0.1.5-rc.1 | `v0.1.5-rc.1/` | +140 | ⭐⭐⭐⭐⭐ | 反馈对话框 + 产物卡片 + 文档预览 + 共享图标 |
+| v0.1.5-rc.2 | `v0.1.5-rc.2/` | +2 | ⭐⭐ | 反馈对称化 + 交付物 UI 精化（backport） |
 
 > 版本变更详情（0.1.1→0.1.5 完整提交级记录）参见 [dsh-015-notes.md](../dsh-015-notes.md)。
 
@@ -22,7 +24,8 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | rc.7 → 0.1.1 | 🟢 低 | 无 breaking changes |
 | 0.1.1 → 0.1.2 | 🔴 高 | client/runtime→store、Session V2、Apiproxy→Remote、CallId→ToolCallId |
 | 0.1.2 → 0.1.3 | 🟡 中 | settingsNamespace()→字符串、Permission Presets |
-| 0.1.3 → 0.1.5 | 🔴 高 | Session V3 surface node、Sidebar 完全重写、Inbox 投影重构 |
+| 0.1.3 → 0.1.5 | 🔴 高 | Session V3 surface node、Sidebar 完全重写、Inbox 投影重构、Token Meter 扩展、Permission Presets 统一、LLM Adapter 7 方法 |
+| 0.1.5-rc.1 → rc.2 | 🟡 中 | `toggle`→`retract` 接口变更、Like 也走对话框、图标数据化 |
 
 ## 推荐阅读路径
 
@@ -59,9 +62,29 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | — | [architecture-overview.md](v0.1.0-rc.5/architecture-overview.md) | 架构总览 | 全局架构图、模块关系 |
 | — | [module-template.md](v0.1.0-rc.5/module-template.md) | 模块详解模板 | 文章编写规范 |
 
+## v0.1.5-rc.2 详细目录
+
+| # | 文件 | 主题 | 核心概念 |
+|---|------|------|----------|
+| 01 | [01-cordis-framework.md](v0.1.5-rc.2/01-cordis-framework.md) | Cordis 框架层 | Service、Context、生命周期 |
+| 02 | [02-core-product.md](v0.1.5-rc.2/02-core-product.md) | Core 产品主干 | 产品架构、核心流程 |
+| 03 | [03-shell-capabilities.md](v0.1.5-rc.2/03-shell-capabilities.md) | Shell 能力缝 | shell 与 core 的衔接 |
+| 04 | [04-llm-typer.md](v0.1.5-rc.2/04-llm-typer.md) | LLM 与 Typer | LLM 集成、类型系统 |
+| 05 | [05-execution-world.md](v0.1.5-rc.2/05-execution-world.md) | 执行世界 | fs/sandbox/code-runtime |
+| 06 | [06-memory.md](v0.1.5-rc.2/06-memory.md) | 记忆系统 | Session V3、compaction |
+| 07 | [07-multi-agent.md](v0.1.5-rc.2/07-multi-agent.md) | 多智能体 | 子代理目录、模型路由 |
+| 08 | [08-human-agent-governance.md](v0.1.5-rc.2/08-human-agent-governance.md) | 人机协作与治理 | 治理框架、安全机制 |
+| 10 | [10-gui-frontend-backend.md](v0.1.5-rc.2/10-gui-frontend-backend.md) | GUI 前后端 | Web UI、Sidebar 重写 |
+| 11 | [11-protocol-sdk.md](v0.1.5-rc.2/11-protocol-sdk.md) | 协议与 SDK | SDK、ACP、MCP |
+| 12 | [12-engineering.md](v0.1.5-rc.2/12-engineering.md) | 工程体系 | 构建、测试、发布 |
+| — | [plugin-migration-guide.md](v0.1.5-rc.2/plugin-migration-guide.md) | **插件迁移深度指南** | **Token/Permission/Inbox/Adapter 全面迁移** |
+| — | [architecture-overview.md](v0.1.5-rc.2/architecture-overview.md) | 架构总览 | 全局架构图、模块关系 |
+| — | [changelog-alpha1-rc1.md](v0.1.5-rc.1/changelog-alpha1-rc1.md) | Alpha.1→RC.1 变更 | 反馈对话框、产物卡片 |
+| — | [changelog-rc1-rc2.md](v0.1.5-rc.2/changelog-rc1-rc2.md) | RC.1→RC.2 变更 | 反馈对称化、UI 精化 |
+
 ## 原始来源
 
-- 源码快照: `deepseek-harness/ v0.1.0-rc.5`
-- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.1.5-alpha.1`
+- 源码快照: `deepseek-harness/ v0.1.0-rc.5` ~ `v0.1.5-rc.2`
+- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.1.5-rc.2`
 - 原始文章: `详解/ 第01-12篇`
 - 项目文档: `项目架构总览.md`、`模块详解模板.md`

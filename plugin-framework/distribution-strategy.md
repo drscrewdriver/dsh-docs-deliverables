@@ -15,7 +15,61 @@ DSH 在 0.1.2-alpha.2 做了客户端包重构，在 0.1.3+ 引入了新的 peer
 | ≥ 0.1.3-alpha.1 | `dsh-client-store` | 字符串命名空间 | `dsh-permission-presets`、`dsh-settings` |
 | ≥ 0.1.5-alpha.1 | `dsh-client-store` | 字符串命名空间 | + `ui-dockkit`、`ui-sidebar-files` 等 |
 
+### 1.1 完整依赖与能力接口矩阵
+
+> 供分发策略制定时查表。详细的模块可用性请查阅 `dsh-015-notes.md` §插件侧模块可用性矩阵。
+
+**客户端依赖变更**：
+
+| 模块 | ≤ 0.1.1 | ≥ 0.1.2 | ≥ 0.1.5 | 分发影响 |
+|------|---------|---------|---------|----------|
+| `dsh-client-runtime` | ✅ | ❌ 移除 | ❌ | 0.1.0 版本必须声明 |
+| `dsh-client-store` | ❌ | ✅ 新增 | ✅ | 0.1.1+ 版本必须声明 |
+| `dsh-client-ui-conversation` | ✅ | ✅ | ✅ | 通用 |
+| `dsh-client-ui-slots` | ✅ | ✅ | ✅ | 通用 |
+| `dsh-client-connection` | ❌ | ❌ | ✅ 新增 | 仅 0.1.5+ RPC 通道 |
+
+**服务端能力接口变更**：
+
+| 接口 | ≤ 0.1.1 | ≥ 0.1.2 | ≥ 0.1.5 | 分发影响 |
+|------|---------|---------|---------|----------|
+| `settings.register()` | `settingsNamespace(ns)` | 直接字符串 | 同0.1.2 | 0.1.0 版本用旧 API |
+| `subagents` | `registerContinuableSetup` | `startContinuable` | 同0.1.2 | 0.1.0 版本用旧 API |
+| 客户端事件 | `conversationEvents` | `uiConversation` | 同0.1.2 | 0.1.0 版本用旧名 |
+| RPC 通道 | `webServer.register` | `webServer.register` | `connection.rpc.intercept` | 仅 0.1.5+ 变更 |
+| 客户端 API | `/endpoint` | `/endpoint` | `/api/endpoint` | 仅 0.1.5+ 变更 |
+| sandbox | 隐式可用 | 隐式可用 | 显式 peerDep | 0.1.5+ 需声明 |
+
 **结果**：插件的客户端 bundle 在不同 DSH 版本中需要导入不同的包名，无法用单一版本同时兼容。
+
+### 1.2 已验证插件依赖迁移实例
+
+> 12 个已分析插件的 package.json 实际依赖声明与版本适配状态（仓库地址已通过 GitHub 平台搜索核对，2026-09-12）。
+
+| 插件 | engines.dsh | peerDependencies 范围 | inject 中的客户端包 | dsh-client-runtime？ | 0.1.2 适配 | 0.1.5 适配 |
+|------|------------|----------------------|-------------------|---------------------|-----------|-----------|
+| dsh-bash-terminal | — | `^0.1.5-rc.1` | locale + ui-settings + api-remotes | ❌(v0.3.15) | 🟢4处 | ✅v0.3.15原生 |
+| dsh-better-display | — | `^0.1.2-rc.1` | +5项(chat,renderer,session,controller) | ❌(compat分支) | 🟡10+处 | ✅HEAD原生 |
+| dsh-live-token-stats | — | cordis only | dsh-client-runtime + ui-conversation | ⚠️(0.1.2) | 🟡6处 | 🟡3处(RPC) |
+| dsh-agent-teams | — | — | conversationEvents→uiConversation | ⚠️(旧版) | 🟢2处 | ✅ |
+| dsh-input-traffic | `>=0.1.2-alpha.1` | `>=0.1.2-alpha.1 <0.2.0-0` | locale + ui-conversation | ❌ | ✅已适配 | ✅ |
+| dsh-thinking-levels | `>=0.1.2-alpha.1` | `>=0.1.2-alpha.1 <0.2.0-0` | locale + ui-renderer + ui-slots + ui-settings | ❌ | ✅已适配 | ✅ |
+| dsh-perm-gate | `>=0.1.2-alpha.1` | cordis only | locale + ui-renderer + ui-settings + ui-slots | ❌ | ✅已适配 | ⚠️permissionPresets |
+| dsh-session-guard | `>=0.1.0-rc.7` | `>=0.1.0-rc.7 <0.2.0-0` | locale + ui-settings + ui-renderer | ❌ | ✅已适配 | ✅ |
+| **dsh-tidychat** | **无声明** | `dsh-settings: ^0.1.0-rc.7` | **dsh-client-runtime** + ui-settings | ⚠️**是** | ❌**需迁移** | ⚠️需验证 |
+| bainianlaoyao/codex | — | `^0.1.2-rc.1 \|\| ^0.1.5-rc.1` | — | — | ✅已适配 | ✅双版本 |
+| shuind/codex | — | `>=0.1.0-rc.8` | dsh-client-runtime + ui-conversation | ⚠️(旧devDep) | ✅已适配 | ⚠️session修复 |
+| apply-patch | — | 零依赖 | — | — | ✅零依赖 | ⚠️ctx.fs |
+
+**跨版本兼容 workaround 案例（dsh-tidychat）**：
+- inject 列表保留 `dsh-client-runtime`（旧包名），0.1.1 能解析，0.1.2+ 通过 alias 兼容
+- `tsconfig.json` 设置 `skipLibCheck: true` + `strict: false`
+- 代码中多处 `as any` 绕过 DSH 内部类型
+- settings API 双回退：`installSection` / `register` 自动适配（v0.2.7+）
+- 折叠锚点双路径：`data-chat-turn` + `data-chat-anchor-key` 回退（v0.2.8+）
+- **效果**：v0.2.10 同一份代码在 DSH 0.1.0-rc.7 ~ 0.1.5+ 均可运行
+
+**正式 0.1.2 适配模式**（dsh-tidychat / dsh-bash-terminal 同模式）：3 处替换（inject + devDeps + client import）。
 
 ---
 

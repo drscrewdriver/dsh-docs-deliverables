@@ -497,6 +497,7 @@ v0.1.5 将 Session 格式从 V2 升级到 V3：
 | 系统提示词 | 普通消息 | `surface node zero` |
 | 格式 | projection-based | surface node + surface op |
 | Inbox | `InboxService` 独立服务 | agent-loop 内部投影 |
+| 压缩方式 | shadowed range | surface node 替换 |
 
 **插件影响**：
 - 如果你的插件读取 session 数据，需适配 V3 格式（内置自动迁移）
@@ -519,6 +520,156 @@ v0.1.5 的 Sidebar 引入了 dockkit 停靠引擎和 5 个 slot：
 - 旧的 Sidebar 插件可能需要重新适配 slot 契约
 - 新增 `ui-dockkit`、`ui-sidebar-files`、`ui-sidebar-right`、`ui-sidebar-textpreview` 包
 - 消息轨（TurnNavigator）硬编码在 ChatView 中，**无 slot 暴露**
+
+---
+
+## 十四、v0.1.5+ Token Meter API 扩展
+
+### 14.1 变更内容
+
+`ctx.tokenMeter` 从 **3 方法扩展到 7 方法**，新增 `measure()` 等 4 个方法：
+
+| 方法 | 0.1.0-rc.5 | 0.1.5-rc.2 |
+|------|-----------|-----------|
+| `estimateMessage(message)` | ✅ | ✅ |
+| `measure(session, requestHeader?)` | — | 🆕 |
+| `estimateContentBlock(block)` | — | 🆕 |
+| `estimateToolResult(result)` | — | 🆕 |
+
+> **破坏性**：**无**。旧方法保留，新方法有默认实现。
+
+### 14.2 `TokenMeasurement` 类型
+
+```typescript
+interface TokenMeasurement {
+  readonly logRevision: SessionLogOffset
+  readonly baseline: TokenMeasurementBaseline
+  readonly surfaceDeltaTokens: number
+  readonly totalTokens: number
+  readonly surfaceTokens: number
+  readonly nodes: readonly TokenSurfaceNode[]
+}
+```
+
+### 14.3 迁移路径
+
+```typescript
+// ✅ 如果你只需要精确 token 计量 — 使用 measure()
+const measurement = ctx.tokenMeter.measure(session)
+const cost = calculateCost(measurement.surfaceTokens, measurement.baseline)
+
+// ✅ 如果你需要检测 surface 变化（缓存失效）
+const delta = currMeasurement.surfaceDeltaTokens
+if (Math.abs(delta) > threshold) { /* cache invalidated */ }
+
+// 旧写法仍可用
+const oldEstimate = ctx.tokenMeter.estimateMessage(message) // ✅ 保留
+```
+
+---
+
+## 十五、v0.1.5+ LLM Adapter 扩展
+
+### 15.1 变更内容
+
+`LlmAdapter` 从 3 方法扩展到 **7 方法**：
+
+| 方法 | 0.1.0-rc.5 | 0.1.5-rc.2 | 说明 |
+|------|-----------|-----------|------|
+| `stream()` | ✅ | ✅ | 保留 |
+| `resolveModel()` | ✅ | ✅ | 保留 |
+| `listModels()` | ✅ | ✅ | 保留 |
+| `providerInfo()` | — | 🆕 | 提供商品牌信息 |
+| `providerRetryPolicy()` | — | 🆕 | 提供商级重试策略 |
+| `imageRequestPricing()` | — | 🆕 | 图像计费信息 |
+| `prepareCall()` | — | 🆕 | **HMR 安全隔离** |
+
+> **破坏性**：**无**。新增方法都有默认实现，现有适配器无需立即实现。
+
+### 15.2 `prepareCall()` — HMR 安全
+
+将模型解析与流式分发绑定到同一注册世代，防止 HMR 期间的错配：
+
+```typescript
+// v0.1.5 — 推荐实现
+async prepareCall(provider: string, model: string, signal?: AbortSignal) {
+  const generation = this.currentGeneration
+  const modelConfig = await this.resolveModelInternal(provider, model)
+  
+  return {
+    readonly adapter: this,
+    readonly modelConfig,
+    execute(signal: AbortSignal) {
+      if (this.currentGeneration !== generation) {
+        throw new Error('HMR safety: adapter generation changed')
+      }
+      return this.streamInternal({ ...modelConfig, signal })
+    }
+  }
+}
+```
+
+### 15.3 `ReplayEnvelope` 结构化
+
+```typescript
+// v0.1.0-rc.5
+interface AssistantProvenance { replayState: unknown }
+
+// v0.1.5-rc.2
+interface ReplayEnvelope {
+  response: unknown       // 响应级适配器私有元数据
+  blocks?: readonly unknown[]  // 逐块元数据（与发出的块数对齐）
+}
+```
+
+---
+
+## 十六、v0.1.5+ 子代理目录与模型路由
+
+### 16.1 新增能力
+
+| 能力 | 说明 |
+|------|------|
+| 子代理目录 | 子代理创建时追加 `subagent/catalog` 事件，投影为可枚举列表 |
+| 模型路由 | 每个子代理可独立指定 `provider`/`model`/`reasoningEffort` |
+| 路由预检 | 子代理启动前预检 LLM 路由可用性 |
+
+### 16.2 使用示例
+
+```typescript
+// 枚举子代理
+const children = listChildren(parentAgent)
+for (const child of children) {
+  console.log(`${child.childId}: ${child.mode} — ${child.status}`)
+}
+
+// 子代理模型路由
+const result = await startWorkflow({
+  agentOptions: {
+    provider: 'deepseek-official',
+    model: 'deepseek-v3',
+    reasoningEffort: 'max'
+  }
+})
+```
+
+---
+
+## 十七、深度文档索引
+
+v0.1.5 的每个变更维度都有更深入的文档，供需要详细了解技术细节的开发者参考：
+
+| 主题 | 插件框架总览 | 源码分析（技术细节） |
+|------|-------------|---------------------|
+| **Token Meter** | 本章（第十四章） | [Token Meter 深度指南](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md#一token-meter-api-深度分析) |
+| **Permission Presets** | 本章（第三章 + 第十五章） | [Permission Presets 深度指南](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md#二permission-presets-深度分析) |
+| **Inbox 投影** | 本章（第四章） | [Inbox 投影深度指南](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md#三inbox-投影重构深度分析) |
+| **LLM Adapter** | 本章（第十五章） | [LLM Adapter 深度指南](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md#四llm-adapter-深度分析) |
+| **Sidebar Slot** | 本章（第十三章） | [Sidebar Slot 深度指南](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md#五sidebar-slot-深度分析) |
+| **Session V3** | 本章（第十三章） | [Session V3 深度指南](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md#六session-v3-深度分析) |
+| **子代理目录** | 本章（第十六章） | [子代理目录深度指南](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md#七子代理目录深度分析) |
+
+> **推荐阅读顺序**：插件框架总览 → [v0.1.5-migration.md](v0.1.5-migration.md)（引导性指南）→ [plugin-migration-guide.md](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md)（技术细节）
 
 ---
 

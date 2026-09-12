@@ -2,6 +2,7 @@
 
 > 数据源：从 https://github.com/deepseek-ai/deepseek-harness 拉取，对比标签提交。
 > 总提交数：~2088 个非合并提交（0.1.1→0.1.3 约 1708 个，0.1.3→0.1.5 约 380 个）
+> **插件侧模块可用性矩阵**已补全至 §插件侧模块可用性矩阵，供插件开发时查表。
 
 ---
 
@@ -231,6 +232,69 @@
 | Native | 基础子进程 | 原生隔离 | 子进程完善 | Node-API flock |
 | 桌面 | 无 | 无 | 无 | Electron+签名+自动更新 |
 | UI | 基础聊天 | 视觉升级 | 视觉升级 | Sidebar+文件树+停靠 |
+
+---
+
+## 插件侧模块可用性矩阵
+
+> 以下为 DSH 向插件暴露的全部 `@deepseek-ai/*` 模块在各版本的可用性，供插件开发时查表决定 peerDependencies 声明。
+
+### 客户端模块
+
+| 模块 | 0.1.1-rc.2 | 0.1.2-rc.1 | 0.1.5-alpha.1 | 变更说明 |
+|------|-----------|-----------|--------------|----------|
+| `dsh-client-runtime` | ✅ 存在 | ❌ **移除** | ❌ | 0.1.2 重命名为 client-store |
+| `dsh-client-store` | ❌ | ✅ **新增** | ✅ | 替代 client-runtime |
+| `dsh-client-ui-conversation` | ✅ | ✅ | ✅ | 版本号跟随主版本 |
+| `dsh-client-ui-primitives` | ✅ | ✅ | ✅ | |
+| `dsh-client-ui-slots` | ✅ | ✅ | ✅ | |
+| `dsh-client-ui-chat` | ❌ | ✅ **新增** | ✅ | 0.1.2 新增 |
+| `dsh-client-ui-renderer` | ❌ | ✅ **新增** | ✅ | 0.1.2 新增 |
+| `dsh-client-ui-session` | ❌ | ✅ **新增** | ✅ | 0.1.2 新增 |
+| `dsh-client-ui-commands` | ✅ | ✅ | ✅ | |
+| `dsh-client-ui-settings` | ✅ | ✅ | ✅ | |
+| `dsh-client-ui-settings-plugins` | ✅ | ✅ | ✅ | |
+| `dsh-client-locale` | ✅ | ✅ | ✅ | |
+| `dsh-client-connection` | ❌ | ❌ | ✅ **新增** | 0.1.5 RPC 基础 |
+| `dsh-session` | ❌ | ✅ **新增** | ✅ | 会话类型定义 |
+| `dsh-api-session-controller` | ❌ | ✅ **新增** | ✅ | 会话控制器 |
+| `dsh-util-workspace-path` | ❌ | ✅ **新增** | ✅ | |
+
+### 服务端/核心模块
+
+| 模块 | 0.1.1-rc.2 | 0.1.2-rc.1 | 0.1.5-alpha.1 | 变更说明 |
+|------|-----------|-----------|--------------|----------|
+| `dsh-tools` | ✅ | ✅ | ✅ | defineTool 等 |
+| `dsh-settings` | ✅ | ✅ (导出变) | ✅ | 0.1.2 移除 settingsNamespace |
+| `dsh-shell` | ✅ | ✅ | ✅ | |
+| `dsh-llm` | ✅ | ✅ | ✅ | |
+| `dsh-timeout` | ✅ | ✅ | ✅ | |
+| `dsh-sandbox` | ✅ 隐式 | ✅ | ✅ **显式peerDep** | 0.1.5 升为显式 |
+| `dsh-sandbox-policy` | ✅ 隐式 | ✅ | ✅ | |
+| `dsh-session-projection` | ❌ | ❌ | ✅ **新增** | 实时流投影 |
+| `dsh-session-stats` | ❌ | ❌ | ✅ **新增** | 统计聚合 |
+| `dsh-token-meter` | ❌ | ❌ | ✅ **新增** | Token 计量 |
+| `dsh-agent` | ✅ | ✅ | ✅ | |
+| `dsh-compaction` | ✅ | ✅ | ✅ | |
+| `dsh-jobs` | ✅ | ✅ | ✅ | |
+| `dsh-terminal` | ✅ | ✅ | ✅ | |
+| `dsh-subprocess` | ✅ | ✅ | ✅ | |
+| `dsh-fs` | ✅ | ✅ | ✅ | |
+| `dsh-credentials` | ✅ | ✅ | ✅ | |
+| `cordis` | ^4.0.1 | ^4.0.2 | ^4.0.2 | |
+
+### 插件常用能力接口变更
+
+| 能力接口 | 0.1.1-rc.2 | 0.1.2-rc.1 | 0.1.5-alpha.1 |
+|----------|-----------|-----------|--------------|
+| `ctx.settings.register()` | `settingsNamespace(ns)` 包装 | 直接传字符串 `ns` | 同 0.1.2 + `installSection()` |
+| `ctx.subagents` | `registerContinuableSetup()` | `startContinuable()` | 同 0.1.2 |
+| 客户端事件注册 | `ctx.conversationEvents` | `ctx.uiConversation.events` | 同 0.1.2 |
+| RPC 通道（Host→Client） | `ctx.webServer.register()` | `ctx.webServer.register()` | `ctx.connection.rpc.intercept()` |
+| 客户端 API 调用 | `/endpoint` | `/endpoint` | `/api/endpoint`（加前缀） |
+| inject 列表（服务端） | `['slots','sessions']` | +`'conversation','remote','remote.session'` | 同 0.1.2 |
+| inject 列表（客户端） | 1-2 项 | +5 项（chat,renderer,session,controller） | 同 0.1.2 |
+| 权限控制 | sandbox + approval 分别设置 | 同 0.1.1 | `permissionPresets.set()` 统一 |
 
 ---
 

@@ -18,7 +18,8 @@
 此外还有：
 - `website-reference-en/` / `website-reference-zh/` — 网站 reference 侧边栏导航索引
 - `discussion-issues/` — 按子系统分解的 Discussion 故障排查文档
-- `dsh-015-notes.md` — DSH 版本变更矩阵（0.1.1→0.1.5），源码解析版本规划的导航伴侣
+- `dsh-015-notes.md` — DSH 版本变更矩阵（0.1.1→0.1.5），含**插件侧模块可用性矩阵**（28模块×3版本档 + 8项能力接口变更），源码解析版本规划的导航伴侣
+- `dsh-version-migration-guide.md` — 跨插件版本迁移统一指南（7+5插件适配经验 + 决策树 + 专项报告索引 + 生态插件依赖迁移明细 + 类型优化workaround）
 
 ---
 
@@ -27,7 +28,8 @@
 ```
 dsh-docs-deliverables/
 ├── README.md                           ← 本文件（总导航）
-├── dsh-015-notes.md                    ← 版本变更矩阵（0.1.1→0.1.5）
+├── dsh-015-notes.md                    ← 版本变更矩阵（0.1.1→0.1.5）+ 插件侧模块可用性矩阵
+├── dsh-version-migration-guide.md      ← 跨插件版本迁移统一指南
 │
 ├── official-repo/                      ← 官方仓库 docs/ 完整镜像
 │   └── docs/                           ← 85 文件 / 12 子目录
