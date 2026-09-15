@@ -1,8 +1,15 @@
 /**
  * Locale dictionaries for `dsh-plugin-template`.
  *
- * Extend with your translations. The DSH locale system reads from
- * `ctx.get('locale').translate(key)` in the browser half.
+ * `ZH` is the key-set source of truth; every other language mirrors its key
+ * union via `Record<keyof typeof ZH, string>` so a missing key is a compile
+ * error. The browser half registers these through `ctx.locale.register(ns, { zh, en })`.
+ *
+ * To ship Japanese / Korean (or any third language) as well, register the extra
+ * dictionaries through the single-locale overload — `ctx.locale.register(NS, 'ja', JA)`
+ * — and note that stock DSH only exposes `zh` / `en` in the Language row until a
+ * language pack calls `ctx.locale.addLanguage({ id, label, fallback })`.
+ * Full walkthrough: ../i18n-multilingual-guide.md
  */
 
 export const EN = {

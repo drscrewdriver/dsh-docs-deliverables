@@ -46,6 +46,7 @@ dsh plugin --profile web add /path/to/your-plugin
 | **[v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md)** | **v0.1.5 迁移补充（实战校准）** | **插件启动 await、firehose seed 盲区、设置卡片槽改名、peer 预发布陷阱、宿主 LLM 目录接缝** |
 | [upgrade-pitfalls.md](upgrade-pitfalls.md) | 升级适配陷阱（讨论区实证） | 升级后排障：会话拒载、RPC 405、client combo 缓存等真实踩坑 |
 | [client-ui-extension-seams.md](client-ui-extension-seams.md) | 客户端 UI 扩展接缝（源码实证） | 贡献自定义权限档位时的图标缺失、选中态文字回退、风险确认不触发 |
+| **[i18n-multilingual-guide.md](i18n-multilingual-guide.md)** | **多语言适配（zh/en 内置 + ja/ko 第三语言）** | **插件要支持日语/韩语：字典拆分、`locale.register` 注册、`addLanguage` 语言包、HMR 回收与验证清单** |
 | [submission-guide.md](submission-guide.md) | awesome-dsh-plugin 投稿 | 向市场提交插件的完整步骤 |
 
 ## 快速开始（文档阅读顺序）
@@ -55,7 +56,8 @@ dsh plugin --profile web add /path/to/your-plugin
 3. **版本策略**：参照 [distribution-strategy.md](distribution-strategy.md) 规划双版本分发
 4. **v0.1.5 迁移**：参照 [v0.1.5-migration.md](v0.1.5-migration.md) 完成 Token/Permission/Inbox/Adapter 适配，再用 [v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md) 复核正文未覆盖的实战项
 5. **升级排障**：升级后行为异常时查 [upgrade-pitfalls.md](upgrade-pitfalls.md)（讨论区实证陷阱 + 排障决策树）
-6. **发布市场**：参照 [submission-guide.md](submission-guide.md) 向 awesome-dsh-plugin 投稿
+6. **做多语言**：要让插件的 ja/ko 文案跟随语言切换，参照 [i18n-multilingual-guide.md](i18n-multilingual-guide.md)
+7. **发布市场**：参照 [submission-guide.md](submission-guide.md) 向 awesome-dsh-plugin 投稿
 
 ## 核心概念
 
