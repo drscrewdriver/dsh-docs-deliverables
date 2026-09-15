@@ -43,7 +43,9 @@ dsh plugin --profile web add /path/to/your-plugin
 | [distribution-strategy.md](distribution-strategy.md) | 版本分发策略 | 同一 npm 包名适配不同 DSH 版本 |
 | [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径 |
 | **[v0.1.5-migration.md](v0.1.5-migration.md)** | **v0.1.5 迁移指南** | **Token/Permission/Inbox/Adapter 全面迁移** |
+| **[v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md)** | **v0.1.5 迁移补充（实战校准）** | **插件启动 await、firehose seed 盲区、设置卡片槽改名、peer 预发布陷阱、宿主 LLM 目录接缝** |
 | [upgrade-pitfalls.md](upgrade-pitfalls.md) | 升级适配陷阱（讨论区实证） | 升级后排障：会话拒载、RPC 405、client combo 缓存等真实踩坑 |
+| [client-ui-extension-seams.md](client-ui-extension-seams.md) | 客户端 UI 扩展接缝（源码实证） | 贡献自定义权限档位时的图标缺失、选中态文字回退、风险确认不触发 |
 | [submission-guide.md](submission-guide.md) | awesome-dsh-plugin 投稿 | 向市场提交插件的完整步骤 |
 
 ## 快速开始（文档阅读顺序）
@@ -51,7 +53,7 @@ dsh plugin --profile web add /path/to/your-plugin
 1. **先看骨架**：[dsh-plugin-template/](dsh-plugin-template/) — 复制即用，包含所有标准文件
 2. **配置兼容性**：参照 [compatibility-guide.md](compatibility-guide.md) 设置 `dsh.plugin.json` + peerDeps
 3. **版本策略**：参照 [distribution-strategy.md](distribution-strategy.md) 规划双版本分发
-4. **v0.1.5 迁移**：参照 [v0.1.5-migration.md](v0.1.5-migration.md) 完成 Token/Permission/Inbox/Adapter 适配
+4. **v0.1.5 迁移**：参照 [v0.1.5-migration.md](v0.1.5-migration.md) 完成 Token/Permission/Inbox/Adapter 适配，再用 [v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md) 复核正文未覆盖的实战项
 5. **升级排障**：升级后行为异常时查 [upgrade-pitfalls.md](upgrade-pitfalls.md)（讨论区实证陷阱 + 排障决策树）
 6. **发布市场**：参照 [submission-guide.md](submission-guide.md) 向 awesome-dsh-plugin 投稿
 
@@ -75,8 +77,12 @@ DSH v0.1.5 是第二次重大架构升级，插件开发者需要关注以下四
 | Permission Presets 统一服务 | 🟡 中 | `ctx.permissionPresets.set()` 替代 `setSandboxMode` |
 | Inbox 从服务到投影 | 🔴 高 | `ctx.inbox` 移除，改为 `Agent.inbox` 投影 |
 | LLM Adapter 扩展 | 🟢 低 | 4 个新方法，默认实现不强制 |
+| **RPC 通道重构** | 🔴 高 | handle 通道 405 静默失效、/api interceptor 单槽——**改自持 webServer 路由**，见 [compatibility-guide.md §16A](compatibility-guide.md) 与 [upgrade-pitfalls.md §2.1](upgrade-pitfalls.md) |
+| **webServer 调用方授权** | 🔴 高 | 走 RPC/HTTP 通道的插件入口须 `inject=[...,'webServer']`，缺失 = 宿主 fatal |
+| **客户端声明式注入挂起** | 🟡 中 | inject 缺失服务 → apply 永久等待、UI 全静默消失；只声明必有服务，其余懒取 |
 
 > **快速上手**：[v0.1.5-migration.md](v0.1.5-migration.md) 提供了完整的迁移步骤、代码示例和检查清单。
+> **RPC/HTTP 通道插件**：直接读 [compatibility-guide.md §16A](compatibility-guide.md)（实操级方案，2026-09-13 实战增补）。
 
 ## 投稿 Checklist 速查
 
