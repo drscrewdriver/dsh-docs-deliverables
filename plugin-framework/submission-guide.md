@@ -360,13 +360,26 @@ notes: |
 | 元数据位置 | 字段 | 作用 |
 |---|---|---|
 | `package.json → peerDependencies` | `dsh-client-store >=0.1.2-rc.1` | npm 安装时版本校验 |
-| `dsh.plugin.json → engines.dsh` | `>=0.1.2-rc.1` | DSH 运行时版本校验 |
+| ~~`dsh.plugin.json → engines.dsh`~~ | `>=0.1.2-rc.1` | ⚠️ **见下方纠正：DSH 不读此文件** |
+
+> **⚠️ 清单事实纠正（2026-09-25 实测，`dsh-v0.1.7-rc.1`）**
+>
+> 上表第二行**不成立**，请勿据此设计兼容策略：
+>
+> | 事实 | 依据 |
+> |---|---|
+> | **DSH 全仓不读 `dsh.plugin.json`** | `git grep -l 'dsh\.plugin\.json'` 在 `dsh-v0.1.5-rc.2` / `dsh-v0.1.6-alpha.1` / `dsh-v0.1.7-rc.1` 三个 tag 上**命中均为 0**（含 docs/packages/scripts/apps/website） |
+> | DSH 读的是 **`package.json` 的 `dsh` 字段** | 官方 `docs/user/develop/basic/publish.md`：`dsh.bundle`（bundle manifest）/ `dsh.profile`（profile manifest）；类型见 `packages/util/package-manifest/src/types.ts` |
+> | **版本准入校验读 `peerDependencies`，既不是 `engines.dsh`、更不是 `dsh.plugin.json`** | `packages/boot/app-boot/src/plugin-compatibility.ts:68-87`；官方原文 `packages/boot/app-boot/README.md:52`「These checks use peer declarations, not `engines.dsh`」、`packages/util/package-manifest/README.md:93`「do not enforce `dsh.manifestVersion` or `engines.dsh`」 |
+>
+> **实操结论**：① 兼容性约束写进 **`peerDependencies`**（与宿主共享单例的包**同时**写 `devDependencies`）；② `engines.dsh` 保留可作文档/市场信号，但**没有准入效果**；③ 继续 ship `dsh.plugin.json` 不会报错（多余文件被忽略），**但不要指望它产生任何运行时行为**。若你的投稿流程（marketplace CI）确实要求该文件，那是投稿侧约定，与 DSH 运行时无关。
 
 ### 验证清单
 
 - [ ] v0.1.0 tag 存在，package.json 版本正确
 - [ ] v0.1.1 tag 存在，package.json 版本正确
-- [ ] 0.1.1 的 `engines.dsh` 声明为 `>=0.1.2-rc.1`
+- [ ] 0.1.1 的 `engines.dsh` 声明为 `>=0.1.2-rc.1`（**仅文档/市场信号；DSH 不校验它**）
+- [ ] **0.1.1 的 `peerDependencies` 声明了 DSH 依赖范围，且能被目标 `dsh --version` 满足**（这是唯一产生准入效果的位置）
 - [ ] 0.1.1 的 peerDependencies 使用新包名
 - [ ] 0.1.1 的 dsh.client.inject 不包含旧包名
 - [ ] README 顶部版本兼容矩阵已更新

@@ -36,11 +36,17 @@ DSH 在 0.1.2-alpha.2 做了客户端包重构，在 0.1.3+ 引入了新的 peer
 | `settings.register()` | `settingsNamespace(ns)` | 直接字符串 | 同0.1.2 | 0.1.0 版本用旧 API |
 | `subagents` | `registerContinuableSetup` | `startContinuable` | 同0.1.2 | 0.1.0 版本用旧 API |
 | 客户端事件 | `conversationEvents` | `uiConversation` | 同0.1.2 | 0.1.0 版本用旧名 |
-| RPC 通道 | `webServer.register` | `webServer.register` | `connection.rpc.intercept` | 仅 0.1.5+ 变更 |
-| 客户端 API | `/endpoint` | `/endpoint` | `/api/endpoint` | 仅 0.1.5+ 变更 |
+| RPC 通道 | `webServer.register` | `webServer.register` | ~~`connection.rpc.intercept`~~ → **自持 webServer prefix 路由**(推荐,见 compatibility-guide §16A) | 0.1.5 上 handle 405、intercept 单槽 |
+| 客户端 API | `/endpoint` | `/endpoint` | `/api/endpoint`(官方)/ 自持路径(推荐) | 仅 0.1.5+ 变更 |
+| webServer 授权 | 隐式可用 | 隐式可用 | 调用方 fiber 须声明 `inject=[...,'webServer']` | 缺失 = 宿主 fatal(见 upgrade-pitfalls §2.2) |
 | sandbox | 隐式可用 | 隐式可用 | 显式 peerDep | 0.1.5+ 需声明 |
 
 **结果**：插件的客户端 bundle 在不同 DSH 版本中需要导入不同的包名，无法用单一版本同时兼容。
+
+**0.1.5 实测补充（dsh-context-compression-improved 适配，2026-09-14）**：
+
+- **peer 闭包暴涨**：0.1.5 把大量能力拆成独立小包，一个 `dsh-agent` 的 peer 就新增 `dsh-session-projection`、`dsh-session-persistence`、`dsh-atomic-write`、`dsh-home-paths`、`dsh-sandbox`、`dsh-user-approval`、`dsh-llm-retry` 等。多版本分发的插件按 0.1.5 打包时，devDependencies（用于测试的宿主闭包）必须整体覆盖这些拆分包，否则 mock registry / 离线 consumer 解析失败。
+- **peer 范围写法（semver 预发布规则）**：`0.1.5-rc.2` **不满足** `>=0.1.1-rc.2 <0.2.0`（npm semver 只允许同元组预发布匹配）。跨 rc 升级必须用 `-0` 上界后缀：`">=0.1.5-rc.2 <0.2.0-0"`；`engines.dsh` 用 `">=0.1.5-alpha.1 <0.2.0-0"`。旧写法在 0.1.1-rc.2 当期时"看起来能用"，宿主升级后 peer 求交为空直接装不上。
 
 ### 1.2 已验证插件依赖迁移实例
 
@@ -49,6 +55,7 @@ DSH 在 0.1.2-alpha.2 做了客户端包重构，在 0.1.3+ 引入了新的 peer
 | 插件 | engines.dsh | peerDependencies 范围 | inject 中的客户端包 | dsh-client-runtime？ | 0.1.2 适配 | 0.1.5 适配 |
 |------|------------|----------------------|-------------------|---------------------|-----------|-----------|
 | dsh-bash-terminal | — | `^0.1.5-rc.1` | locale + ui-settings + api-remotes | ❌(v0.3.15) | 🟢4处 | ✅v0.3.15原生 |
+| **dsh-context-compression-improved** | `>=0.1.5-alpha.1 <0.2.0-0` | `>=0.1.5-rc.2 <0.2.0-0`（分支） | locale + ui-settings + ui-slots + ui-workspace + **ui-session + client-store** | ❌（compat/0.1.5 分支完成迁移） | 🟢 | ✅ 2026-09-14（compaction 深度插件实证：firehose seed-reopen、`.await()` 启动语义、semver 预发布 peer 规则） |
 | dsh-better-display | — | `^0.1.2-rc.1` | +5项(chat,renderer,session,controller) | ❌(compat分支) | 🟡10+处 | ✅HEAD原生 |
 | dsh-live-token-stats | — | cordis only | dsh-client-runtime + ui-conversation | ⚠️(0.1.2) | 🟡6处 | 🟡3处(RPC) |
 | dsh-agent-teams | — | — | conversationEvents→uiConversation | ⚠️(旧版) | 🟢2处 | ✅ |
@@ -98,6 +105,8 @@ npm 包名：dsh-session-search-toggle
 | `dsh.plugin.json → engines.dsh` | `>=0.0.1` | `>=0.1.2-rc.1` |
 
 > **v0.1.3+ 注意**：如果插件使用 Permission Presets，需额外声明 `dsh-permission-presets` 为 optional peerDependency。
+
+> **v0.1.5+ 注意**：① peer 范围必须写 `">=0.1.5-rc.2 <0.2.0-0"` —— 不带 `-0` 后缀时 `0.1.5-rc.2` 这个预发布版本在 strict semver 下不满足 `>=0.1.x` 的任何跨元组范围（详见 upgrade-pitfalls.md §7.3）。② 客户端依赖为 `dsh-client-store` + `dsh-client-ui-settings` + `dsh-client-ui-session`（会话 hooks）+ `dsh-client-ui-slots`；`dsh-client-runtime` 不可用。③ `engines.dsh` 声明 `">=0.1.5-alpha.1 <0.2.0-0"`。
 
 ---
 
@@ -236,7 +245,71 @@ npm 包名：my-dsh-plugin
 
 ---
 
-## 六、常见问题
+### 5.4 三条长期分支线的实战纪律（dsh-perm-gate 实证，2026-09-14）
+
+dsh-perm-gate 维护着三条**长期并存**的兼容分支，比 tag 锁定更进一步——每条线都在持续收功能与修复：
+
+| 分支 | 版本系列 | `engines.dsh` | dist-tag | DSH |
+|------|----------|---------------|----------|-----|
+| `legacy` | `1.x` | `>=0.1.0-rc.7 <0.1.2-alpha.1` | `legacy` | ≤ 0.1.1 |
+| `main` | `2.x` | `>=0.1.2-alpha.1 <0.2.0-0` | `latest` | 0.1.2+ |
+| `compat/0.1.5` | `3.x` | `>=0.1.5-rc.1 <0.2.0-0` | `dsh-0.1.5` | 0.1.5+ |
+
+版本系列号跟随 **DSH 线**而非插件功能史，让版本号一眼可判目标宿主。跨线同步功能时的实证纪律：
+
+1. **建分支前先 `git ls-remote --heads origin` 查重。** 实证：按"计划"本地新建 `compat/0.1.5`，推送时才发现远程同名分支已在别的会话建好（3.x 专用线），push 被拒。同名冲突时以远程为准——重置本地、把功能以移植方式落到远程线上，**绝不 force push 覆盖别人建的线**。
+2. **`git branch -a` 在 fetch 前看不到别的机器新推的远程分支。** 动分支之前先 `git fetch`。
+3. **worktree 各自 `npm ci`，绝不 junction node_modules。** Git Bash 的 `rm -rf` 会穿透 NTFS junction 删掉真身（实证把主仓库 node_modules 删了两次，靠 `npm ci` 按 lockfile 恢复）。必须清理时先 `cmd /c rmdir <junction>` 再删目录；`git worktree remove` 报 Permission denied 通常是 shell cwd 还留在 worktree 里，切走再删。
+4. **对提交后的树验证。** `typecheck`/`test` 通过只代表 working tree——若修复未提交，已提交 HEAD 是破损的，从它切出的新分支随之破损（实证：main 切 compat 后才发现 HEAD 缺 import）。发布前在干净 clone 或 `git stash` 后跑一遍。
+5. **管道不吞退出码。** `npm test | grep | tail && git commit` 会让测试失败静默进提交（实证发生过）。脚本里 `set -o pipefail`，或直接判退出码后再提交。
+6. **跨线移植：先 diff 确认目标线同名文件结构，再决定移植方式。** 实证：legacy 与 main 的 `events.ts` 快照结构完全一致 → 核心模块零改动复制；接线层（`index.ts`/config schema）每线单独落地。目标线自带的修复（如 compat 线已含的类型修复）不必重复移植。
+
+## 六、peer 上界的 `-0` 后缀规则（semver 预发布陷阱）
+
+### 6.1 问题本质
+
+npm semver 的预发布版本**只匹配同一元组内的预发布**。例如 `0.1.5-rc.2` 满足 `>=0.1.5-rc.1 <0.2.0`，但**不满足** `>=0.1.1-rc.2 <0.2.0`——因为 `0.1.5-rc.2` 和 `0.1.1-rc.2` 属于不同元组（minor 版本不同），npm 认为跨元组的预发布不可比较。
+
+后果：当宿主升级到 `0.1.5-rc.x` 时，插件的 peer 求交为空 → 安装直接拒绝。
+
+### 6.2 解决方案：`-0` 上界后缀
+
+在上界版本号后加 `-0` 后缀，使上界本身也成为预发布版本，从而「降级」比较规则为宽松模式：
+
+```
+# 错误写法（strict semver，0.1.5-rc.2 不满足）
+">=0.1.1-rc.2 <0.2.0"
+
+# 正确写法（-0 后缀，宽松比较）
+">=0.1.1-rc.2 <0.2.0-0"
+```
+
+`<0.2.0-0` 的含义：任何 `<0.2.0` 的版本（包括所有预发布）都满足，且 `0.2.0` 本身不满足（因为 `-0` 是 `0.2.0` 的预发布，`0.2.0` > `0.2.0-0`）。
+
+### 6.3 适用范围
+
+| 声明位置 | 推荐写法 | 示例 |
+|----------|----------|------|
+| `peerDependencies` | `">=0.1.5-rc.2 <0.2.0-0"` | `dsh: ">=0.1.5-rc.2 <0.2.0-0"` |
+| `engines.dsh` | `">=0.1.5-alpha.1 <0.2.0-0"` | `engines: { dsh: ">=0.1.5-alpha.1 <0.2.0-0" }` |
+| `dsh.plugin.json → engines.dsh` | `">=0.1.5-alpha.1 <0.2.0-0"` | 同上 |
+
+**关键区别**：`engines` 的下界用 `alpha.1`（更宽松，允许更早的预发布），`peerDependencies` 的下界用 `rc.2`（更严格，只匹配稳定的预发布序列）。
+
+### 6.4 实证
+
+dsh-context-compression-improved 在 0.1.1-rc.2 当期使用 `<0.2.0`（无 `-0`），安装正常。宿主升级到 0.1.5-rc.2 后 peer 求交为空，安装失败。修正为 `<0.2.0-0` 后恢复。参见 `repair-log.md` D7 条目。
+
+### 6.5 检查清单
+
+- [ ] peerDependencies 上界含 `-0` 后缀
+- [ ] engines.dsh 上界含 `-0` 后缀
+- [ ] dsh.plugin.json engines.dsh 上界含 `-0` 后缀
+- [ ] 下界精确到 `rc.x` 或 `alpha.x`（不使用 `^` 或 `~`）
+
+---
+
+## 七、常见问题
 
 ### Q: 两个版本共享同一 npm 包名，会冲突吗？
 
@@ -274,6 +347,7 @@ CI 应在不同 DSH 版本环境下分别测试：
 - [ ] 0.1.1 的 dsh.client.inject 不包含 `dsh-client-runtime`
 - [ ] 如需 v0.1.3+ 兼容：检查 `dsh-permission-presets` optional peer
 - [ ] 如需 v0.1.5+ 兼容：检查 Sidebar slot 契约变更
+- [ ] 如需 v0.1.5+ 兼容：peerDependencies / engines.dsh / dsh.plugin.json 的上界均含 `-0` 后缀（见 §6）
 - [ ] README 顶部版本兼容矩阵已更新
 - [ ] awesome-dsh-plugins README 条目包含版本矩阵
 - [ ] dshmarket 的 versions 列表已更新
@@ -281,7 +355,9 @@ CI 应在不同 DSH 版本环境下分别测试：
 - [ ] 在 DSH 0.1.1 上测试 0.1.0 安装成功
 - [ ] 在 DSH 0.1.2 上测试 0.1.1 安装成功
 - [ ] 升级场景实测：旧 profile 升级后强制刷新浏览器（client combo 缓存陈旧会让插件整体不激活，见 [upgrade-pitfalls.md](upgrade-pitfalls.md) §3.1）
-- [ ] 若使用 RPC/HTTP 通道：在目标 DSH 版本实测通道往返（0.1.5-rc.1/rc.2 有 405 静默失效问题，见 [upgrade-pitfalls.md](upgrade-pitfalls.md) §2.1）
+- [ ] 若使用 RPC/HTTP 通道：在目标 DSH 版本实测通道往返（0.1.5 上 handle 通道 405 静默失效、/api interceptor 单槽会被其他插件抢占——推荐自持 webServer prefix 路由，见 [compatibility-guide.md](compatibility-guide.md) §16A 与 [upgrade-pitfalls.md](upgrade-pitfalls.md) §2.1）
+- [ ] 若使用 RPC/HTTP 通道：插件入口 `inject` 已声明 `connection` + `webServer`（0.1.5 按调用方 fiber 校验授权，缺失 = 宿主 fatal load failure，见 [upgrade-pitfalls.md](upgrade-pitfalls.md) §2.2）
+- [ ] 客户端半 `inject` 区分两类：shell 常备服务（slots/locale/settingsScope）声明式（懒取会竞态早退、设置入口全消失）；可选服务（connection 等）`ctx.get()` 懒取降级（声明可选服务会让 apply 永久挂起、UI 全静默消失，见 [upgrade-pitfalls.md](upgrade-pitfalls.md) §2.3 与 [settings-seat-pinning.md](settings-seat-pinning.md)）
 
 ---
 

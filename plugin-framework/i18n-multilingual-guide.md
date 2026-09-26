@@ -128,7 +128,9 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 
 ### Step 5 — 跨版本 / 跨环境守卫（可选但推荐）
 
-客户端**声明式注入缺失会让 `apply` 永久挂起、UI 静默消失**（见 [README.md](README.md) v0.1.5 适配重点）。要兼容老线或不确定 locale 服务是否存在时，用懒取 + 能力探测：
+客户端**声明式注入可选服务缺失会让 `apply` 永久挂起、UI 静默消失**（见 [README.md](README.md) v0.1.5 适配重点）。要兼容极老宿主或不确定 locale 服务是否存在时，用懒取 + 能力探测：
+
+> ⚠️ 2026-09-17 校准：`locale` 在 ≥0.1.2 全线是 shell 常备服务（由 dsh-client-locale 提供）——主流场景**直接声明式 `inject = [..., 'locale']`** 即可，懒取只在"确认目标宿主可能根本不提供 locale"的极端兼容场景使用（懒取本身有激活竞态风险，见 [settings-seat-pinning.md](settings-seat-pinning.md)）。
 
 ```ts
 const locale = ctx.get('locale') as { register?: (...) => () => void } | undefined
@@ -215,5 +217,73 @@ ctx.effect(() => ctx.locale.addLanguage({
 
 ---
 
-*文档生成时间：2026-09-15*
+## 8. 第三件事（0.1.7 新增）：插件**显示**元数据 `meta`
+
+> 来源：`.agents/notes/implemented/architecture/2026-09-18-localized-package-metadata.md`（`dsh-v0.1.7-rc.1` 新增，Status: implemented）
+> 与前面两件事的区别：§0 讲的是**你的界面文案**，第 3 节讲的是**用户能否选到某语言**，本节讲的是**插件管理页/设置页里那个插件叫什么**。
+
+### 8.1 要解决的问题
+
+一个 npm 包可以导出多个用途不同的插件，包级 `description` 无法分别描述它们；而"仅在激活时注册介绍"会让**被禁用或加载失败的插件没有显示文本**。0.1.7 因此引入插件自有的显示元数据。
+
+### 8.2 契约
+
+在每个语言资源里加一个 `meta` 块：
+
+```json
+{
+  "meta": {
+    "title": "File Search",
+    "description": "Search files in your workspace."
+  }
+}
+```
+
+并声明资源导出（子路径插件为 `./<sub>/locale/*.json`）：
+
+```json
+{
+  "exports": {
+    "./locale/*.json": "./locale/*.json"
+  }
+}
+```
+
+| 主题 | 契约 |
+|---|---|
+| 资源地址 | 由**配置里的 Cordis 插件名**决定，经 Node 模块解析按 profile 与 package exports 选文件——**不评估插件代码** |
+| 语言发现 | Host 解析 `en.json`，在同目录发现各语言文件名，用**同一插件 specifier 与 parent URL** 解析每个资源；语言标识**大小写不敏感**，**重复被拒**；`meta` 字段须为非空字符串 |
+| title 回退 | `meta.title` → `<plugin specifier>/package.json` 的非空 `name` → 完整配置 Cordis 插件名 |
+| description 回退 | `meta.description` → 同级 package.json 的非空 `description` → 无描述 |
+| 字段独立 | 两个字段**各自独立回退** |
+| 子路径插件 | **不继承**所属包的介绍（回退只在同一地址内进行） |
+| 纯 JS 路径插件 | `./plugins/search.js` 这类**跳过同级资源查找**，配置路径本身即最终标题回退；**不提供**兄弟目录的 locale 元数据，也不读邻近 package.json |
+| 文件路径 / file URL | Windows 盘符路径与 UNC 路径同样跳过资源解析并返回无元数据；**文件地址本身不算元数据错误** |
+| 禁用插件 | **无需激活即可读取**（这是该设计的核心动机） |
+| 错误语义 | 缺资源 / 缺字段走回退；**非法 locale 字段或畸形文件报诊断而非静默回退**，且插件**仍可管理** |
+| 缓存 | **按请求读取，无元数据缓存** |
+| 不适用面 | 远端预览**不下载**远端包内容做翻译；模型工具结果**排除**多语言 UI 字典；Session 事件不变 |
+
+### 8.3 与插件管理页的两条显示规则
+
+- `Plugin Manager` 在已装 bundle 卡片与详情、组件列表、组件配置详情上使用该元数据，并**保留完整技术名回退**。
+- `Settings` 的插件清单同样使用它，但会把**字面包名 / 模块名回退**缩短（去掉 npm scope 与 Cordis/DSH 前缀）；**翻译过的标题保持原样**，且完整模块名、entry id、搜索身份与操作目标**不变**。
+- 一行配置页**仅在该插件没有显示描述时**才用其注册的 `summary` 视图。
+
+### 8.4 发布注意（最容易翻车的一条）
+
+note 的 Consequences 段明确：**漏掉语言文件或漏声明导出，会让发布后元数据不可用**——而本地开发时往往看起来正常。因此验证必须同时覆盖两项：
+
+1. **解析**（本地 `dsh --profile <p> --dump-config` 后打开插件管理页，确认标题/简介与语言切换）；
+2. **打包进包的文件**（`npm pack` / `pnpm pack` 后检查 `locale/*.json` 是否真的在 tarball 里、`exports` 是否可解析）。
+
+把它加进 §5 的验证清单：
+
+- [ ] **显示元数据（0.1.7+）**：`locale/en.json` 含 `meta.title`/`meta.description`，`./locale/*.json` 已在 `exports` 声明；打包后 `locale/` 确实在 tarball 内。
+- [ ] **禁用态可读**：禁用该插件后，插件管理页**仍**显示其标题与简介（不是技术名）。
+- [ ] **回落行为**：删除 `meta` 后，标题回退到 package.json 的 `name`，再回退到完整 Cordis 插件名——三级依次可观察。
+
+---
+
+*文档生成时间：2026-09-15（§8 于 2026-09-25 按 `dsh-v0.1.7-rc.1` 增补）*
 *数据源：`@deepseek-ai/dsh-client-locale@0.1.2-rc.1` 类型声明（`LocaleRuntime` / `locale-settings`）、`@huanlin/dsh-plugin-better-locale@0.4.3` README、本仓库 `mine-dsh-plugins/*` 源码*
