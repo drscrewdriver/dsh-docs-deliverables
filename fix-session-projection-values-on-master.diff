@@ -1,0 +1,561 @@
+diff --git a/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.i18n.yaml b/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.i18n.yaml
+new file mode 100644
+index 0000000000..a1dfc84f7e
+--- /dev/null
++++ b/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.i18n.yaml
+@@ -0,0 +1,6 @@
++# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
++# side as of the last confirmed-consistent state. Both languages carry equal authority;
++# after editing either side, bring the other along and re-record with:
++#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.md
++2026-09-14-session-projection-row-containment.md: a039c0cfa09ad81b8896a121833d3989ade9166d
++2026-09-14-session-projection-row-containment.zh.md: 087b027933d1ec1347988acf7744823af8024b33
+diff --git a/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.md b/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.md
+new file mode 100644
+index 0000000000..a039c0cfa0
+--- /dev/null
++++ b/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.md
+@@ -0,0 +1,38 @@
++# Agent Note: Projection rows and cells degrade at their own granularity
++
++Status: implemented
++
++English | [中文](2026-09-14-session-projection-row-containment.zh.md)
++
++## Problem
++
++Session-projection state and wire values leave the host through four carriers: the persisted checkpoint record (cold reads and listing hints), the forwarded host event `api-session/added` (live clients), and two Remote stream items from the Session Controller — the control baseline with its change feed, and the `session/follow` snapshot's projections block. All four reject or corrupt on a value that is not lossless JSON (an `undefined`-valued key, a `Map`, a `Date`, a non-finite number), and they fail unlike each other: the checkpoint write threw — leaving every row of that session at the previous cut, because the write is fail-soft — the forwarded host event threw, so the client never received the session's list entry, and the stream items reached the Client silently corrupted, because a stream item's only serialization is `JSON.stringify` with no JSON check, which turns a `Map` into `{}`. One field of one plugin therefore removed session availability — `session/fork` rolled back, the listing row vanished on reconnect, and the transcript stayed readable through a different path — while a second class of the same input corrupted only the display.
++
++Every one of these carriers assumed a value the registry had seen through a unit's `viewSchema` was JSON-safe. That assumption is false: `viewSchema` is Zod validation, which accepts a `Map`, a `Date`, or an object holding `undefined`, and the `SessionProjectionValues` type documents JSON-safe values without being able to enforce that for values contributed outside this compilation face.
++
++The defect is in the producer, but the blast radius was owned by the platform: projection units are an open set, and a derived fold shortcut is not an authority that may strand an authoritative path.
++
++## Decision
++
++A projection row or cell that is not lossless JSON degrades at its own granularity and is never allowed to fail or corrupt the carrier that would have delivered it.
++
++- `SessionProjectionCache.put()` detaches and validates each row separately; a row that is not losslessly JSON-serializable is omitted from the record with one warning naming the key and session, and the remaining rows still land on the same cut.
++- `losslessProjectionValues()` owns the cell rule for every wire carrier: it keeps the cells `isJsonValue` accepts and reports each dropped key to its caller, which warns with the key, the session id, and its own carrier. `ApiSessionList.projectionsFor()`, `SessionControlController.projectionBaseline()`, and the `session/follow` projection block all pass their values through it.
++- `SessionControlController` drops a change-feed frame whose value is not lossless JSON before broadcasting it: a frame the Client cannot receive correctly is never sent as a corrupted one.
++- `asOfSeq` stays the registry's cut in every carrier, so an omission can only overstate staleness, and `isJsonValue` keeps its current strictness. No carrier normalizes or reinterprets business values; only the carriage changes.
++
++## Alternatives considered
++
++**Normalize the offending value at the carrier.** Rejected: transport does not reinterpret business fields, and stripping a value silently would hide the producer defect instead of locating it.
++
++**Keep failing the record and the event, and fix producers instead.** Rejected: the producer set is open and unbounded, while the consequence of one bad field is session-level unavailability. Producer-side correctness stays a separate obligation.
++
++**Fail loud by default (abort the record, surface a hard error).** Rejected: the projection cache is a derived fold shortcut whose stated contract is that a stale or unreadable cache costs a longer tail replay and never a wrong value; a hard failure on a derived row turns a display cell into an outage.
++
++**Contain only the carriers that throw (the record and the forwarded event).** Rejected: the same input reaches the two stream carriers, where it is worse — `JSON.stringify` publishes a structurally valid, semantically wrong value with no warning anywhere, so the Client shows a permanently empty column instead of a missing one.
++
++**Bump a `stateVersion` or migrate the offending row.** Rejected: a value that is not JSON cannot be migrated into JSON, and the row's problem is producer-side, not schema evolution.
++
++## Consequences
++
++A unit that produces a non-JSON state or wire value now costs its own row or cell: the session keeps listing, forking, and checkpointing, and the key refolds (or the cell stays absent, in the listing and in the stream frames alike) until the producer is corrected. Each omission is reported once per carrier with the key and session id — the warning is the locating signal, so operators must watch logs rather than expect the platform to refuse; a deliberate strict or counting surface remains the producer's or a future platform policy's to add. An omitted row pulls `restoreFloor` to its minimum, zero, so the next cold read re-reads the stored log from the start: the omitted key refolds from init while the remaining keys still seed from their cached rows, which makes a persistently offending unit a cold-read latency cost for long Sessions. The underlying producer defect and its fix remain owned by the unit's author.
+diff --git a/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.zh.md b/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.zh.md
+new file mode 100644
+index 0000000000..087b027933
+--- /dev/null
++++ b/.agents/notes/implemented/architecture/2026-09-14-session-projection-row-containment.zh.md
+@@ -0,0 +1,38 @@
++# Agent Note: 投影的「行」与「列」各自降级
++
++Status: implemented
++
++[English](2026-09-14-session-projection-row-containment.md) | 中文
++
++## Problem
++
++会话投影的状态与 wire 值经由四条通路离开宿主：持久化检查点记录（冷读与列表提示）、转发的宿主事件 `api-session/added`（在线客户端），以及 Session Controller 的两条 Remote stream 项——控制流 baseline 与其变更帧、`session/follow` 快照的 projections 块。四条通路对非无损 JSON 的值（值为 `undefined` 的键、`Map`、`Date`、非有限数）都会拒绝或腐化，且失败方式各不相同：检查点写入抛错——由于写入是 fail-soft，该会话的**每一行**都滞留在上一个切点；转发的宿主事件抛错，客户端因此永远收不到该会话的列表条目；而 stream 项则是**静默腐化**——stream 项唯一的序列化是 `JSON.stringify`，全程没有 JSON 校验，`Map` 会变成 `{}`。于是某个插件的一个字段就抹掉了会话可用性——`session/fork` 回滚、重连后列表条目消失、正文仍能通过另一条路径读到——而同一输入的第二个类别只是把展示内容弄脏。
++
++这四条通路都预设：注册表经由单元的 `viewSchema` 看过的值就是 JSON 安全的。该预设不成立：`viewSchema` 是 Zod 校验，它接受 `Map`、`Date`、以及含 `undefined` 值的对象；而 `SessionProjectionValues` 类型虽然声明了 JSON 安全的值，却无法对**本编译面之外**贡献的值施加约束。
++
++缺陷在生产方，但爆炸半径原本由平台承担：投影单元是**开放集合**，而折叠捷径不是可以拖垮权威路径的权威数据。
++
++## Decision
++
++不被无损 JSON 接受的投影**行**或**列**，各自在其自身粒度上降级，绝不允许拖垮或污染本应承载它的通路。
++
++- `SessionProjectionCache.put()` 逐行 detach 与校验；不可无损序列化的行被**省略**，并以一条 warn 指出 key 与会话 id，其余行仍在同一水位落盘。
++- `losslessProjectionValues()` 是**所有 wire 通路**共用的列级规则：保留 `isJsonValue` 接受的列，并把每一个被丢弃的 key 上报给调用方，由调用方连同 key、会话 id 与自己所在的通路一起 warn。`ApiSessionList.projectionsFor()`、`SessionControlController.projectionBaseline()` 与 `session/follow` 的投影块都经由它取值。
++- `SessionControlController` 在广播前丢弃取值非无损 JSON 的变更帧：客户端无法正确接收的帧，绝不作为被污染的帧发出去。
++- 各通路的 `asOfSeq` 仍是注册表的切点，因此省略只可能把水位说得更陈旧；`isJsonValue` 保持既有严格度。任何通路都不做业务字段的归一化或重新解释，改变的只是**承载方式**。
++
++## Alternatives considered
++
++**在通路上把不合格值归一化。** 否决：传输层不重新解释业务字段；静默剥离会把生产方缺陷藏起来，而不是定位它。
++
++**保持整条失败，改由生产方修复。** 否决：生产方是开放且无界的集合，而一个字段的代价是会话级不可用。生产方的正确性仍是独立义务。
++
++**默认大声失败（放弃整条记录、抛出硬错误）。** 否决：投影缓存本身是派生的折叠捷径，其既定契约是"陈旧或不可读只意味着更长的尾部重放，绝不意味着一个错误的值"；让派生的行把展示单元格升级成故障，与其契约相悖。
++
++**只收敛会抛错的两条通路（记录与转发事件）。** 否决：同一输入同样会进入两条 stream 通路，而且后果更糟——`JSON.stringify` 会发布一个结构合法、语义错误的值，且任何地方都没有告警，客户端看到的是一个"永远为空的列"，而不是"缺失的列"。
++
++**提升 `stateVersion` 或迁移该行。** 否决：非 JSON 的值无法被迁移成 JSON，该行的问题是生产方的，而不是 schema 演进问题。
++
++## Consequences
++
++产出非 JSON 状态或 wire 值的单元，此后只损失自己的那一行/列：会话照常列出、fork 与写检查点，该 key 在生产者被修正前持续重折（或该列在列表与 stream 帧中持续缺席）。每次省略都会按通路带 key 与会话 id 报告一次——warn 才是定位信号，因此运维侧必须看日志，而不是期待平台拒绝；若需要显式的 strict 或计数面，属于生产方或后续平台策略的事。被省略的行会把 `restoreFloor` 拉到其最小值 0，因此下一次冷读需要**从日志起点重读**：被省略的 key 从 init 重折，而其余 key 仍以其缓存行作为种子，这使长期出错的单元对长会话构成冷读延迟成本。底层的生产方缺陷及其修复，仍归该单元的作者。
+diff --git a/packages/api/session-controller/src/control.ts b/packages/api/session-controller/src/control.ts
+index 9bdd5a05bf..524c8b126c 100644
+--- a/packages/api/session-controller/src/control.ts
++++ b/packages/api/session-controller/src/control.ts
+@@ -7,13 +7,13 @@ import type { JobSnapshot } from '@deepseek-ai/dsh-jobs'
+ import type {
+   Session, SessionId, UserMessage,
+ } from '@deepseek-ai/dsh-session'
+-import type { JsonValue } from '@deepseek-ai/dsh-util-values'
++import { isJsonValue, type JsonValue } from '@deepseek-ai/dsh-util-values'
++import { losslessProjectionValues } from './projection-values.ts'
+ import type {
+   SessionControlBaseline,
+   SessionControlFrame,
+   SessionJob,
+   SessionProjectionBaseline,
+-  SessionProjectionValues,
+   SessionQueuedItem,
+ } from './types.ts'
+ 
+@@ -24,6 +24,16 @@ export class SessionControlController {
+   /** @param ctx - Host context carrying live Agent, projection, and jobs services. */
+   constructor(private readonly ctx: Context) {
+     ctx.sessionProjections.onChanged((session, key, value, seq) => {
++      // The registry validates every published value with the unit's
++      // `viewSchema`, which accepts values JSON cannot carry; this stream is
++      // `JSON.stringify`-ed with no JSON check, so such a value would reach the
++      // Client corrupted (a Map as `{}`) rather than absent.
++      if (!isJsonValue(value)) {
++        ctx.logger.warn(
++          `session-controller.control: projection "${key}" of "${session.id}" is not lossless JSON; skipping its frame`,
++        )
++        return
++      }
+       this.broadcast({
+         type: 'projection',
+         sessionId: session.id,
+@@ -95,8 +105,14 @@ export class SessionControlController {
+       const snapshot = this.ctx.sessionProjections.snapshot(session)
+       blocks[session.id] = {
+         asOfSeq: snapshot.asOfSeq,
+-        // Every projection definition validates its value before snapshot publication.
+-        values: snapshot.values as SessionProjectionValues,
++        // Baseline values cross the same JSON check as the change frames: a
++        // unit's `viewSchema` is not a JSON check, so a cell it accepts may
++        // still be a value this stream's `JSON.stringify` would corrupt.
++        values: losslessProjectionValues(snapshot.values, (key) => {
++          this.ctx.logger.warn(
++            `session-controller.control: projection "${key}" of "${session.id}" is not lossless JSON; omitting that cell`,
++          )
++        }),
+       }
+     }
+     return blocks
+diff --git a/packages/api/session-controller/src/history.ts b/packages/api/session-controller/src/history.ts
+index a22badc1f1..bbdabe9ebe 100644
+--- a/packages/api/session-controller/src/history.ts
++++ b/packages/api/session-controller/src/history.ts
+@@ -19,6 +19,7 @@ import { SessionQueryError, type SessionObservation } from '@deepseek-ai/dsh-ses
+ import type {} from '@deepseek-ai/dsh-subagent'
+ import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
+ import type { JsonValue } from '@deepseek-ai/dsh-util-values'
++import { losslessProjectionValues } from './projection-values.ts'
+ import type {
+   SessionAddress,
+   SessionAssistantStreamFrame,
+@@ -29,7 +30,6 @@ import type {
+   SessionPage,
+   SessionPageRequest,
+   SessionProjectionBaseline,
+-  SessionProjectionValues,
+   SessionWireHeader,
+   SessionWireEvent,
+ } from './types.ts'
+@@ -197,7 +197,7 @@ export class SessionHistoryController {
+         hasMore: page.hasMore,
+         projections: source.projections === undefined
+           ? { asOfSeq: cursor, values: {} }
+-          : projectionBlock(source.projections),
++          : projectionBlock(source.projections, this.ctx, target),
+         ...assistantStream === undefined ? {} : { assistantStream },
+       }
+       if (address.kind === 'session' && source.source === 'prepared') {
+@@ -293,11 +293,20 @@ function wireAssistantStreamFrame(
+ 
+ function projectionBlock(
+   snapshot: NonNullable<SessionObservation['projections']>,
++  ctx: Context,
++  sessionId: SessionId,
+ ): SessionProjectionBaseline {
+   return {
+     asOfSeq: snapshot.asOfSeq,
+-    // Projection definitions validate whole JSON values before snapshot publication.
+-    values: snapshot.values as SessionProjectionValues,
++    // A projection definition validates its value with its `viewSchema`, which
++    // is not a JSON check: this baseline leaves as a stream item, whose only
++    // serialization is `JSON.stringify`, so a cell JSON cannot carry is
++    // omitted rather than sent corrupted.
++    values: losslessProjectionValues(snapshot.values, (key) => {
++      ctx.logger.warn(
++        `session-controller.history: projection "${key}" of "${sessionId}" is not lossless JSON; omitting that cell`,
++      )
++    }),
+   }
+ }
+ 
+diff --git a/packages/api/session-controller/src/list.ts b/packages/api/session-controller/src/list.ts
+index 4aa369c378..d7a1b94093 100644
+--- a/packages/api/session-controller/src/list.ts
++++ b/packages/api/session-controller/src/list.ts
+@@ -10,12 +10,13 @@ import type {} from '@deepseek-ai/dsh-session-projection-cache'
+ import { SessionQueryError, type SessionSearchCursor } from '@deepseek-ai/dsh-session-query'
+ import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
+ import { z } from 'zod'
++import { losslessProjectionValues } from './projection-values.ts'
+ import {
+   SESSION_SEARCH_RESULT_LIMIT,
+   SESSION_SEARCH_SNIPPET_MAX_CODE_POINTS,
+ } from './types.ts'
+ import type {
+-  SessionListMetadata, SessionProjectionHints, SessionProjectionValues, SessionSearchItem,
++  SessionListMetadata, SessionProjectionHints, SessionSearchItem,
+   SessionSearchValue, SessionSummary,
+ } from './types.ts'
+ 
+@@ -277,13 +278,19 @@ export class ApiSessionList {
+           : cache?.cachedSnapshot(header, SessionLogOffset(0))
+             ?? cache?.cachedPredecessorTitle(header, SessionLogOffset(0))
+         : this.ctx.sessionProjections.cachedSnapshot(session)
+-      return block !== undefined && Object.keys(block.values).length > 0
+-        ? {
+-          asOfSeq: block.asOfSeq,
+-          // Listing hints contain every currently cached wire value but remain
+-          // partial: missing cells and cache rows are never materialized here.
+-          values: block.values as SessionProjectionValues,
+-        }
++      if (block === undefined) return undefined
++      // Listing hints contain every currently cached wire value but remain
++      // partial: missing cells and cache rows are never materialized here, and
++      // a cell that is not lossless JSON is omitted instead of failing the row
++      // or the host event that carries it. `asOfSeq` stays the registry's cut,
++      // so an omission can only overstate staleness.
++      const values = losslessProjectionValues(block.values, (key) => {
++        this.ctx.logger.warn(
++          `api-session.list: projection "${key}" of "${header.id}" is not lossless JSON; omitting that cell`,
++        )
++      })
++      return Object.keys(values).length > 0
++        ? { asOfSeq: block.asOfSeq, values }
+         : undefined
+     } catch (error) {
+       this.ctx.logger.warn(
+diff --git a/packages/api/session-controller/src/projection-values.ts b/packages/api/session-controller/src/projection-values.ts
+new file mode 100644
+index 0000000000..1ffbbbb4aa
+--- /dev/null
++++ b/packages/api/session-controller/src/projection-values.ts
+@@ -0,0 +1,37 @@
++/** Projection values on their way to a JSON transport. */
++
++import { isJsonValue } from '@deepseek-ai/dsh-util-values'
++import type { SessionProjectionValues } from './types.ts'
++
++/**
++ * Keep the cells of one projection payload that a JSON transport carries
++ * unchanged, and report the rest.
++ *
++ * A projection definition validates its value with its `viewSchema`, which
++ * accepts values JSON cannot carry (a `Map`, a `Date`, a property whose value
++ * is `undefined`). The two transports then fail apart: a forwarded host event
++ * rejects whole on the first such cell, while a Remote stream item is
++ * `JSON.stringify`-ed with no JSON check and silently corrupts it. Dropping
++ * the cell leaves consumers with the "no value at this cut" reading they
++ * already have for an absent projection.
++ * @param values - whole values per projection key.
++ * @param onDropped - called once per dropped key with that key.
++ * @returns the surviving cells in input order.
++ */
++export function losslessProjectionValues(
++  values: Readonly<Record<string, unknown>>,
++  onDropped: (key: string) => void,
++): SessionProjectionValues {
++  const kept: Record<string, unknown> = {}
++  for (const [key, value] of Object.entries(values)) {
++    if (isJsonValue(value)) {
++      kept[key] = value
++      continue
++    }
++    onDropped(key)
++  }
++  // Every surviving entry passed `isJsonValue`, which is exactly the
++  // `SessionProjectionValue` contract; the check is a boolean rather than a
++  // type predicate by design, so the result is asserted once here.
++  return kept as SessionProjectionValues
++}
+diff --git a/packages/api/session-controller/tests/session-projections.host.spec.ts b/packages/api/session-controller/tests/session-projections.host.spec.ts
+index 90ffb10456..64fc3a2fe0 100644
+--- a/packages/api/session-controller/tests/session-projections.host.spec.ts
++++ b/packages/api/session-controller/tests/session-projections.host.spec.ts
+@@ -44,9 +44,11 @@ declare module '@deepseek-ai/dsh-session-projection/types' {
+     'test/last-user': LastUserState
+     'test/internal-count': number
+     'test/private-prompt': string | null
++    'test/lossy': { seen: number }
+   }
+   interface SessionProjectionMap {
+     'test/last-user': { text: string } | null
++    'test/lossy': Map<string, string>
+   }
+ }
+ 
+@@ -118,6 +120,23 @@ const privatePromptUnit = () => ({
+   stateVersion: 1,
+ }) satisfies ProjectionDefinition<'test/private-prompt', string | null>
+ 
++/**
++ * Plain-JSON state behind a wire view that leaves the JSON value set (a Map).
++ * `changing` advances the state on every event so the changed view reaches the
++ * change feed instead of being suppressed by `Object.is`.
++ */
++const lossyUnit = (changing = false) => ({
++  key: 'test/lossy',
++  stateSchema: z.object({ seen: z.number() }),
++  init: () => ({ seen: 0 }),
++  apply: (state: { seen: number }) => (changing ? { seen: state.seen + 1 } : state),
++  wire: {
++    viewSchema: z.custom<Map<string, string>>(() => true),
++    view: () => new Map([['a', 'b']]),
++  },
++  stateVersion: 1,
++}) satisfies ProjectionDefinition<'test/lossy', { seen: number }>
++
+ async function harness(withRegistry: boolean): Promise<{
+   ctx: Context
+   session: Session
+@@ -235,6 +254,22 @@ describe('session.history projections block', () => {
+     expect(last?.event.seq).toBe(projections.asOfSeq)
+   })
+ 
++  it('omits a non-lossless cell from the tail block while keeping the others', async () => {
++    const { ctx, session } = await harness(true)
++    const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
++    ctx.sessionProjections.register(lossyUnit())
++    ctx.sessionProjections.register(lastUserUnit())
++    seedMessages(session, 2)
++
++    const snapshot = await opening(remote(ctx), session.id)
++
++    expect(snapshot.projections.values['test/last-user']).toEqual({ text: 'm1' })
++    expect('test/lossy' in snapshot.projections.values).toBe(false)
++    // The cut is the registry's: dropping a cell never moves it forward.
++    expect(snapshot.projections.asOfSeq).toBe(session.seq - 1)
++    expect(warn).toHaveBeenCalledWith(expect.stringContaining('session-controller.history'))
++  })
++
+   it('reconstructs a cold persisted queue without publishing or resuming an Agent', async () => {
+     const { ctx } = await harness(true)
+     const coldId = SessionId('cold-persisted-queue')
+@@ -647,6 +682,43 @@ describe('session.list projections column', () => {
+     expect(row).toBeDefined()
+     expect(row !== undefined && 'projections' in row).toBe(false)
+   })
++
++  it('leaves the column out entirely when every cached cell is not lossless JSON', async () => {
++    const { ctx } = await harness(true)
++    const coldId = SessionId('session-cold-lossy')
++    ctx.provide('sessionPersistence', testSessionPersistence(ctx, {
++      list: async () => [{ version: SESSION_FORMAT_VERSION, id: coldId, createdAt: 5, isSeeded: false, cwd: '/tmp' }],
++    }) as never)
++    ctx.provide('sessionProjectionCache', {
++      cachedSnapshot: () => ({
++        asOfSeq: SessionSeq(7),
++        values: { 'test/lossy': new Map([['a', 'b']]) },
++      }),
++    } as never)
++    const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
++
++    const response = await remote(ctx).list(request({}))
++    if (!response.ok) throw new Error('unreachable')
++    const row = response.value.items.find(item => item.sessionId === coldId)
++    expect(row).toBeDefined()
++    expect(row !== undefined && 'projections' in row).toBe(false)
++    expect(warn).toHaveBeenCalledWith(expect.stringContaining('test/lossy'))
++  })
++
++  it('omits one non-lossless cell while keeping the row and its remaining cells', async () => {
++    const { ctx, session } = await harness(true)
++    const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
++    ctx.sessionProjections.register(lossyUnit())
++    ctx.sessionProjections.register(lastUserUnit())
++    seedMessages(session, 1)
++    const response = await remote(ctx).list(request({}))
++    if (!response.ok) throw new Error('unreachable')
++    const row = response.value.items.find(item => item.sessionId === session.id)
++    expect(row).toBeDefined()
++    expect(row?.projections?.values).toHaveProperty('test/last-user')
++    expect(row?.projections?.values).not.toHaveProperty('test/lossy')
++    expect(warn).toHaveBeenCalledWith(expect.stringContaining('test/lossy'))
++  })
+ })
+ 
+ describe('Session control projection frames', () => {
+@@ -664,6 +736,45 @@ describe('Session control projection frames', () => {
+     return frames
+   }
+ 
++  it('omits one non-lossless cell from the baseline', async () => {
++    const { ctx, session } = await harness(true)
++    const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
++    ctx.sessionProjections.register(lossyUnit())
++    ctx.sessionProjections.register(lastUserUnit())
++    const abort = new AbortController()
++
++    const iterator = remote(ctx).control(abort.signal)[Symbol.asyncIterator]()
++    const baseline = await iterator.next()
++    if (baseline.done || baseline.value.type !== 'baseline') {
++      throw new Error('control stream ended before its baseline')
++    }
++    const block = baseline.value.value.projections[session.id]
++    expect(block?.values).toHaveProperty('test/last-user')
++    expect(block !== undefined && 'test/lossy' in block.values).toBe(false)
++    expect(warn).toHaveBeenCalledWith(expect.stringContaining('test/lossy'))
++    abort.abort()
++    await iterator.return?.()
++  })
++
++  it('skips a non-JSON projection change frame instead of serializing it', async () => {
++    const { ctx, session } = await harness(true)
++    const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
++    ctx.sessionProjections.register(lossyUnit(true))
++    ctx.sessionProjections.register(lastUserUnit())
++    const proxy = remote(ctx)
++    await new Promise(resolve => setTimeout(resolve, 0))
++
++    const abort = new AbortController()
++    const collected = collect(proxy.control(abort.signal), 2, abort)
++    seedMessages(session, 1)
++
++    const keys = (await collected)
++      .filter((frame): frame is Extract<SessionControlFrame, { type: 'projection' }> => frame.type === 'projection')
++      .map(frame => frame.key)
++    expect(keys.sort()).toEqual(['sessionListMetadata', 'test/last-user'])
++    expect(warn).toHaveBeenCalledWith(expect.stringContaining('test/lossy'))
++  })
++
+   it('broadcasts changed view references with the causing seq and skips same-reference applies', async () => {
+     const { ctx, session } = await harness(true)
+     ctx.sessionProjections.register(lastUserUnit())
+diff --git a/packages/api/session-controller/tsconfig.host.json b/packages/api/session-controller/tsconfig.host.json
+index 45a22e93cb..40679fd5c2 100644
+--- a/packages/api/session-controller/tsconfig.host.json
++++ b/packages/api/session-controller/tsconfig.host.json
+@@ -19,6 +19,7 @@
+     "src/list.ts",
+     "src/media-references.ts",
+     "src/model-selection-projection.ts",
++    "src/projection-values.ts",
+     "src/skill-catalog.ts"
+   ],
+   "references": [
+diff --git a/packages/session/session-projection-cache/src/index.ts b/packages/session/session-projection-cache/src/index.ts
+index 639dfcc978..8950854b6b 100644
+--- a/packages/session/session-projection-cache/src/index.ts
++++ b/packages/session/session-projection-cache/src/index.ts
+@@ -375,11 +375,26 @@ export class SessionProjectionCache extends Service {
+     }
+   }
+ 
+-  /** Replace one session's stored record with its log identity and a detached snapshot of `rows`. */
++  /**
++   * Replace one session's stored record with its log identity and a detached
++   * snapshot of `rows`. A row whose state violates the plain-JSON contract is
++   * omitted from the record instead of failing it: the cache is a fold
++   * shortcut, so an omitted row costs a full refold for its key on the next
++   * cold read (`restoreFloor` already reads an absent row as that key's
++   * refold floor), while a failed record would strand every row of the
++   * session at the previous cut.
++   */
+   private async put(id: SessionId, identity: CheckpointIdentity, rows: ProjectionCheckpoint): Promise<void> {
+-    const detached = snapshotJsonValue(rows)
+-    if (detached === undefined) {
+-      throw new TypeError('projection checkpoint is not losslessly JSON-serializable (a unit state violates the plain-JSON contract)')
++    const detached: Record<string, unknown> = {}
++    for (const [key, row] of Object.entries(rows)) {
++      const value = snapshotJsonValue(row)
++      if (value === undefined) {
++        this.ctx.logger.warn(
++          `session projection cache: omitted projection row "${key}" for "${id}" (its state violates the plain-JSON contract); that key refolds on the next cold read`,
++        )
++        continue
++      }
++      detached[key] = value
+     }
+     await this.requireTable().put(id, { identity, rows: detached as CheckpointRecord['rows'] })
+   }
+diff --git a/packages/session/session-projection-cache/tests/cache.spec.ts b/packages/session/session-projection-cache/tests/cache.spec.ts
+index b38f49eec1..78fcb069fd 100644
+--- a/packages/session/session-projection-cache/tests/cache.spec.ts
++++ b/packages/session/session-projection-cache/tests/cache.spec.ts
+@@ -261,13 +261,43 @@ describe('SessionProjectionCache write policy', () => {
+     expect(write).toHaveBeenCalledExactlyOnceWith(session)
+   })
+ 
+-  it('write() on a never-dirty session checkpoints directly and rejects a non-JSON unit state', async () => {
++  it('write() checkpoints a never-dirty session and omits only the non-JSON unit row', async () => {
+     const { ctx, root } = await harness()
+     // Never dirtied: no events — write() still lands the init-derived cut.
+     const clean = ctx.sessions.create(SessionId('clean-write'))
+     await ctx.sessionProjectionCache.write(clean)
+     expect((await storedRows(root, clean.id))?.['cache-test/marks']).toEqual({ ver: 1, seq: -1, val: null })
+-    // A unit whose state violates the plain-JSON contract fails the write loud.
++    // A unit whose state violates the plain-JSON contract loses its own row:
++    // the remaining rows still land, so the session's cache never strands at
++    // an old cut because of one unit.
++    const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
++    ctx.sessionProjections.register({
++      key: 'cache-test/marks2',
++      stateSchema: z.custom<Map<string, string>>(() => true),
++      init: () => new Map<string, string>(),
++      apply: state => state,
++      stateVersion: 1,
++    })
++    await ctx.sessionProjectionCache.write(clean)
++    const rows = await storedRows(root, clean.id)
++    expect(rows?.['cache-test/marks']).toEqual({ ver: 1, seq: -1, val: null })
++    expect(rows !== undefined && 'cache-test/marks2' in rows).toBe(false)
++    expect(warn).toHaveBeenCalledWith(expect.stringContaining('cache-test/marks2'))
++  })
++
++  it('still advances the record when every registered row violates the plain-JSON contract', async () => {
++    const root = await mkdtemp(join(tmpdir(), 'dsh-projcache-'))
++    roots.push(root)
++    const ctx = new Context()
++    contexts.push(ctx)
++    await ctx.plugin(Storage)
++    await ctx.plugin({ name: storageJsonName, inject: storageJsonInject, apply: storageJsonApply, Config: storageJsonConfig }, { root })
++    await ctx.plugin({ name: storageDomainName, inject: storageDomainInject, apply: storageDomainApply, Config: storageDomainConfig }, { backend: 'json' })
++    await ctx.plugin(SessionStore)
++    await ctx.plugin(SessionProjectionRegistry)
++    // The ONLY registered unit has a non-JSON state: the record must still land
++    // (with no rows) so the session is never stranded at a stale cut, and the
++    // omission is reported per key.
+     ctx.sessionProjections.register({
+       key: 'cache-test/marks2',
+       stateSchema: z.custom<Map<string, string>>(() => true),
+@@ -275,7 +305,14 @@ describe('SessionProjectionCache write policy', () => {
+       apply: state => state,
+       stateVersion: 1,
+     })
+-    await expect(ctx.sessionProjectionCache.write(clean)).rejects.toThrow('not losslessly JSON-serializable')
++    await ctx.plugin(SessionProjectionCache, { writeEveryEvents: 100, writeIntervalMs: 60_000 })
++    const warn = vi.spyOn(ctx.logger, 'warn').mockImplementation(() => {})
++    const session = ctx.sessions.create(SessionId('all-rows-lossy'))
++
++    await ctx.sessionProjectionCache.write(session)
++
++    expect(warn).toHaveBeenCalledWith(expect.stringContaining('cache-test/marks2'))
++    expect(await storedRows(root, session.id)).toEqual({})
+   })
+ 
+   it('plugin disposal clears armed interval timers and leaves cleaned sessions alone', async () => {
