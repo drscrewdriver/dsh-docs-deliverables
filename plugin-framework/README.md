@@ -1,6 +1,8 @@
 # Plugin Framework
 
-DSH 插件开发框架文档。涵盖标准文件结构、版本分发策略、兼容性指南、v0.1.5 / v0.1.7 迁移指南、awesome-dsh-plugin 投稿。
+DSH 插件开发框架文档。涵盖标准文件结构、版本分发策略、兼容性指南、v0.1.5 / v0.1.7 / v0.2.0 迁移指南、awesome-dsh-plugin 投稿。
+
+> **✅ 2026-09-29 更新（`dsh-v0.2.0-rc.1`）**：0.2.0 **没有 API 层破坏性变更**（manifest / settings API / 加载器 / HMR / slot / 会话格式 V4 全部未动），但 **peer 世代门槛**会把 `>=0.1.7-rc.1 <0.2.0-0` 的插件**挡在安装之外**（semver 中 `0.2.0-0` < `0.2.0-rc.1`）。peer 范围改 `>=0.2.0-rc.1 <0.3.0-0` 即可，另需复核 Schedule 三 id 与 `displayTitle` 空串语义——见 [v0.2.0-migration.md](v0.2.0-migration.md)。
 
 > **⚠️ 2026-09-25 重要更新（`dsh-v0.1.7-rc.1`）**：本版有 **6 项必须动手的破坏性变更**，其中 `settings.installSection()` 已从宿主**完全删除**（无兼容垫片），`settings.plugin.item` 席位已移除，`$DSH_HOME/settings.yaml` 已移除，且**兼容性校验读的是 `peerDependencies` 而不是 `engines.dsh`**。若你在 0.1.5/0.1.6 上维护插件，请**先读 [v0.1.7-migration.md](v0.1.7-migration.md)**。
 
@@ -44,7 +46,8 @@ dsh plugin --profile web add /path/to/your-plugin
 | [file-structure.md](file-structure.md) | 标准插件文件结构 | 新建插件时的文件组成参考 |
 | [distribution-strategy.md](distribution-strategy.md) | 版本分发策略 | 同一 npm 包名适配不同 DSH 版本 |
 | **[version-line-sync.md](version-line-sync.md)** | **多版本线同步（兼容分支治理）** | **主线前进、兼容线落后的定期同步：先量 merge 成本与独有价值，再选树对齐；把两线差异写成脚本 + 断言，用钉死的 SHA 当基线** |
-| [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径；**§二十一 = v0.1.6/0.1.7 源码实证速查** |
+| [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径；**§二十一 = v0.1.6/0.1.7 源码实证速查；§二十二 = v0.2.0-rc.1 速查** |
+| **[v0.2.0-migration.md](v0.2.0-migration.md)** | **v0.2.0 迁移指南（可操作版）** | **无 API breaking，但 peer 世代门槛（`<0.2.0-0` 挡安装）、Schedule 默认组合移除（opt-in bundle）、`displayTitle` 空串、`forkSession` / composer 契约扩展、`ctx.otel` / `ctx.productAnalytics` 新服务** |
 | **[v0.1.7-migration.md](v0.1.7-migration.md)** | **v0.1.7 迁移指南（可操作版）** | **设置席位 API 换代（`installSection` 删除 → `configure`）、peer 范围强制（`engines.dsh` 无效）、`settings.yaml` 移除、`patchReload` 移除、HMR 改名、会话 V4、本地化显示元数据** |
 | **[v0.1.5-migration.md](v0.1.5-migration.md)** | **v0.1.5 迁移指南**（历史） | **Token/Permission/Inbox/Adapter 全面迁移**；其设置席位部分已被 v0.1.7 取代 |
 | **[v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md)** | **v0.1.5 迁移补充（实战校准）** | **插件启动 await、firehose seed 盲区、设置席位单注册、peer 预发布陷阱、宿主 LLM 目录接缝** |
@@ -64,10 +67,11 @@ dsh plugin --profile web add /path/to/your-plugin
 2. **配置兼容性**：参照 [compatibility-guide.md](compatibility-guide.md) 设置 `package.json` 的 `dsh` 字段 + peerDeps（**注意：DSH 不读 `dsh.plugin.json`，见下方「清单事实纠正」**）
 3. **版本策略**：参照 [distribution-strategy.md](distribution-strategy.md) 规划双版本分发
 4. **维护兼容分支**：兼容线落后于主线需要同步时，参照 [version-line-sync.md](version-line-sync.md)（先量成本再选做法；把差异声明化）
-4.5. **v0.1.7 迁移（当前版本线）**：参照 [v0.1.7-migration.md](v0.1.7-migration.md) 处理设置席位换代、peer 强制校验、`settings.yaml` 移除、`patchReload` 移除、HMR 改名与会话 V4；带设置面板的插件再对照 [settings-seat-017-recipes.md](settings-seat-017-recipes.md) 选范式（`settings.plugins.tab` 或 `settings.section`）并核对本轮实机坑
+4.5. **v0.1.7 迁移**：参照 [v0.1.7-migration.md](v0.1.7-migration.md) 处理设置席位换代、peer 强制校验、`settings.yaml` 移除、`patchReload` 移除、HMR 改名与会话 V4；带设置面板的插件再对照 [settings-seat-017-recipes.md](settings-seat-017-recipes.md) 选范式（`settings.plugins.tab` 或 `settings.section`）并核对本轮实机坑
+4.6. **v0.2.0 迁移（当前版本线）**：参照 [v0.2.0-migration.md](v0.2.0-migration.md) 扩 peer 范围（🔴 唯一必做）、复核 Schedule 三 id 引用与 `displayTitle` 空串；0.1.7 → 0.2.0 代码层预期零修改
 5. **v0.1.5 迁移（历史）**：参照 [v0.1.5-migration.md](v0.1.5-migration.md) 完成 Token/Permission/Inbox/Adapter 适配，再用 [v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md) 复核正文未覆盖的实战项
 5.5. **设置席位钉死**：带设置面板的插件按 [settings-seat-pinning.md](settings-seat-pinning.md) 做"单席位 + seat-pin 契约测试"（**0.1.7 席位表已重写**）
-6. **升级排障**：升级后行为异常时查 [upgrade-pitfalls.md](upgrade-pitfalls.md)（**§八 = 0.1.7 新陷阱** + 排障决策树）
+6. **升级排障**：升级后行为异常时查 [upgrade-pitfalls.md](upgrade-pitfalls.md)（**§八 = 0.1.7 新陷阱、§九 = 0.2.0 新陷阱** + 排障决策树）
 6.5. **安装后没反应**：装了却看不到、又不报错时查 [plugin-install-and-client-seams.md](plugin-install-and-client-seams.md) —— 先 `dsh --profile <p> --dump-config` 确认 `dsh.profile.bundles` 这一层（手动安装最常漏它），再核客户端 `__ModuleLoader__` 契约
 7. **做多语言**：要让插件的 ja/ko 文案跟随语言切换，参照 [i18n-multilingual-guide.md](i18n-multilingual-guide.md)
 8. **发布市场**：参照 [submission-guide.md](submission-guide.md) 向 awesome-dsh-plugin 投稿
@@ -132,9 +136,10 @@ DSH v0.1.5 是第二次重大架构升级，插件开发者需要关注以下四
 - `source-analysis/` 侧重 DSH 内部架构和模块实现
 - `plugin-framework/` 侧重外部插件开发者的使用接口
 
-v0.1.5 的插件迁移深度指南参见：[source-analysis/v0.1.5-rc.2/plugin-migration-guide.md](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md)
+v0.1.5 的插件迁移深度指南参见：[source-analysis/v0.1.5-rc.2/plugin-migration-guide.md](../source-analysis/v0.1.5-rc.2/plugin-migration-guide.md)；v0.1.7 与 v0.2.0 的深度证据链分别参见 [source-analysis/v0.1.7-rc.1/plugin-migration-guide.md](../source-analysis/v0.1.7-rc.1/plugin-migration-guide.md) 与 [source-analysis/v0.2.0-rc.1/plugin-migration-guide.md](../source-analysis/v0.2.0-rc.1/plugin-migration-guide.md)
 
 ---
 
 *文档生成时间：2026-09-12*
 *数据源：`deepseek-ai/deepseek-harness` 仓库 `dsh-v0.1.5-alpha.1` ~ `dsh-v0.1.5-rc.2`*
+*2026-09-29 更新：检出推进至 `dsh-v0.2.0-rc.1`（`4878cdabd8`）；新增 v0.2.0-migration.md、compatibility-guide §二十二、upgrade-pitfalls §九*

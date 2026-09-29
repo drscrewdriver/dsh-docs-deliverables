@@ -16,8 +16,10 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | v0.1.5-rc.2 | `v0.1.5-rc.2/` | +2 | ⭐⭐ | 反馈对称化 + 交付物 UI 精化（backport） |
 | v0.1.6-alpha.1 | `v0.1.6-alpha.1/` | +800 | ⭐⭐⭐⭐⭐ | **四个新能力族**（ssh / ptc-runtime / browser-use / computer-use）、e2b 与 code-runtime 退役、三个默认值收敛、公共包 manifest、profile 解析代际化、侧栏终端 |
 | v0.1.7-rc.1 | `v0.1.7-rc.1/` | +2504 | ⭐⭐⭐⭐⭐ | **会话格式 V4**、**设置机制换代**（`installSection` 删除 + `.volatile()` + `settings.yaml` 移除）、**插件清单契约换代**（patch 数组化、`patchReload` 移除、peer 范围强制、本地化显示元数据）、`deliverables` 与 `document` 两个新顶层包组、语音输入族 |
+| v0.1.7-rc.2 | `v0.1.7-rc.2/` | +335 | ⭐⭐⭐ | 账号体系拆 providers（account / api-key）、LLM 中途动态工具更新（beta wire）、可配置快捷键回归、Schedule 与 user-questions 两条激进主线撤回、prompt 经济学（标准 preset 首轮 −1918 tokens） |
+| v0.2.0-rc.1 | `v0.2.0-rc.1/` | +261 | ⭐⭐⭐⭐ | **Schedule 可选 bundle 化**（默认组合裁剪）、**OTel 统一上报**（`ctx.otel` 共享服务 + 字节限额 + 端点迁移）、**productAnalytics**（desktop-only）、Session Log 上传开关（volatile 热更新）、`ToolCallRecovery`（step 失败保守恢复）、`displayTitle` 空串语义；**无 API breaking，但 peer 世代门槛挡住 0.1.7 线插件** |
 
-> **未覆盖的中间版本**：`dsh-v0.1.5-rc.3`（3 commits）、`dsh-v0.1.6-alpha.2`（887）、`dsh-v0.1.7-alpha.1`（1299）、`dsh-v0.1.7-alpha.2`（162）、`dsh-v0.1.7-rc.2`（346）尚无独立目录。`0.1.7-rc.1` 的文档已把 `0.1.6-alpha.1 → 0.1.7-rc.1` 的 2504 commits 全部纳入（区间包含上述中间版本），因此**不存在分析空白**；`rc.2` 在其之后，未纳入。
+> **未覆盖的中间版本**：`dsh-v0.1.5-rc.3`（3 commits）、`dsh-v0.1.6-alpha.2`（887）、`dsh-v0.1.7-alpha.1`（1299）、`dsh-v0.1.7-alpha.2`（162）尚无独立目录。`0.1.7-rc.1` 的文档已把 `0.1.6-alpha.1 → 0.1.7-rc.1` 的 2504 commits 全部纳入（区间包含上述中间版本）；`rc.2` 与 `0.2.0-rc.1` 各有独立目录。`0.1.7-rc.2 → 0.2.0-rc.1` 之间**没有中间 tag**，不存在分析空白。
 
 > 版本变更详情（0.1.1→0.1.5 完整提交级记录）参见 [dsh-015-notes.md](../dsh-015-notes.md)。
 
@@ -32,6 +34,8 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | 0.1.5-rc.1 → rc.2 | 🟡 中 | `toggle`→`retract` 接口变更、Like 也走对话框、图标数据化 |
 | 0.1.5-rc.2 → 0.1.6-alpha.1 | 🔴 高 | `packages/e2b` 与 `code-runtime` 退役、`DshManifest` 公开面收窄、会话事件同步读取废弃、profile 解析代际化（**升级包后必须重启**）、`ralph` 默认关闭、Session 日志上报默认开启、headless `--session-id` 语义收紧、DeepSeek 默认协议改 Messages |
 | 0.1.6-alpha.1 → 0.1.7-rc.1 | 🔴 高 | **`settings.installSection()` 删除**（无垫片）、**`settings.plugin.item` 席位移除**、**`$DSH_HOME/settings.yaml` 移除**、**`@deepseek-ai/dsh*` peer 范围强制校验**（不是 `engines.dsh`）、`dsh.profile.patchReload` 移除、HMR 包改名 `cordis-plugin-hmr` → `dsh-hmr`、**会话格式 V3 → V4（不可回退）**、`agent-team-web-profile` 整包删除、DeepSeek 彻底 Messages-only（存量 `protocol` 键硬失败） |
+| 0.1.7-rc.1 → 0.1.7-rc.2 | 🟢 低 | 无 API breaking；账号 providers 拆分与动态工具更新均为增量，会话格式保持 V4 |
+| 0.1.7-rc.2 → 0.2.0-rc.1 | 🟡 中 | **peer 世代门槛**（`>=0.1.7-rc.1 <0.2.0-0` 的插件在 0.2.0-rc.1 宿主上**安装被拒**，除非精确版本豁免）、**Schedule 默认组合移除**（引用 `time-context`/`schedule`/`ui-schedule` 的 patch 报 `entry not found`）、**`displayTitle` 可能为空串**（不再兜底 project basename / Session id）；manifest / settings API / 加载器 / HMR / slot / 会话格式 V4 **全部未动** |
 
 ## 推荐阅读路径
 
@@ -42,15 +46,16 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 3. **v0.1.5-alpha.1** — 第二次大重构（Sidebar + Session V3）
 4. **v0.1.6-alpha.1** — 第三次扩张（能力族矩阵 + 默认值收敛 + 启动代际化）
 5. **v0.1.7-rc.1** — 第四次（**契约换代**：设置 + 插件清单 + 会话格式同时换挡）
+6. **v0.2.0-rc.1** — 第五次（**世代门槛 + 组合裁剪**：peer 范围挡住跨线安装、Schedule 转 opt-in、遥测收口共享服务）
 
 ### 按角色
 
 | 角色 | 推荐路径 |
 |------|----------|
-| **新插件开发者** | rc.5 架构总览 → 0.1.2 CHANGELOG → 0.1.5 CHANGELOG → 0.1.6 CHANGELOG → **0.1.7 CHANGELOG + 0.1.7 迁移指南** |
-| **已有插件迁移** | 对应版本 CHANGELOG 的"插件迁移指南"小节；**跨两版者先读 [0.1.7-rc.1/diff-vs-0.1.5-rc.2.md](v0.1.7-rc.1/diff-vs-0.1.5-rc.2.md)** |
-| **架构研究者** | rc.5 全部 14 篇 → dsh-015-notes.md → 0.1.6 的 `14-post-tag-master.md` → **0.1.7 的 `09-plugin-system.md`（插件体系全链）+ `06-memory.md`（V4 持久化）** |
-| **运维/部署** | **0.1.7 的 `CHANGELOG.md` §八「升级影响速查」+ `plugin-migration-guide.md` §九「升级检查清单」** |
+| **新插件开发者** | rc.5 架构总览 → 0.1.2 CHANGELOG → 0.1.5 CHANGELOG → 0.1.6 CHANGELOG → **0.1.7 CHANGELOG + 0.1.7 迁移指南** → 0.2.0 迁移指南（peer 范围 + Schedule opt-in） |
+| **已有插件迁移** | 对应版本 CHANGELOG 的"插件迁移指南"小节；**跨两版者先读 [0.1.7-rc.1/diff-vs-0.1.5-rc.2.md](v0.1.7-rc.1/diff-vs-0.1.5-rc.2.md)**；0.1.7 → 0.2.0 只需 [0.2.0-rc.1/plugin-migration-guide.md](v0.2.0-rc.1/plugin-migration-guide.md)（代码层预期零修改） |
+| **架构研究者** | rc.5 全部 14 篇 → dsh-015-notes.md → 0.1.6 的 `14-post-tag-master.md` → **0.1.7 的 `09-plugin-system.md`（插件体系全链）+ `06-memory.md`（V4 持久化）** → 0.2.0 的 `diff-vs-0.1.7-rc.2.md`（共享 OTel 服务 + ToolCallRecovery） |
+| **运维/部署** | **0.1.7 的 `CHANGELOG.md` §八「升级影响速查」+ `plugin-migration-guide.md` §九「升级检查清单」**；0.2.0 另需注意 **OTLP 端点迁移**（`harness-telemetry` → `dsh-otel-collector`）与 Schedule 默认下线 |
 
 ## v0.1.0-rc.5 详细目录
 
@@ -145,11 +150,38 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 > 2. **`tool-present` 不是本版新写的**（仅从 `packages/fs` 搬家，持久化 digest 未变）；
 > 3. **`agent-team-web-profile` 是整包删除而非改名**（0.1.6 时两包并存），会留下"既有 profile 启动即失败"的缺口。
 
+## v0.1.7-rc.2 详细目录
+
+> 快照基准：tag `dsh-v0.1.7-rc.2` (`477b4f4205`，2026-09-24)，对比上版 `dsh-v0.1.7-rc.1` (`46a7f68b09`)，335 commits（224 非 merge + 111 merge）。
+> 模块级系统性结构与 rc.1 一致，14 篇编号文档沿用 rc.1 全量分析（各篇顶部"基线说明"）。
+
+| 文件 | 主题 |
+|-----|------|
+| [README.md](v0.1.7-rc.2/README.md) | 更新要点（一句话总结 + 版本序列定位 + 变更分组 + Breaking Changes） |
+| [CHANGELOG.md](v0.1.7-rc.2/CHANGELOG.md) | 逐提交分组（Features / Fixes / Reverted） |
+| [diff-vs-0.1.7-rc.1.md](v0.1.7-rc.2/diff-vs-0.1.7-rc.1.md) | 文件热度 + 逐主题 diff（动态工具更新、providers 拆分、快捷键） |
+| [plugin-migration-guide.md](v0.1.7-rc.2/plugin-migration-guide.md) | 插件迁移（结论：无迁移项） |
+| [architecture-overview.md](v0.1.7-rc.2/architecture-overview.md) | 架构总览（rc.1 基线沿用） |
+
+## v0.2.0-rc.1 详细目录
+
+> 快照基准：tag `dsh-v0.2.0-rc.1` (`4878cdabd8`，2026-09-28)，对比上版 `dsh-v0.1.7-rc.2` (`477b4f4205`)，261 commits（167 非 merge + 94 merge）。
+> 表面统计 +20374/−77957，其中 −75173 来自 `docs/persistence-schema.json` 压缩（非代码）。
+> 新增 4 包（`telemetry/otel`、`client/product-analytics`、`client/ui-settings-session-log`、`experimental/schedule-bundle`），无删除无改名；`SESSION_FORMAT_VERSION` 保持 4；模块级 14 篇基线沿用。
+
+| 文件 | 主题 |
+|-----|------|
+| [README.md](v0.2.0-rc.1/README.md) | 更新要点（Schedule opt-in、OTel 收口、productAnalytics、peer 世代门槛） |
+| [CHANGELOG.md](v0.2.0-rc.1/CHANGELOG.md) | 逐提交分组（含 Behavior Changes 与 Reverted 专节） |
+| [diff-vs-0.1.7-rc.2.md](v0.2.0-rc.1/diff-vs-0.1.7-rc.2.md) | 文件热度 + 9 个主题逐 diff + 复核命令 |
+| [plugin-migration-guide.md](v0.2.0-rc.1/plugin-migration-guide.md) | **peer 范围世代门槛**（🔴 唯一必做）、Schedule 复核、`displayTitle` 空串、9 步检查清单 |
+| 01–14 编号文档 + [architecture-overview.md](v0.2.0-rc.1/architecture-overview.md) | 模块基线（0.1.7-rc.1 全量分析沿用，各篇"基线说明"已注明） |
+
 ## 原始来源
 
-- 源码快照: `deepseek-harness/` 各 tag 检出（**当前 HEAD = `dsh-v0.1.7-rc.2`（`477b4f4205`）**）
-- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.1.7-rc.2`（远端已拉到）
-- **跨版本综述**: `roadmap-0.1.5-to-0.1.7-rc.2.md`（0.1.5 → 0.1.6 → 0.1.7-rc.2 三阶段必要性总述）；`v0.1.7-rc.2/` 为最新增量目录
+- 源码快照: `deepseek-harness/` 各 tag 检出（**当前 HEAD = `dsh-v0.2.0-rc.1`（`4878cdabd8`）**）
+- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.2.0-rc.1`（远端已拉到；0.2 线目前仅 `rc.1`）
+- **跨版本综述**: `roadmap-0.1.5-to-0.1.7-rc.2.md`（0.1.5 → 0.1.6 → 0.1.7-rc.2 三阶段必要性总述）；`v0.2.0-rc.1/` 为最新增量目录
 - 侦察底稿: `_analysis_output/dsh016/RECON.md`（0.1.5-rc.2 → 0.1.6-alpha.1）、**`_analysis_output/dsh017/`**（`BRIEF.md` 写作规范 + `notes-added.txt` 区间新增 note 全清单 + `notes-index.txt`）
 - 原始文章: `详解/ 第01-12篇`
 - 项目文档: `项目架构总览.md`、`模块详解模板.md`
@@ -164,4 +196,4 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 
 ---
 
-*最后更新: 2026-09-26（新增 v0.1.7-rc.2 分析目录与跨版本综述 roadmap-0.1.5-to-0.1.7-rc.2.md）*
+*最后更新: 2026-09-29（deepseek-harness 拉取 `dsh-v0.2.0-rc.1`；新增 v0.2.0-rc.1 分析目录，补齐 v0.1.7-rc.2 版本矩阵行）*

@@ -892,9 +892,12 @@ DSH 版本                          settings API                      客户端�
 0.1.5-alpha.1+                    字符串命名空间                      dsh-client-store      V3        Sidebar 重写 + Electron
 0.1.6-alpha.1                     installSection ✅（未变）           dsh-client-store      V3        四能力族 + 公共 manifest + 解析代际
 0.1.7-rc.1                       configure ✅ / installSection ❌    dsh-client-store      **V4**    设置换代 + peer 强制 + 席位收窄
+0.2.0-rc.1                        configure ✅（未变）               dsh-client-store      V4        世代门槛 + Schedule opt-in + 遥测收口
 ```
 
 > **0.1.7 一行的三个「不计入兼容期」提醒**：`installSection` **已删除**（无垫片）；`settings.plugin.item` 席位**已移除**；`$DSH_HOME/settings.yaml` **已移除**。三项都属"不改就静默失效"类型，详见 §二十一。
+
+> **0.2.0 一行的两条提醒**：**peer 世代门槛**——`>=0.1.7-rc.1 <0.2.0-0` 的插件在 `0.2.0-rc.1` 宿主上**安装被拒**（semver 中数值型预发布标识 `0.2.0-0` **小于**字母型的 `0.2.0-rc.1`，故 `0.2.0-rc.1` 不满足 `<0.2.0-0`）；**Schedule 默认组合移除**——`time-context`/`schedule`/`ui-schedule` 三行从 web-app bundle 整行删除，转 optional bundle opt-in。settings API / manifest 契约 / 会话格式 V4 / 加载器 / HMR / slot 机制**全部未变**，详见 §二十二。
 
 > **参考**：`dsh-tidychat` v0.2.6 → v0.2.7 实际适配提交：
 > - 折叠重做：`652a1f1`（model-retry 处理）
@@ -1096,3 +1099,55 @@ foreach ($t in @('dsh-v0.1.5-rc.2','dsh-v0.1.6-alpha.1','dsh-v0.1.7-rc.1')) {
 ```
 
 > **统计口径提醒**：本机 shell 实为 **Windows PowerShell 5.1**，`Get-Content | Measure-Object -Line` 与 `(Get-Content).Count` 读取**含非 ASCII 的 UTF-8 无 BOM** 文件时会**少算行数**。统计行数请改用 `[System.IO.File]::ReadAllLines($p).Count` 或 `git diff --numstat`。另：在仓库根使用 `Get-ChildItem -Recurse` 会跟进 `vendor/`、`node_modules` 符号链接并超时，应改用 `grep` 工具或限定目录。
+
+## 二十二、v0.2.0-rc.1 兼容性变更速查（源码实证）
+
+> 来源：`deepseek-harness` 检出 `dsh-v0.2.0-rc.1`（`4878cdabd8`）对 `dsh-v0.1.7-rc.2`（`477b4f4205`）的实测差异，261 commits（167 非 merge + 94 merge）。
+> 与 [upgrade-pitfalls.md](upgrade-pitfalls.md) §九、[v0.2.0-migration.md](v0.2.0-migration.md) 配合阅读。
+> **总结论：无 API 层硬 breaking change**——manifest（`packages/util/package-manifest/src/types.ts` 区间 diff 为空）、settings API、加载器 / HMR / slot 机制、会话格式 V4 全部未动。需要动手的只有 peer 范围与两处语义复核。
+
+| 级别 | 变更 | 影响面 | 证据 |
+|---|---|---|---|
+| 🔴 | **peer 世代门槛**：`>=0.1.7-rc.1 <0.2.0-0` 在 `0.2.0-rc.1` 宿主不满足，**安装被拒**（preflight 拒绝 + 安装后复查回滚 + 启动拒绝加载），精确版本豁免除外 | 所有 0.1.7 线插件 | `packages/boot/app-boot/src/plugin-compatibility.ts:61`（`includePrerelease` semver）；`packages/boot/plugin-manager/src/operations.ts:323,475` |
+| 🟡 | **Schedule 默认组合移除**：`time-context`/`schedule`/`ui-schedule` 从 web-app bundle 整行删除，迁 optional bundle `@deepseek-ai/dsh-experimental-schedule-bundle`；引用这三个 id 的 patch 报 `patch: entry <id> not found` | 依赖 `schedule_*` 工具或 patch 这三个 id 的插件 | `packages/bundle/web-app/cordis.patch.yml`；`packages/boot/app-boot/src/profile.ts:213`（`OPTIONAL_BUNDLES`） |
+| 🟡 | **`displayTitle` 空串语义**：`SessionRowOwnerProps.displayTitle` / `SessionNode.title` 不再兜底 project basename / Session id，可能为空串；渲染层 `node.title \|\| t('session.untitled')` 兜底 | Session 行动作 slot 消费者 | `packages/client/ui-workspace/src/client/contract/slots.ts:79`、`tree.ts sessionTitle()`、`Rows.tsx` |
+| 🟢 | `forkSession(sessionId)` → `(sessionId, onCreated?) => Promise<SessionId>`（调用者兼容，实现者适配） | override 该接口的插件 | `ui-workspace/src/client/navigation.ts:45-53`；`session-controller/src/client/contract/sessions.ts` |
+| 🟢 | composer 提交契约扩展：`SessionInput.submit(mode?, source?)`、`SubmitAttempt`/`InputEvent` 可选 `submission` 字段、新增 `MessageSubmission` 类型 | 实现 composer 契约的插件 | `ui-conversation/src/client/contract/composer-submission.ts`、`input.ts:189,283-298` |
+| 🟢 | `TextShimmer` DOM 重构（嵌套包装 + `data-shimmer-decoration`） | 覆盖其样式/DOM 的插件 UI | `ui-primitives/src/TextShimmer.tsx` + `.module.css`（`ae9a455bfd`） |
+| 🟢 | `session-log-deepseek.Config.enabled` 改 `Volatile<boolean>` 且由可选变必有；用户改开关即刻生效（免重启） | 直接读该 Config 类型的代码 | `packages/session/session-log-deepseek/src/index.ts`；新 UI 包 `dsh-client-ui-settings-session-log`（General 设置 order 90） |
+| ⚪ | 新服务 `ctx.otel`（`createEventReporter` / `createSessionLogReporter`，字节限额 `maxRequestBytes` ≤ 4,000,000）与 `ctx.productAnalytics`（仅 desktop profile 挂载）；均为可选注入 | 想接遥测/埋点的插件（可选采用） | `packages/telemetry/otel/`；`packages/client/product-analytics/`；`packages/bundle/base/cordis.patch.yml`、`web-app/cordis.patch.yml` |
+| ⚪ | OTLP 端点迁移：`harness-telemetry.deepseeksvc.com` → `dsh-otel-collector.deepseeksvc.com`（未设 `DSH_TELEMETRY_OTLP_URL` 的安装改发新 collector） | 自建遥测消费方（运维） | `packages/bundle/base/cordis.patch.yml` |
+| ⚪ | Web 默认组合不再携带 Schedule 的 4 个 tool schema 与逐步 durable clock 消息（prompt 减负）；`transcriptView` 非 Desktop Web 默认 `detailed`（Desktop 仍 `standard`） | 全体插件（间接利好） | `packages/bundle/web-app/cordis.patch.yml`；`ui-chat/src/chat-settings.ts:32`、`client/apply.ts:149` |
+
+### 22.1 peer 范围迁移动作（唯一必做项）
+
+```jsonc
+// package.json —— peerDependencies
+// 旧（0.1.7 线）
+"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0-0"
+// 新（0.2.0 线）
+"@deepseek-ai/dsh": ">=0.2.0-rc.1 <0.3.0-0"
+// 或跨线（0.2.0-rc.1 对 0.1.7 插件 API 完全兼容时可选，自行承担跨线测试义务）
+"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.3.0-0"
+```
+
+### 22.2 可复核命令
+
+```bash
+repo=E:/test/rewrite-agently/deepseek-harness
+
+# peer 校验语义（应见 includePrerelease）
+git -C $repo grep -n "includePrerelease" dsh-v0.2.0-rc.1 -- packages/boot/app-boot/src/plugin-compatibility.ts
+
+# manifest 契约未动（diff 应为空）
+git -C $repo diff dsh-v0.1.7-rc.2..dsh-v0.2.0-rc.1 -- packages/util/package-manifest/src/types.ts
+
+# Schedule bundle 化（web-app patch 应删除三行）
+git -C $repo diff dsh-v0.1.7-rc.2..dsh-v0.2.0-rc.1 -- packages/bundle/web-app/cordis.patch.yml
+
+# displayTitle 语义
+git -C $repo diff dsh-v0.1.7-rc.2..dsh-v0.2.0-rc.1 -- packages/client/ui-workspace/src/client/contract/slots.ts
+
+# 会话格式（预期 4）
+git -C $repo grep -n "currentVersion" dsh-v0.2.0-rc.1 -- packages/session/session-format-catalog/src/generated.ts
+```

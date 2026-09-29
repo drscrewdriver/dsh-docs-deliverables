@@ -403,6 +403,48 @@ DSH 升级后插件异常
 - **在仓库根使用 `Get-ChildItem -Recurse`** 会跟进 `vendor/`、`node_modules` 符号链接并超时；改用 `grep` 工具或限定目录。
 - **枚举包时不要用磁盘目录**：`packages/experimental` 磁盘枚举实测返回 **21** 项（多出的 `agent-team-web-profile` 只有 `lib/` 与 `node_modules/`，**无 `src/`、无 `package.json`**，是构建残留），而 tag 树查询是 **20** 项。**以 `git ls-tree -d <tag>:packages/<group>` 为准。**
 
+## 九、0.2.0-rc.1 实测新增陷阱（源码实证，2026-09-29 校准）
+
+> 来源：`deepseek-harness` 检出 `dsh-v0.2.0-rc.1`（`4878cdabd8`）对 `dsh-v0.1.7-rc.2`（`477b4f4205`）的逐行差异核实（261 commits）。
+> 与 [compatibility-guide.md](compatibility-guide.md) §二十二、[v0.2.0-migration.md](v0.2.0-migration.md) 配合阅读。
+> **本节特征与 §八 相反：0.2.0 的坑几乎全是"响亮"的——安装被拒、patch 警告都是显式报错，反而容易定位。**
+
+### 9.1 peer 世代门槛：0.1.7 线插件在 0.2.0-rc.1 上安装直接被拒 🔴
+
+- **症状**：`dsh plugin install` 报 `installation rejected`，附 `IncompatiblePlugin { name, version, runtimeVersion, peers }`；**什么都没装**（preflight 在 pnpm 运行前就拒绝）。若 peer 不满足的包是本此安装**未触碰**的旧依赖，宿主只警告并把拦截推迟到 profile 启动。
+- **原因**：peer 校验用 `semver.satisfies(runtimeVersion, range, { includePrerelease: true })`。0.1.7 线惯例 `>=0.1.7-rc.1 <0.2.0-0` 排除一切 0.2 预发布版——semver 中数值型预发布标识 `0.2.0-0` **小于**字母型的 `0.2.0-rc.1`，所以 `0.2.0-rc.1` 不满足 `<0.2.0-0`。这是版本号从 0.1 跨到 0.2 的**机制本意**（生态强制升级位），不是 bug。
+- **修复**：peerDependencies 改 `>=0.2.0-rc.1 <0.3.0-0`（或跨线 `>=0.1.7-rc.1 <0.3.0-0`）。豁免按插件 `name@version` + 运行版本精确配对，是给用户的逃生门，不是发布策略。
+- **定位**：`packages/boot/app-boot/src/plugin-compatibility.ts:61`（校验入口）、`packages/boot/plugin-manager/src/operations.ts:323,475`（preflight + 安装后回滚）。
+
+### 9.2 引用 Schedule 三个 id 的 profile patch 报 `entry not found` 🟡
+
+- **症状**：升级后启动时 loader 警告 `patch: entry <id> not found`（id ∈ `time-context` / `schedule` / `ui-schedule`），对应 patch 行不生效。
+- **原因**：三行已从 `packages/bundle/web-app/cordis.patch.yml` **整行删除**（0.1.7-rc.2 里还是 `disabled: true`），迁入 optional bundle `@deepseek-ai/dsh-experimental-schedule-bundle`；bundle 未启用时组合里没有这些行可匹配。
+- **修复**：用户在 Plugins 页启用 Schedule bundle，或在 profile 的 `dsh.profile.bundles` 显式带上；插件侧对 `schedule_*` 工具做能力探测（`ctx.get('schedule')` 判空），不要假设默认存在。
+- **连带**：依赖"逐步 durable clock 消息"或 Automation tasks 页数据的插件，默认组合下不再产生新消息（存量数据保留在 Schedule 域）。
+
+### 9.3 `displayTitle` 拿到空串 🟡
+
+- **症状**：Session 行动作 slot 的插件 UI 出现空白标题、以标题为键的检索查不到新会话。
+- **原因**：`SessionRowOwnerProps.displayTitle` / `SessionNode.title` 的兜底语义被移除（0.1.7-rc.2："persisted title, project basename, or Session id"；0.2.0-rc.1："persisted title, or empty"）。宿主渲染层用 `t('session.untitled')` 兜底，**插件侧没有**。
+- **修复**：消费方自己补 `displayTitle || <未命名文案>`；rename 对话框把空串当"未命名"而非显示空白。证据：`ui-workspace/src/client/contract/slots.ts:79`、`tree.ts sessionTitle()`。
+
+### 9.4 覆盖 TextShimmer 样式的插件 UI 错位 🟢
+
+- **症状**：自定义 CSS 覆盖 shimmer 效果的插件行出现样式失效/错位。
+- **原因**：`ui-primitives/TextShimmer` 重构为嵌套包装 + `data-shimmer-decoration` 标记（`ae9a455bfd`），内部 DOM 结构变了。
+- **修复**：改用组件默认渲染，或按新结构重写选择器。
+
+### 9.5 运维侧：OTLP 端点迁移与 Session Log 开关热更新 🟢
+
+- **端点**：base bundle 的 `session-telemetry-otel.exporter.url` 由 `harness-telemetry.deepseeksvc.com` 迁到 `dsh-otel-collector.deepseeksvc.com`；自建遥测消费方若按旧端点聚合，升级后流量会"消失"到新 collector。新增 `maxRequestBytes`（≤ 4,000,000）字节限额，大会话前缀拆多次串行请求。
+- **热更新**：`session-log-deepseek.enabled` 改 `Volatile<boolean>`，General 设置新增开关（`dsh-client-ui-settings-session-log`），**改完下一请求即生效**——运维排障时别再假设"改设置要重启"。
+- **直接读 Config 类型的代码**：`enabled` 由可选变必有（类型层适配）。
+
+---
+
+*2026-09-29 增补：§九 来自 dsh-v0.2.0-rc.1 检出对 dsh-v0.1.7-rc.2 的源码差异核实；本版坑位少而显式（安装拒绝 / patch 警告），主战场是 peer 范围声明。*
+
 ---
 
 *生成时间：2026-09-13　|　数据源：`dsh-discussion-summary/incremental-2026-09-12/`（#5886–#6442，544 篇增量讨论）*

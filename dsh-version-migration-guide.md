@@ -115,24 +115,41 @@
 
 ### 4.1 dsh-live-token-stats RPC 迁移专项
 
-**核心变更**：`webServer.register` → `connection.rpc.intercept`
+> ⚠️ **2026-09-13 修订**：下述 `intercept` 迁移路线经实战验证**不可靠**——`/api` 共享通道的
+> interceptor 是单槽（第二个注册的插件抛 `already has an interceptor`，源码实锤见
+> `@deepseek-ai/dsh-client-connection@0.1.5-rc.2` 的 `registerInterceptor`），会被其他
+> 已适配 0.1.5 的插件抢占。且本文原样例的 2 参签名是错的（实际 3 参 + channel 只接受
+> `'/api'`）。**推荐方案**：插件自持 webServer prefix 路由，不经 connection.rpc，
+> 见 [plugin-framework/upgrade-pitfalls.md](plugin-framework/upgrade-pitfalls.md) §2.1。
+
+**核心变更**：`webServer.register` → `connection.rpc.intercept`（不推荐）/ 自持 webServer 路由（推荐）
 
 ```diff
-// 旧（0.1.2+）
-- ctx.webServer.register('live-token-stats', handler);
+// 旧（0.1.2+，0.1.5 上 405 静默失效）
+- ctx.webServer.register({ kind: 'prefix', path: '/live-token-stats', handler });
 
-// 新（0.1.5+）
-+ ctx.connection.rpc.intercept('live-token-stats', handler);
+// 方案 A（不推荐：/api 单槽会被他插件抢占）
++ ctx.connection.rpc.intercept('/api', (ep) => ep.startsWith('live-token-stats'), handler);
+
+// 方案 B（推荐：自持 prefix 路由，多插件共存，better-sidebar main 已验证）
++ ctx.effect(() => ctx.webServer.register({
++   kind: 'prefix',
++   path: '/live-token-stats/api',
++   handler: async (req, res) => { /* 自有信封 + loopback fence */ },
++ }), 'live-token-stats: api routes');
 ```
 
 **客户端调用路径变更**：
 ```diff
 - fetch('/live-token-stats/stream')
-+ fetch('/api/live-token-stats/stream')
++ fetch('/live-token-stats/api/stream')   // 方案 B:直连自持路由,原生 fetch
 ```
 
 **适配分支**：`feature/dsh-015-compat`（提交 `d257475`）
 **涉及文件**：`rpc-channel.ts`（重写）、`LiveTokenStatsLine.tsx`、`client/index.ts`、测试
+**注意**：走 connection.rpc 或自持 webServer 路由都需要在插件入口声明
+`inject = [..., 'connection', 'webServer']`——0.1.5 按调用方 fiber 校验 webServer 授权，
+缺失即宿主 `fatal load failure`（见 upgrade-pitfalls §2.2）。
 
 ### 4.2 dsh-tidychat v0.2.10 feature 分支变更
 
