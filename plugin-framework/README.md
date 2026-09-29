@@ -60,6 +60,7 @@ dsh plugin --profile web add /path/to/your-plugin
 | **[command-registration-audit/](command-registration-audit/)** | **客户端命令注册契约检查（案例复盘 + 检查工具）** | **`/` 菜单里命令集体消失、控制台 `contribution.description is not a function`：注册期零校验 → 候选期抛错 → source 级降级。含 L1 静态 + L2 沙箱双层检查器与 16 条自测** |
 | **[i18n-multilingual-guide.md](i18n-multilingual-guide.md)** | **多语言适配（zh/en 内置 + ja/ko 第三语言）** | **插件要支持日语/韩语：字典拆分、`locale.register` 注册、`addLanguage` 语言包、HMR 回收与验证清单** |
 | [submission-guide.md](submission-guide.md) | awesome-dsh-plugin 投稿 | 向市场提交插件的完整步骤 |
+| [../source-analysis/v0.2.0-rc.1/15-creator-mode-guidance.md](../source-analysis/v0.2.0-rc.1/15-creator-mode-guidance.md) | 创造模式插件指引与 prompt 演进 | 官方创造模式（cordis preset）引导 agent 写插件的现行机制：#4745 prompt 精简（规则搬家对照表）、渐进式 skill 结构（references/ + templates/）、8192 字符阈值与验证清单 |
 
 ## 快速开始（文档阅读顺序）
 
