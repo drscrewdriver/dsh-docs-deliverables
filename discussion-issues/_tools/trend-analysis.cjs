@@ -3,7 +3,7 @@
  * Bug-classification TREND analysis across the WHOLE discussion corpus.
  *
  * Unlike cluster-new.cjs (which only looks at one increment), this classifies
- * every cached discussion (#13..#6442) with the same family rules and buckets it
+ * every cached discussion (#13..latest) with the same family rules and buckets it
  * by week, so emerging / declining / persistent problem families are visible.
  *
  * Input : <RAW_DIR>/<number>.json
@@ -101,7 +101,7 @@ function main() {
     versionHistogram: (() => {
       const v = {};
       for (const x of all) {
-        const m = (x.title + ' ' + '').match(/0\.1\.[0-9]+(?:-[a-z]+\.?[0-9]*)?/g) || [];
+        const m = (x.title + ' ' + '').match(/0\.\d+\.[0-9]+(?:-[a-z]+\.?[0-9]*)?/g) || [];
         for (const s of m) v[s] = (v[s] || 0) + 1;
       }
       return v;
@@ -111,7 +111,7 @@ function main() {
   fs.writeFileSync(path.join(OUT_DIR, 'trend-data.json'), JSON.stringify(out, null, 2), 'utf-8');
 
   // Console summary
-  console.log(`Corpus: ${all.length} discussions (#13..#6442)\n`);
+  console.log(`Corpus: ${all.length} discussions (#13..#${all.length ? all[all.length - 1].num : '?'})\n`);
   console.log('=== Weekly totals ===');
   for (const w of weekKeys) console.log(`  W${w} ${weekLabels[w]} : ${weekTotals[w]}`);
 

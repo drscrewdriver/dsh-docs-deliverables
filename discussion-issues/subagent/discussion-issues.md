@@ -204,3 +204,30 @@ subagent 和 subagent_fork 工具在调用时只接受 description、prompt 和 
 | [#6244](https://github.com/deepseek-ai/deepseek-harness/discussions/6244) | [bug] Forked session inherits the source session's queued (pending) input — the child's first n | 5924 | 0 |
 
 其余：#6327, #6301, #6295, #6245, #6150, #6339
+
+---
+
+## 增量补充 — #6443–#8513（2026-10-01）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-10-01/增量分析报告.md`。
+
+### Fork 会话继承父会话队列　`fork-inbox`
+
+- **规模**: 26 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6491](https://github.com/deepseek-ai/deepseek-harness/discussions/6491) | [dsh-acp] session/list and session/resume treat parentSession as a subagent marker, so forked s | 10315 | 5 |
+| [#7626](https://github.com/deepseek-ai/deepseek-harness/discussions/7626) | Compaction cannot rescue an oversized session — the summarization request itself exceeds the pr | 3711 | 5 |
+| [#7309](https://github.com/deepseek-ai/deepseek-harness/discussions/7309) | [Bug] fork 会继承源会话 fork 点的下一条输入，新会话第一次输入执行的是它 | 3502 | 4 |
+| [#6964](https://github.com/deepseek-ai/deepseek-harness/discussions/6964) | [Bug] claimed 的输入在 prepareRequest 抛错时会永久丢失：本机 154 份存档里 14 例 | 3257 | 4 |
+| [#6555](https://github.com/deepseek-ai/deepseek-harness/discussions/6555) | 【BUG】fork 出的子会话继承父会话未认领的收件箱消息并重复执行 | 2433 | 4 |
+| [#7014](https://github.com/deepseek-ai/deepseek-harness/discussions/7014) | BUG: 冷启动会话列表里，分叉（fork）会话的标题退化成目录名、时间退化成创建时间 | 5016 | 3 |
+| [#6499](https://github.com/deepseek-ai/deepseek-harness/discussions/6499) | fork 之后，fork 前那条消息仍在排队，但界面上不显示 | 618 | 3 |
+| [#8010](https://github.com/deepseek-ai/deepseek-harness/discussions/8010) | [Bug] A session log that lost its final frames reads back as a complete session | 7094 | 2 |
+| [#7406](https://github.com/deepseek-ai/deepseek-harness/discussions/7406) | WebP image attachments permanently break sessions against local llama.cpp-based providers (400  | 4764 | 2 |
+| [#7118](https://github.com/deepseek-ai/deepseek-harness/discussions/7118) | session/fork inherits the next turn's inbox insert → phantom queued input in the child | 2911 | 2 |
+| [#6625](https://github.com/deepseek-ai/deepseek-harness/discussions/6625) | 【社区资源】dsh 排障与升级指南：症状 → 根因（含 file:line）→ 绕过 | 1292 | 2 |
+| [#6909](https://github.com/deepseek-ai/deepseek-harness/discussions/6909) | Fork 会继承父会话排队未发送的消息，顶替用户在子会话发送的新消息 | 712 | 2 |
+
+其余：#7595, #7175, #6660, #7770, #6852, #7247, #6619, #6669, #7843, #6766, #7284, #7736, #8172, #7180

@@ -1,9 +1,9 @@
 # Bug 归类趋势报告（LLM 语义分类）
 
-> 生成时间：2026-09-12T15:30:31Z
-> 语料：DeepSeek Harness GitHub Discussions #13–#6442，共 6321 篇
+> 生成时间：2026-09-30T23:37:16Z
+> 语料：DeepSeek Harness GitHub Discussions #13–#8513，共 8377 篇
 > 分类器：**Qwen3.6-35B-A3B**（局域网 vLLM @ `192.168.100.242:8200`，温度 0.1，JSON 约束输出）
-> 已分类：**6321 / 6321**（覆盖率 100.0%）
+> 已分类：**8377 / 8377**（覆盖率 100.0%）
 
 ---
 
@@ -15,40 +15,40 @@ LLM 版要求模型给出**唯一的 `primary` 族**，因此分布是互斥的�
 
 | 问题族 | 正则命中 | LLM 主族 | 偏差 | 说明 |
 |---|---|---|---|---|
-| `npm-install-build` | 212 | 252 | -16% | 基本一致 |
-| `legacy-session-corruption` | 95 | 128 | -26% | 基本一致 |
-| `malformed-toolcall` | 221 | 102 | +117% | 正则显著高估 |
-| `sandbox-windows` | 527 | 86 | +513% | 正则显著高估 |
-| `legacy-plugin-load-crash` | 47 | 76 | -38% | 基本一致 |
-| `web-startup-perf` | 71 | 63 | +13% | 基本一致 |
-| `web-process-death` | 167 | 60 | +178% | 正则显著高估 |
-| `session-history-unreadable` | 236 | 54 | +337% | 正则显著高估 |
-| `legacy-context-compaction` | 334 | 52 | +542% | 正则显著高估 |
-| `reasoning-loop` | 50 | 40 | +25% | 基本一致 |
-| `session-migration` | 74 | 35 | +111% | 正则显著高估 |
-| `composer-ime` | 53 | 32 | +66% | 正则显著高估 |
-| `legacy-auth-lan` | 932 | 23 | +3952% | 正则显著高估 |
-| `persona-preset-break` | 59 | 23 | +157% | 正则显著高估 |
-| `windows-reveal` | 26 | 21 | +24% | 基本一致 |
-| `fork-inbox` | 36 | 17 | +112% | 正则显著高估 |
-| `client-bundle-stale` | 100 | 16 | +525% | 正则显著高估 |
-| `tool-visibility` | 65 | 11 | +491% | 正则显著高估 |
-| `legacy-token-auth-pwa` | 444 | 3 | +14700% | 正则显著高估 |
-| `legacy-sandbox-escalation` | 76 | 0 | — | 正则误报（LLM 判为 other） |
+| `npm-install-build` | 297 | 356 | -17% | 基本一致 |
+| `sandbox-windows` | 793 | 174 | +356% | 正则显著高估 |
+| `legacy-session-corruption` | 99 | 142 | -30% | 基本一致 |
+| `malformed-toolcall` | 271 | 132 | +105% | 正则显著高估 |
+| `legacy-plugin-load-crash` | 61 | 99 | -38% | 基本一致 |
+| `web-startup-perf` | 102 | 87 | +17% | 基本一致 |
+| `legacy-context-compaction` | 458 | 81 | +465% | 正则显著高估 |
+| `session-migration` | 128 | 79 | +62% | 正则显著高估 |
+| `web-process-death` | 233 | 74 | +215% | 正则显著高估 |
+| `session-history-unreadable` | 310 | 71 | +337% | 正则显著高估 |
+| `windows-reveal` | 80 | 65 | +23% | 基本一致 |
+| `reasoning-loop` | 78 | 55 | +42% | 基本一致 |
+| `composer-ime` | 80 | 50 | +60% | 正则显著高估 |
+| `persona-preset-break` | 77 | 33 | +133% | 正则显著高估 |
+| `fork-inbox` | 62 | 30 | +107% | 正则显著高估 |
+| `legacy-auth-lan` | 1240 | 26 | +4669% | 正则显著高估 |
+| `client-bundle-stale` | 163 | 20 | +715% | 正则显著高估 |
+| `tool-visibility` | 82 | 17 | +382% | 正则显著高估 |
+| `legacy-token-auth-pwa` | 593 | 3 | +19667% | 正则显著高估 |
+| `legacy-sandbox-escalation` | 84 | 0 | — | 正则误报（LLM 判为 other） |
 
 ### 量化结论
 
 | 指标 | 正则 | LLM |
 |---|---|---|
-| 同一子集(6321 篇)的总命中次数 | 3825 | 6505 |
-| 平均每篇命中族数 | 0.61 | 1.03 |
-| 命中率冗余度（总命中 ÷ 篇数） | 0.61× | — |
+| 同一子集(8377 篇)的总命中次数 | 5291 | 8650 |
+| 平均每篇命中族数 | 0.63 | 1.03 |
+| 命中率冗余度（总命中 ÷ 篇数） | 0.63× | — |
 
-- 正则**单族命中**且与 LLM 主族一致：**287** 篇（4.5%）
-- 正则**完全未命中**但 LLM 判定属于某具体问题族：**305** 篇（4.8%）— 这是正则漏检
-- 正则**有命中**但 LLM 判定为非问题（other）：**1915** 篇（30.3%）— 这是正则误报
+- 正则**单族命中**且与 LLM 主族一致：**443** 篇（5.3%）
+- 正则**完全未命中**但 LLM 判定属于某具体问题族：**428** 篇（5.1%）— 这是正则漏检
+- 正则**有命中**但 LLM 判定为非问题（other）：**2555** 篇（30.5%）— 这是正则误报
 
-正则平均每篇命中 **0.61** 个族，而 LLM 为 **1.03** 个（多标签模式）或恒为 1（主族模式）。正则的命中冗余正是此前「各族之和远超总篇数、份额无法相加」的根源。
+正则平均每篇命中 **0.63** 个族，而 LLM 为 **1.03** 个（多标签模式）或恒为 1（主族模式）。正则的命中冗余正是此前「各族之和远超总篇数、份额无法相加」的根源。
 
 ---
 
@@ -56,55 +56,55 @@ LLM 版要求模型给出**唯一的 `primary` 族**，因此分布是互斥的�
 
 | 问题族 | 篇数 | 占比 |
 |---|---|---|
-| 其它（非问题类或未归类） `other` | 5227 | 82.7% |
-| npm 安装/构建失败 `npm-install-build` | 252 | 4.0% |
-| 会话日志损坏（seq gap/并发写） `legacy-session-corruption` | 128 | 2.0% |
-| 畸形 tool-call 致会话不可恢复 `malformed-toolcall` | 102 | 1.6% |
-| Windows 沙箱/TLS/代理 `sandbox-windows` | 86 | 1.4% |
-| 插件加载失败拖垮启动 `legacy-plugin-load-crash` | 76 | 1.2% |
-| dsh web 启动性能退化 `web-startup-perf` | 63 | 1.0% |
-| dsh web 进程静默死亡 `web-process-death` | 60 | 0.9% |
-| 升级后历史会话无法加载 `session-history-unreadable` | 54 | 0.9% |
-| 上下文压缩失效 `legacy-context-compaction` | 52 | 0.8% |
-| 推理退化循环 / 空响应 `reasoning-loop` | 40 | 0.6% |
-| 会话格式迁移失败 `session-migration` | 35 | 0.6% |
-| Composer 输入法/翻译干扰 `composer-ime` | 32 | 0.5% |
-| Web 鉴权 / 局域网访问 `legacy-auth-lan` | 23 | 0.4% |
-| persona/preset 字段重命名破坏 `persona-preset-break` | 23 | 0.4% |
-| Windows 资源管理器定位失败 `windows-reveal` | 21 | 0.3% |
-| Fork 继承父会话队列 `fork-inbox` | 17 | 0.3% |
-| client bundle 陈旧失效 `client-bundle-stale` | 16 | 0.3% |
-| 工具/提示词节丢失 `tool-visibility` | 11 | 0.2% |
+| 其它（非问题类或未归类） `other` | 6783 | 81.0% |
+| npm 安装/构建失败 `npm-install-build` | 356 | 4.2% |
+| Windows 沙箱/TLS/代理 `sandbox-windows` | 174 | 2.1% |
+| 会话日志损坏（seq gap/并发写） `legacy-session-corruption` | 142 | 1.7% |
+| 畸形 tool-call 致会话不可恢复 `malformed-toolcall` | 132 | 1.6% |
+| 插件加载失败拖垮启动 `legacy-plugin-load-crash` | 99 | 1.2% |
+| dsh web 启动性能退化 `web-startup-perf` | 87 | 1.0% |
+| 上下文压缩失效 `legacy-context-compaction` | 81 | 1.0% |
+| 会话格式迁移失败 `session-migration` | 79 | 0.9% |
+| dsh web 进程静默死亡 `web-process-death` | 74 | 0.9% |
+| 升级后历史会话无法加载 `session-history-unreadable` | 71 | 0.8% |
+| Windows 资源管理器定位失败 `windows-reveal` | 65 | 0.8% |
+| 推理退化循环 / 空响应 `reasoning-loop` | 55 | 0.7% |
+| Composer 输入法/翻译干扰 `composer-ime` | 50 | 0.6% |
+| persona/preset 字段重命名破坏 `persona-preset-break` | 33 | 0.4% |
+| Fork 继承父会话队列 `fork-inbox` | 30 | 0.4% |
+| Web 鉴权 / 局域网访问 `legacy-auth-lan` | 26 | 0.3% |
+| client bundle 陈旧失效 `client-bundle-stale` | 20 | 0.2% |
+| 工具/提示词节丢失 `tool-visibility` | 17 | 0.2% |
 | PWA / 移动端 / i18n `legacy-token-auth-pwa` | 3 | 0.0% |
-| **合计** | **6321** | **100%** |
+| **合计** | **8377** | **100%** |
 
-- **Bug 类**: 2881 篇（45.6%）— 非 Bug 类含功能请求、插件展示、提问与讨论
+- **Bug 类**: 4229 篇（50.5%）— 非 Bug 类含功能请求、插件展示、提问与讨论
 
 ### 严重度分布（仅 Bug 类）
 
 | 严重度 | 篇数 | 占 Bug 类 |
 |---|---|---|
-| critical | 135 | 4.7% |
-| high | 1596 | 55.4% |
-| medium | 876 | 30.4% |
-| low | 274 | 9.5% |
+| critical | 166 | 3.9% |
+| high | 2384 | 56.4% |
+| medium | 1262 | 29.8% |
+| low | 417 | 9.9% |
 
 ### 主要族的严重度构成
 
 | 问题族 | critical | high | medium | low |
 |---|---|---|---|---|
-| 其它（非问题类或未归类） | 64 | 841 | 713 | 3609 |
-| npm 安装/构建失败 | 0 | 185 | 38 | 29 |
-| 会话日志损坏（seq gap/并发写） | 44 | 81 | 1 | 2 |
-| 畸形 tool-call 致会话不可恢复 | 14 | 84 | 4 | 0 |
-| Windows 沙箱/TLS/代理 | 4 | 54 | 16 | 12 |
-| 插件加载失败拖垮启动 | 1 | 64 | 4 | 7 |
-| dsh web 启动性能退化 | 1 | 24 | 33 | 5 |
-| dsh web 进程静默死亡 | 2 | 56 | 1 | 1 |
-| 升级后历史会话无法加载 | 0 | 47 | 7 | 0 |
-| 上下文压缩失效 | 3 | 33 | 14 | 2 |
-| 推理退化循环 / 空响应 | 0 | 31 | 8 | 1 |
-| 会话格式迁移失败 | 2 | 30 | 1 | 2 |
+| 其它（非问题类或未归类） | 80 | 1266 | 1005 | 4432 |
+| npm 安装/构建失败 | 0 | 270 | 50 | 36 |
+| Windows 沙箱/TLS/代理 | 6 | 134 | 20 | 14 |
+| 会话日志损坏（seq gap/并发写） | 48 | 91 | 1 | 2 |
+| 畸形 tool-call 致会话不可恢复 | 18 | 109 | 4 | 1 |
+| 插件加载失败拖垮启动 | 1 | 85 | 4 | 9 |
+| dsh web 启动性能退化 | 1 | 36 | 42 | 8 |
+| 上下文压缩失效 | 4 | 50 | 25 | 2 |
+| 会话格式迁移失败 | 4 | 70 | 2 | 3 |
+| dsh web 进程静默死亡 | 3 | 69 | 1 | 1 |
+| 升级后历史会话无法加载 | 1 | 59 | 11 | 0 |
+| Windows 资源管理器定位失败 | 0 | 8 | 56 | 1 |
 
 ---
 
@@ -112,41 +112,41 @@ LLM 版要求模型给出**唯一的 `primary` 族**，因此分布是互斥的�
 
 > 因语料总量剧烈衰减（W0 3386 篇 → W4 355 篇），下表同时给出**绝对篇数**与**当周占比**。占比是互斥口径，可直接横向比较。
 
-| 周 | 区间 | 已分类 | W0 | W1 | W2 | W3 | W4 |
-|---|---|---|---|---|---|---|---|
-| 篇数 | | | 3386 | 1206 | 767 | 607 | 355 |
+| 周 | 区间 | 已分类 | W0 | W1 | W2 | W3 | W4 | W5 | W6 |
+|---|---|---|---|---|---|---|---|---|---|
+| 篇数 | | | 3388 | 1206 | 767 | 608 | 803 | 753 | 852 |
 
 ### 各族周度篇数与占比
 
-| 问题族 | W0 | W1 | W2 | W3 | W4 | W0→末周 |
-|---|---|---|---|---|---|---|
-| 其它（非问题类或未归类） | 2906 (85.8%) | 988 (81.9%) | 609 (79.4%) | 467 (76.9%) | 257 (72.4%) | 0.84× |
-| npm 安装/构建失败 | 109 (3.2%) | 58 (4.8%) | 35 (4.6%) | 34 (5.6%) | 16 (4.5%) | 1.40× |
-| 会话日志损坏（seq gap/并发写） | 69 (2.0%) | 27 (2.2%) | 20 (2.6%) | 9 (1.5%) | 3 (0.8%) | 0.41× |
-| 畸形 tool-call 致会话不可恢复 | 50 (1.5%) | 26 (2.2%) | 11 (1.4%) | 11 (1.8%) | 4 (1.1%) | 0.76× |
-| Windows 沙箱/TLS/代理 | 56 (1.7%) | 12 (1.0%) | 6 (0.8%) | 8 (1.3%) | 4 (1.1%) | 0.68× |
-| 插件加载失败拖垮启动 | 40 (1.2%) | 10 (0.8%) | 16 (2.1%) | 8 (1.3%) | 2 (0.6%) | 0.48× |
-| dsh web 启动性能退化 | 24 (0.7%) | 19 (1.6%) | 9 (1.2%) | 5 (0.8%) | 6 (1.7%) | 2.38× |
-| dsh web 进程静默死亡 | 21 (0.6%) | 18 (1.5%) | 11 (1.4%) | 7 (1.2%) | 3 (0.8%) | 1.36× |
-| 升级后历史会话无法加载 | 25 (0.7%) | 8 (0.7%) | 9 (1.2%) | 8 (1.3%) | 4 (1.1%) | 1.53× |
-| 上下文压缩失效 | 11 (0.3%) | 14 (1.2%) | 11 (1.4%) | 12 (2.0%) | 4 (1.1%) | 3.47× |
-| 推理退化循环 / 空响应 | 21 (0.6%) | 6 (0.5%) | 7 (0.9%) | 5 (0.8%) | 1 (0.3%) | 0.45× |
-| 会话格式迁移失败 | 4 (0.1%) | 1 (0.1%) | 3 (0.4%) | 12 (2.0%) | 15 (4.2%) | 35.77× |
-| Composer 输入法/翻译干扰 | 12 (0.4%) | 7 (0.6%) | 3 (0.4%) | 6 (1.0%) | 4 (1.1%) | 3.18× |
-| Web 鉴权 / 局域网访问 | 15 (0.4%) | 2 (0.2%) | 4 (0.5%) | 2 (0.3%) | 0 (0.0%) | 0.00× |
-| persona/preset 字段重命名破坏 | 6 (0.2%) | 6 (0.5%) | 3 (0.4%) | 4 (0.7%) | 4 (1.1%) | 6.36× |
-| Windows 资源管理器定位失败 | 7 (0.2%) | 1 (0.1%) | 1 (0.1%) | 1 (0.2%) | 11 (3.1%) | 14.99× |
-| Fork 继承父会话队列 | 2 (0.1%) | 1 (0.1%) | 1 (0.1%) | 1 (0.2%) | 12 (3.4%) | 57.23× |
-| client bundle 陈旧失效 | 5 (0.1%) | 1 (0.1%) | 3 (0.4%) | 5 (0.8%) | 2 (0.6%) | 3.82× |
-| 工具/提示词节丢失 | 3 (0.1%) | 0 (0.0%) | 4 (0.5%) | 1 (0.2%) | 3 (0.8%) | 9.54× |
-| PWA / 移动端 / i18n | 0 (0.0%) | 1 (0.1%) | 1 (0.1%) | 1 (0.2%) | 0 (0.0%) | 0.00× |
+| 问题族 | W0 | W1 | W2 | W3 | W4 | W5 | W6 | W0→末周 |
+|---|---|---|---|---|---|---|---|---|
+| 其它（非问题类或未归类） | 2908 (85.8%) | 988 (81.9%) | 609 (79.4%) | 468 (77.0%) | 606 (75.5%) | 561 (74.5%) | 643 (75.5%) | 0.88× |
+| npm 安装/构建失败 | 109 (3.2%) | 58 (4.8%) | 35 (4.6%) | 34 (5.6%) | 30 (3.7%) | 61 (8.1%) | 29 (3.4%) | 1.06× |
+| Windows 沙箱/TLS/代理 | 56 (1.7%) | 12 (1.0%) | 6 (0.8%) | 8 (1.3%) | 10 (1.2%) | 16 (2.1%) | 66 (7.7%) | 4.69× |
+| 会话日志损坏（seq gap/并发写） | 69 (2.0%) | 27 (2.2%) | 20 (2.6%) | 9 (1.5%) | 8 (1.0%) | 5 (0.7%) | 4 (0.5%) | 0.23× |
+| 畸形 tool-call 致会话不可恢复 | 50 (1.5%) | 26 (2.2%) | 11 (1.4%) | 11 (1.8%) | 11 (1.4%) | 14 (1.9%) | 9 (1.1%) | 0.72× |
+| 插件加载失败拖垮启动 | 40 (1.2%) | 10 (0.8%) | 16 (2.1%) | 8 (1.3%) | 8 (1.0%) | 11 (1.5%) | 6 (0.7%) | 0.60× |
+| dsh web 启动性能退化 | 24 (0.7%) | 19 (1.6%) | 9 (1.2%) | 5 (0.8%) | 9 (1.1%) | 12 (1.6%) | 9 (1.1%) | 1.49× |
+| 上下文压缩失效 | 11 (0.3%) | 14 (1.2%) | 11 (1.4%) | 12 (2.0%) | 9 (1.1%) | 11 (1.5%) | 13 (1.5%) | 4.70× |
+| 会话格式迁移失败 | 4 (0.1%) | 1 (0.1%) | 3 (0.4%) | 12 (2.0%) | 31 (3.9%) | 8 (1.1%) | 20 (2.3%) | 19.88× |
+| dsh web 进程静默死亡 | 21 (0.6%) | 18 (1.5%) | 11 (1.4%) | 7 (1.2%) | 9 (1.1%) | 3 (0.4%) | 5 (0.6%) | 0.95× |
+| 升级后历史会话无法加载 | 25 (0.7%) | 8 (0.7%) | 9 (1.2%) | 8 (1.3%) | 8 (1.0%) | 7 (0.9%) | 6 (0.7%) | 0.95× |
+| Windows 资源管理器定位失败 | 7 (0.2%) | 1 (0.1%) | 1 (0.1%) | 1 (0.2%) | 21 (2.6%) | 15 (2.0%) | 19 (2.2%) | 10.79× |
+| 推理退化循环 / 空响应 | 21 (0.6%) | 6 (0.5%) | 7 (0.9%) | 5 (0.8%) | 4 (0.5%) | 8 (1.1%) | 4 (0.5%) | 0.76× |
+| Composer 输入法/翻译干扰 | 12 (0.4%) | 7 (0.6%) | 3 (0.4%) | 6 (1.0%) | 9 (1.1%) | 7 (0.9%) | 6 (0.7%) | 1.99× |
+| persona/preset 字段重命名破坏 | 6 (0.2%) | 6 (0.5%) | 3 (0.4%) | 4 (0.7%) | 5 (0.6%) | 3 (0.4%) | 6 (0.7%) | 3.98× |
+| Fork 继承父会话队列 | 2 (0.1%) | 1 (0.1%) | 1 (0.1%) | 1 (0.2%) | 18 (2.2%) | 6 (0.8%) | 1 (0.1%) | 1.99× |
+| Web 鉴权 / 局域网访问 | 15 (0.4%) | 2 (0.2%) | 4 (0.5%) | 2 (0.3%) | 0 (0.0%) | 2 (0.3%) | 1 (0.1%) | 0.27× |
+| client bundle 陈旧失效 | 5 (0.1%) | 1 (0.1%) | 3 (0.4%) | 5 (0.8%) | 2 (0.2%) | 2 (0.3%) | 2 (0.2%) | 1.59× |
+| 工具/提示词节丢失 | 3 (0.1%) | 0 (0.0%) | 4 (0.5%) | 1 (0.2%) | 5 (0.6%) | 1 (0.1%) | 3 (0.4%) | 3.98× |
+| PWA / 移动端 / i18n | 0 (0.0%) | 1 (0.1%) | 1 (0.1%) | 1 (0.2%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) | 0.00× |
 
 ### 关键判定（绝对增长 vs 相对抗跌）
 
-> 已分类子集的大盘衰减系数 = 355 / 3386 = **0.105**
+> 已分类子集的大盘衰减系数 = 852 / 3388 = **0.251**
 
-- **绝对增长族（3）**：`session-migration` 4→15、`windows-reveal` 7→11、`fork-inbox` 2→12
-- **绝对腰斩族（14）**：`other` 2906→257、`npm-install-build` 109→16、`legacy-session-corruption` 69→3、`malformed-toolcall` 50→4、`sandbox-windows` 56→4、`legacy-plugin-load-crash` 40→2、`web-startup-perf` 24→6、`web-process-death` 21→3、`session-history-unreadable` 25→4、`legacy-context-compaction` 11→4、`reasoning-loop` 21→1、`composer-ime` 12→4、`legacy-auth-lan` 15→0、`client-bundle-stale` 5→2
+- **绝对增长族（2）**：`session-migration` 4→20、`windows-reveal` 7→19
+- **绝对腰斩族（13）**：`other` 2908→643、`npm-install-build` 109→29、`legacy-session-corruption` 69→4、`malformed-toolcall` 50→9、`legacy-plugin-load-crash` 40→6、`web-startup-perf` 24→9、`web-process-death` 21→5、`session-history-unreadable` 25→6、`reasoning-loop` 21→4、`composer-ime` 12→6、`fork-inbox` 2→1、`legacy-auth-lan` 15→1、`client-bundle-stale` 5→2
 
 ---
 
@@ -156,29 +156,40 @@ LLM 版要求模型给出**唯一的 `primary` 族**，因此分布是互斥的�
 
 > 注意：模型给每篇帖各自取名，同一个问题会出现多种拼写（`windows-path-truncation` / `win32-path-truncation` / `native-picker-path-truncation` 实为同一问题）。因此原始标签必须先经 `canon-new-families.cjs` 做**语义归并**才有意义，下表使用归并后的规范族。
 
-原始标签 **1706** 个，参与归并 92 个（出现 ≥2 次者），归并为 **32** 个规范族。
+原始标签 **2501** 个，参与归并 141 个（出现 ≥2 次者），归并为 **46** 个规范族。
 
 | 规范新族 | 涉及帖数 | 归并的同义标签 | 说明 |
 |---|---|---|---|
-| `windows-path-truncation` | 41 | `native-picker-path-truncation`(8)<br>`native-picker-utf16-truncation`(9)<br>`windows-dialog-worker-crash`(2)<br>`windows-native-picker-utf16-truncation`(3)<br>`windows-path-truncation`(6)<br>`native-path-truncation`(5)<br>`win32-path-truncation`(3)<br>`windows-cjk-path-truncation`(2)<br>`native-picker-cjk-truncation`(3) | Path string truncation or encoding issues in Windows native pickers and dialogs. |
-| `sandbox-permission-escalation` | 22 | `sandbox-permission-escalation`(2)<br>`sandbox-escape`(3)<br>`sandbox-escalation-logic`(2)<br>`sandbox-escalation-loop`(2)<br>`sandbox-permission-loop`(2)<br>`sandbox-permission-escalation-bug`(3)<br>`sandbox-escalation-same-mode`(2)<br>`sandbox-permission-idempotency`(2)<br>`sandbox-permission-validation`(2)<br>`sandbox-permission-logic`(2) | Logic errors, loops, or validation failures in sandbox permission escalation. |
-| `subagent-model-issues` | 18 | `subagent-model-inheritance`(14)<br>`subagent-model-override`(2)<br>`subagent-model-stale`(2) | Inheritance, override, or staleness issues in subagent model definitions. |
-| `web-security-vulnerabilities` | 18 | `web-origin-restriction`(2)<br>`web-memory-leak`(2)<br>`web-auth-missing`(2)<br>`web-http-secure-context`(2)<br>`ssrf-vulnerability`(2)<br>`ssrf-fake-ip-block`(2)<br>`security-vulnerabilities`(2)<br>`security-vulnerability`(2)<br>`security-path-traversal`(2) | Security vulnerabilities including SSRF, path traversal, auth, and origin restrictions. |
-| `tool-call-validation` | 13 | `hook-config-validation`(2)<br>`tool-call-validation-error`(3)<br>`tool-call-module-duplication`(2)<br>`tool-call-empty-string-overwrite`(2)<br>`tool-call-id-collision`(2)<br>`tool-desc-template-conflict`(2) | Validation, duplication, or collision errors in tool call execution and configuration. |
-| `windows-subprocess-issues` | 10 | `windows-subprocess-support`(2)<br>`subprocess-spill-crash`(2)<br>`windows-subprocess-popup`(2)<br>`windows-subprocess-console-flash`(2)<br>`windows-subprocess-flash`(2) | Crashes, crashes, or UI flashes related to Windows subprocess execution. |
-| `windows-path-encoding` | 10 | `native-path-encoding`(6)<br>`windows-path-encoding`(4) | Character encoding issues when handling file paths on Windows. |
-| `ui-rendering-errors` | 10 | `ui-stats-truncation`(2)<br>`ui-error-display`(2)<br>`ui-workspace-selection-failure`(2)<br>`ui-state-stale`(2)<br>`ui-flicker`(2) | UI rendering, state staleness, flicker, or selection failures. |
-| `tool-schema-validation` | 8 | `tool-schema-serialization`(2)<br>`tool-schema-mismatch`(2)<br>`tool-schema-validation`(2)<br>`mcp-schema-validation`(2) | Serialization, mismatch, or validation errors in tool schemas. |
-| `windows-dialog-crashes` | 7 | `windows-dialog-focus`(2)<br>`windows-native-crash`(3)<br>`windows-folder-picker-crash`(2) | Crashes or focus issues in Windows native dialogs and pickers. |
-| `tool-execution-crash` | 7 | `tool-execution-crash`(3)<br>`unknown-tool-error`(2)<br>`tool-runtime-symbol-mismatch`(2) | Runtime crashes, unknown tools, or symbol mismatches during tool execution. |
-| `sdk-session-memory` | 7 | `sdk-session-resume-failure`(3)<br>`sdk-memory-leak`(4) | Session resume failures or memory leaks in the SDK. |
-| `plugin-crash` | 6 | `plugin-install-crash`(2)<br>`plugin-hot-reload-failure`(2)<br>`plugin-rpc-injection-failure`(2) | Crashes or failures during plugin installation, hot reloading, or RPC injection. |
-| `workspace-path-issues` | 6 | `workspace-path-validation`(2)<br>`workspace-path-resolution`(2)<br>`workspace-cwd-mismatch`(2) | Validation, resolution, or current working directory mismatches in workspace paths. |
-| `llm-role-retry-issues` | 5 | `llm-retry-misclassification`(3)<br>`llm-role-incompatibility`(2) | Misclassification during LLM retries or role incompatibility issues. |
-| `settings-race-condition` | 5 | `settings-race-condition`(3)<br>`settings-wire-redaction-leak`(2) | Race conditions or data leaks in settings management. |
-| `composer-crash` | 4 | `composer-ui-crash`(2)<br>`composer-render-crash`(2) | Crashes in the composer UI or rendering engine. |
-| `markdown-rendering-bugs` | 4 | `markdown-strikethrough-misparse`(2)<br>`markdown-rendering-bug`(2) | Parsing or rendering bugs in markdown content. |
-| `plugin-event-ignorable` | 3 | `plugin-event-ignorable`(3) | Issues with ignorable plugin events. |
+| `windows-path-truncation` | 39 | `native-picker-path-truncation`(8)<br>`native-picker-utf16-truncation`(9)<br>`windows-native-picker-utf16-truncation`(3)<br>`windows-path-truncation`(6)<br>`native-path-truncation`(5)<br>`win32-path-truncation`(3)<br>`windows-cjk-path-truncation`(2)<br>`native-picker-cjk-truncation`(3) | Path string truncation issues in native or Windows-specific pickers and path handling. |
+| `sandbox-security-issues` | 25 | `sandbox-permission-escalation`(2)<br>`sandbox-escape`(3)<br>`sandbox-escalation-logic`(2)<br>`sandbox-bypass`(2)<br>`sandbox-escalation-loop`(2)<br>`sandbox-permission-loop`(2)<br>`sandbox-permission-idempotency`(2)<br>`sandbox-permission-validation`(3)<br>`sandbox-permission-escalation-bug`(3)<br>`sandbox-permission-logic`(2)<br>`sandbox-escalation-same-mode`(2) | Security vulnerabilities and logic errors related to sandbox permission escalation, bypass, and validation. |
+| `ui-rendering-bugs` | 23 | `ui-stats-truncation`(2)<br>`rtl-rendering`(2)<br>`markdown-strikethrough-misparse`(2)<br>`markdown-rendering-bug`(2)<br>`math-rendering-failure`(2)<br>`math-rendering-bug`(2)<br>`markdown-math-rendering`(2)<br>`composer-ime`(3)<br>`ui-flicker`(2)<br>`ui-overlap`(2)<br>`ui-layout-scroll`(2) | Visual rendering bugs including layout, flickering, IME, and markdown/math display issues. |
+| `subagent-model-issues` | 20 | `subagent-model-inheritance`(14)<br>`subagent-model-override`(2)<br>`subagent-model-stale`(2)<br>`subagent-error-propagation`(2) | Problems with subagent model configuration, inheritance, state staleness, and error handling. |
+| `tool-execution-crash` | 16 | `subprocess-spill-crash`(2)<br>`plugin-install-crash`(2)<br>`composer-ui-crash`(2)<br>`composer-render-crash`(2)<br>`tool-execution-crash`(4)<br>`native-addon-crash`(2)<br>`tool-dispatch-crash`(2) | Application crashes occurring during tool execution, plugin installation, or native addon loading. |
+| `tool-call-issues` | 16 | `tool-runtime-symbol-mismatch`(3)<br>`tool-call-module-duplication`(5)<br>`tool-call-empty-string-overwrite`(2)<br>`tool-call-id-collision`(2)<br>`tool-symbol-mismatch`(2)<br>`tool-runtime-init-failure`(2) | Issues with tool call identification, module duplication, runtime initialization, and symbol mismatches. |
+| `tool-schema-validation` | 15 | `hook-config-validation`(2)<br>`tool-call-validation-error`(3)<br>`tool-schema-serialization`(2)<br>`tool-schema-mismatch`(2)<br>`tool-schema-validation`(2)<br>`mcp-schema-validation`(2)<br>`tool-desc-template-conflict`(2) | Errors related to tool schema definition, validation, serialization, and configuration. |
+| `web-security-vulnerabilities` | 14 | `web-origin-restriction`(2)<br>`security-vulnerabilities`(2)<br>`security-vulnerability`(2)<br>`ssrf-vulnerability`(2)<br>`security-path-traversal`(2)<br>`ssrf-fake-ip-block`(2)<br>`web-fetch-fake-ip-block`(2) | Security vulnerabilities including SSRF, path traversal, and origin restriction failures. |
+| `llm-reasoning-issues` | 11 | `llm-retry-misclassification`(3)<br>`auth-error-misclassification`(2)<br>`llm-role-incompatibility`(2)<br>`reasoning-only-empty-response`(2)<br>`reasoning-loop`(2) | Errors in LLM reasoning, retry logic, role compatibility, and response generation. |
+| `windows-path-encoding` | 10 | `native-path-encoding`(6)<br>`windows-path-encoding`(4) | Character encoding problems when handling file paths on Windows or native systems. |
+| `ui-state-sync` | 10 | `settings-race-condition`(3)<br>`task-status-sync`(3)<br>`task-state-sync`(2)<br>`ui-state-stale`(2) | Synchronization issues between UI state, settings, and task status. |
+| `web-memory-leak` | 9 | `web-memory-leak`(3)<br>`sdk-memory-leak`(4)<br>`preset-memory-leak`(2) | Memory leaks occurring in web contexts, SDKs, or presets. |
+| `plugin-issues` | 9 | `plugin-hot-reload-failure`(2)<br>`plugin-event-ignorable`(3)<br>`plugin-rpc-injection-failure`(2)<br>`plugin-module-duplication`(2) | Issues with plugin loading, hot reloading, RPC injection, and module duplication. |
+| `windows-subprocess-issues` | 8 | `windows-subprocess-support`(2)<br>`windows-subprocess-popup`(2)<br>`windows-subprocess-console-flash`(2)<br>`windows-subprocess-flash`(2) | Issues with Windows subprocess execution, including console flashing and popup behavior. |
+| `web-ui-perf-bugs` | 7 | `web-startup-perf`(3)<br>`web-ui-scroll-perf`(2)<br>`web-ui-layout-bug`(2) | Performance and layout bugs specific to the web user interface. |
+| `windows-dialog-crash` | 6 | `windows-dialog-focus`(2)<br>`windows-dialog-worker-crash`(2)<br>`windows-folder-picker-crash`(2) | Crashes or focus issues related to Windows native dialogs and pickers. |
+| `workspace-path-issues` | 6 | `workspace-path-validation`(2)<br>`workspace-cwd-mismatch`(2)<br>`workspace-path-resolution`(2) | Problems with workspace path validation, current working directory mismatches, and resolution. |
+| `dependency-issues` | 6 | `npm-dependency-missing`(2)<br>`node-version-incompatibility`(2)<br>`dependency-version-pinning`(2) | Problems with missing dependencies, Node version incompatibility, and version pinning. |
+| `session-state-errors` | 6 | `acp-session-load-missing`(2)<br>`session-race-condition`(2)<br>`session-format-validation-error`(2) | Issues related to loading, validating, or managing session state integrity. |
+| `desktop-environment-issues` | 6 | `desktop-clipboard-shortcuts`(2)<br>`desktop-build-failure`(2)<br>`desktop-protocol-404`(2) | Problems specific to the desktop application environment, build, or protocol handling. |
+| `macos-security-entitlements` | 6 | `macos-entitlement-missing`(4)<br>`sandbox-integrity-label`(2) | macOS-specific security issues regarding missing entitlements or sandbox labels. |
+| `sdk-session-issues` | 5 | `sdk-session-resume-failure`(3)<br>`session-logging-integrity`(2) | Issues with SDK session resumption and logging data integrity. |
+| `ui-selection-failure` | 4 | `ui-workspace-selection-failure`(2)<br>`workspace-selection-failure`(2) | Failures in selecting or managing workspace items in the UI. |
+| `web-auth-issues` | 4 | `web-auth-missing`(2)<br>`web-http-secure-context`(2) | Authentication failures and secure context issues in web environments. |
+| `provider-catalog-stale` | 4 | `model-catalog-stale`(2)<br>`provider-catalog-stale`(2) | Stale data in model or provider catalogs. |
+| `data-loss-and-integrity` | 4 | `tool-truncation-data-loss`(2)<br>`settings-import-data-loss`(2) | Incidents where user data is truncated, lost, or corrupted during operations. |
+| `ui-and-rendering-regressions` | 4 | `markdown-rendering`(2)<br>`ui-regression`(2) | Visual or rendering defects affecting the user interface or content display. |
+| `plugin-and-module-errors` | 4 | `plugin-update-failure`(2)<br>`module-duplication-symbol-mismatch`(2) | Failures in plugin updates or module loading due to symbol conflicts. |
+| `transport-and-proxy-failures` | 4 | `transport-failure`(2)<br>`proxy-redirect-failure`(2) | Network transport issues or failures in proxy redirection logic. |
+| `electron-environment-leak` | 4 | `electron-env-leak`(4) | Resource or environment variable leaks within the Electron runtime. |
 
 > 上表只列出现 ≥3 帖的规范族；完整归并结果见 `_tools/new-family-canonical.json`。
 
@@ -188,10 +199,41 @@ LLM 版要求模型给出**唯一的 `primary` 族**，因此分布是互斥的�
 
 ## 五、LLM 判定的 critical / high 问题清单
 
-共 **1731** 篇。
+共 **2550** 篇。
 
 | # | 严重度 | 主族 | 标题 | LLM 判定的根因 |
 |---|---|---|---|---|
+| [#8511](https://github.com/deepseek-ai/deepseek-harness/discussions/8511) | critical | 其它（非问题类或未归类） | 纯问答请求触发越界读取与工作区落盘 | Agent violates sandbox policy by reading outside workspace and writing files without user approval. |
+| [#8465](https://github.com/deepseek-ai/deepseek-harness/discussions/8465) | critical | 畸形 tool-call 致会话不可恢复 | [Bug]内容风控拒答会让会话永久不可用，且 DSH 没有任何恢复途径 | Content moderation rejection causes session corruption or permanent unavailability without recovery  |
+| [#8330](https://github.com/deepseek-ai/deepseek-harness/discussions/8330) | critical | dsh web 进程静默死亡 | Uncaught ENOENT in OutputCollector.spillAll kills the dsh web server; spill root | Uncaught ENOENT exception in OutputCollector.spillAll crashes the server when temp files are deleted |
+| [#8195](https://github.com/deepseek-ai/deepseek-harness/discussions/8195) | critical | 其它（非问题类或未归类） | # [Windows] 自更新会删除位于安装目录内的工作区，随后静默重建为空目录（被掩盖的数据丢失） | NSIS installer deletes non-payload files in installation directory during update, causing data loss. |
+| [#8171](https://github.com/deepseek-ai/deepseek-harness/discussions/8171) | critical | 会话日志损坏（seq gap/并发写） | Session persistence layer is not isolated between sessions - one session's file  | Shared session persistence layer lacks isolation, allowing one session's corruption to break another |
+| [#8084](https://github.com/deepseek-ai/deepseek-harness/discussions/8084) | critical | 会话日志损坏（seq gap/并发写） | Session corrupt: seed assistant/message at index 4002 has invalid settlement fie | Session log data corruption causing invalid settlement fields in stored messages. |
+| [#7944](https://github.com/deepseek-ai/deepseek-harness/discussions/7944) | critical | 畸形 tool-call 致会话不可恢复 | [Bug] V4 写侧 admission 不校验 tool-call 的 id/name：会话或永久打不开、或每次请求 400（0.1.7-rc.2 桌面端， | Write-side admission validation fails to check tool-call id/name, allowing creation of unreadable se |
+| [#7921](https://github.com/deepseek-ai/deepseek-harness/discussions/7921) | critical | 会话格式迁移失败 | [Bug] Data dir re-initialized during 0.1.7-rc.1 → rc.2 upgrade (Windows): all se | Upgrade helper failed to preserve data and re-initialized data directory despite claiming non-destru |
+| [#7784](https://github.com/deepseek-ai/deepseek-harness/discussions/7784) | critical | 其它（非问题类或未归类） | 建议为pwsh的移动/删除文件操作增加路径校验，防止目标路径解析错误 | Tool lacks path validation and error handling for PowerShell variable conflicts, leading to accident |
+| [#7726](https://github.com/deepseek-ai/deepseek-harness/discussions/7726) | critical | 其它（非问题类或未归类） | [Security] Supplement to GHSA-vp88-72xg-3579: events.mux also broadcasts the ful | Security vulnerability in events.mux broadcasting full session content and unbound lookup in respond |
+| [#7722](https://github.com/deepseek-ai/deepseek-harness/discussions/7722) | critical | 其它（非问题类或未归类） | [Security] Cross-session terminal hijack: the terminal namespace resolves purely | Missing authorization checks in terminal controller allow cross-session hijacking. |
+| [#7661](https://github.com/deepseek-ai/deepseek-harness/discussions/7661) | critical | 其它（非问题类或未归类） | 安全隐患反馈 | Sandbox permission enforcement failed, allowing file writes outside the designated workspace directo |
+| [#7637](https://github.com/deepseek-ai/deepseek-harness/discussions/7637) | critical | 升级后历史会话无法加载 | # [Bug] Sidebar history sessions and workspaces completely lost, and current ses | Session data corruption or migration failure causing complete loss of sidebar history and workspace  |
+| [#7623](https://github.com/deepseek-ai/deepseek-harness/discussions/7623) | critical | 其它（非问题类或未归类） | /plugins/* carrier 路由未做请求信任校验，伪造 Host 即可读取完整插件图（附带定位，细节待私密渠道补充） | Missing Host header validation and authentication on internal plugin routes allowing unauthorized da |
+| [#7613](https://github.com/deepseek-ai/deepseek-harness/discussions/7613) | critical | 其它（非问题类或未归类） | mermaid securityLevel:'strict' does not stop off-origin image requests from fenc | Mermaid strict security level fails to block off-origin image requests in HTML labels. |
+| [#7517](https://github.com/deepseek-ai/deepseek-harness/discussions/7517) | critical | Windows 沙箱/TLS/代理 | [BUG] Workspace-write 沙箱缺陷：受限进程可通过工作区内的目录 Junction 删除工作区外文件 | Sandbox ACL logic allows DELETE via junctions due to inconsistent permission checks between write an |
+| [#7467](https://github.com/deepseek-ai/deepseek-harness/discussions/7467) | critical | 其它（非问题类或未归类） | 完全权限模式下清空自己清空了c盘里不影响开机的部分 | User reports accidental data loss via AI instruction, not a known software defect. |
+| [#7387](https://github.com/deepseek-ai/deepseek-harness/discussions/7387) | critical | 会话日志损坏（seq gap/并发写） | Bug: SessionPersistence.prepare() commits crash repair that can corrupt an activ | Race condition in SessionPersistence.prepare causes seq overlap between recovered events and synthet |
+| [#7370](https://github.com/deepseek-ai/deepseek-harness/discussions/7370) | critical | 畸形 tool-call 致会话不可恢复 | Scheduler failure leaves unpaired assistant tool-call blocks, making the session | Scheduler failure leaves unpaired tool-call blocks, causing serialization failure and session corrup |
+| [#7298](https://github.com/deepseek-ai/deepseek-harness/discussions/7298) | critical | Windows 沙箱/TLS/代理 | [0.1.5-rc.2]: 在某一次对话中，dsh向我汇报了工作区外目录误删的事故，想问一下是bug还是操作问题 | Sandbox ACL failed to intercept symbolic link escape to workspace-external directories. |
+| [#7271](https://github.com/deepseek-ai/deepseek-harness/discussions/7271) | critical | 其它（非问题类或未归类） | [Bug] CDP doesn't need authorization to access, while /injest need authorization | Missing authorization check on CDP endpoint allows unauthorized session access. |
+| [#7230](https://github.com/deepseek-ai/deepseek-harness/discussions/7230) | critical | 其它（非问题类或未归类） | [Bug] Agent rebuilds user-owned files from stale backups, silently discarding ma | Agent overwrites user-edited files using stale backups without conflict detection or user confirmati |
+| [#7207](https://github.com/deepseek-ai/deepseek-harness/discussions/7207) | critical | 其它（非问题类或未归类） | [security] bwrap sandbox can be bypassed by accessing X11 socket or dbus | bwrap sandbox configuration lacks network isolation and file permission restrictions, allowing escap |
+| [#7188](https://github.com/deepseek-ai/deepseek-harness/discussions/7188) | critical | 其它（非问题类或未归类） | [Safety] Agent cleanup killed unrelated user Edge processes instead of only task | Agent cleanup logic incorrectly targets and kills unrelated user processes instead of only task-owne |
+| [#6964](https://github.com/deepseek-ai/deepseek-harness/discussions/6964) | critical | 其它（非问题类或未归类） | [Bug] claimed 的输入在 prepareRequest 抛错时会永久丢失：本机 154 份存档里 14 例 | User message is lost when prepareRequest fails after inbox claim but before session append. |
+| [#6928](https://github.com/deepseek-ai/deepseek-harness/discussions/6928) | critical | 上下文压缩失效 | Official compaction checkpoint: the loader and the writer disagree on the shadow | Disagreement between compaction writer and session loader on shadowed node ranges causes permanent l |
+| [#6892](https://github.com/deepseek-ai/deepseek-harness/discussions/6892) | critical | 其它（非问题类或未归类） | [Bug] 0.1.6-alpha.1 升级后所有会话无法创建/恢复：profile 内 dsh-scope 双副本导致 scope 身份失配 | Duplicate dsh-scope module instances cause scope identity mismatch, blocking session creation and re |
+| [#6833](https://github.com/deepseek-ai/deepseek-harness/discussions/6833) | critical | 畸形 tool-call 致会话不可恢复 | A settled background subagent poisons the session: its `reasoning` block is copi | Background subagent notice incorrectly includes reasoning block in user message, causing serializati |
+| [#6562](https://github.com/deepseek-ai/deepseek-harness/discussions/6562) | critical | 会话日志损坏（seq gap/并发写） | Session rows after a seq gap are silently dropped — only surfaces if a turn/end  | Session loader silently truncates history on sequence gaps without error, causing data loss. |
+| [#6493](https://github.com/deepseek-ai/deepseek-harness/discussions/6493) | critical | 会话格式迁移失败 | [Bug] Session format migration (v0→v3) is non-atomic: stopping the process betwe | Non-atomic migration process allows data loss if interrupted between truncation and write. |
+| [#6465](https://github.com/deepseek-ai/deepseek-harness/discussions/6465) | critical | 其它（非问题类或未归类） | [Security] agent经宿主路由以无审批方式启动本地应用  Agent Launching Local Applications Without Ap | Agent bypasses sandbox by reading plaintext credentials to forge valid browser cookies for host API  |
 | [#6358](https://github.com/deepseek-ai/deepseek-harness/discussions/6358) | critical | 会话格式迁移失败 | DSH Bug 反馈:会话日志迁移在 exFAT 等"无硬链接"文件系统上失败(ENOTSUP);且迁移会就地改写数据文件导致无法回滚 | Migration logic uses hard links unsupported by exFAT, causing failure and irreversible data corrupti |
 | [#6300](https://github.com/deepseek-ai/deepseek-harness/discussions/6300) | critical | 畸形 tool-call 致会话不可恢复 | [Bug][0.1.5-rc.1]畸形 tool-call（空 id/name）被持久化进会话日志，导致会话永久不可恢复（每次回放 400 `missing f | Empty tool-call fields persist in session log, causing permanent session corruption and unrecoverabl |
 | [#6283](https://github.com/deepseek-ai/deepseek-harness/discussions/6283) | critical | 会话日志损坏（seq gap/并发写） | [Bug][0.1.2-rc.1] Seeded continuation writer restarts at a regressed seq counter | Seeded continuation logic fails to correctly initialize the sequence counter, causing duplicate and  |
@@ -241,37 +283,6 @@ LLM 版要求模型给出**唯一的 `primary` 族**，因此分布是互斥的�
 | [#4091](https://github.com/deepseek-ai/deepseek-harness/discussions/4091) | critical | 其它（非问题类或未归类） | Bug: duplicate provider tool-call index silently merges two calls into one — the | Streaming tool-call deltas keyed by provider index lack duplicate detection, causing silent merge of |
 | [#4084](https://github.com/deepseek-ai/deepseek-harness/discussions/4084) | critical | 会话日志损坏（seq gap/并发写） | Bug：Session log corrupted after seed compaction: writer resumes with stale seq c | Stale sequence counter after seed compaction causes seq gap, corrupting session log. |
 | [#4081](https://github.com/deepseek-ai/deepseek-harness/discussions/4081) | critical | 其它（非问题类或未归类） | DoS family: planted session artifacts exhaust memory at boot, burn CPU in list() | Lack of input validation and caps in JSONL session loading allows DoS attacks via planted artifacts. |
-| [#4080](https://github.com/deepseek-ai/deepseek-harness/discussions/4080) | critical | 其它（非问题类或未归类） | Bug: case-fold lexical fast path lets writes land OUTSIDE every writable root wh | Case-fold lexical fast path in isPathUnder allows path traversal outside sandbox roots on case-insen |
-| [#4067](https://github.com/deepseek-ai/deepseek-harness/discussions/4067) | critical | 会话日志损坏（seq gap/并发写） | Session log corrupts when two dsh processes write the same JSONL session — recov | Race condition in JSONL persistence allows duplicate sequence numbers when multiple processes write  |
-| [#4039](https://github.com/deepseek-ai/deepseek-harness/discussions/4039) | critical | 其它（非问题类或未归类） | 致命缺陷：deepseek明文泄露风险 | API key stored in plaintext file without user awareness, posing security risk. |
-| [#4032](https://github.com/deepseek-ai/deepseek-harness/discussions/4032) | critical | 其它（非问题类或未归类） | Security fix: DNS rebinding can bypass the local API's cross-site fence (Host-he | Missing Host header validation in local API proxy allows DNS rebinding attacks. |
-| [#3899](https://github.com/deepseek-ai/deepseek-harness/discussions/3899) | critical | 其它（非问题类或未归类） | [Bug] dsh-tools Symbol 实例分裂导致工具调用崩溃，且依赖不匹配时整个 dsh 直接不可用 | Symbol instance mismatch between main process and plugin due to duplicate module copies. |
-| [#3896](https://github.com/deepseek-ai/deepseek-harness/discussions/3896) | critical | 会话日志损坏（seq gap/并发写） | 会话恢复时写入游标错位导致 seq 重复，会话日志损坏、历史无法加载（一周内两次） | Cursor misalignment during session recovery causes duplicate seq writes and data loss. |
-| [#3872](https://github.com/deepseek-ai/deepseek-harness/discussions/3872) | critical | 会话日志损坏（seq gap/并发写） | [Bug] 打断后的迟到流式事件破坏会话日志序号连续性，整个会话变得无法读取 \| Late streaming events after interrupti | Late streaming events after interruption have lower sequence numbers than interruption markers, brea |
-| [#3849](https://github.com/deepseek-ai/deepseek-harness/discussions/3849) | critical | 会话日志损坏（seq gap/并发写） | [Bug Report] 会话中断恢复后合成收尾事件与续写事件 seq 重叠，导致日志损坏、历史无法加载 | Session log corruption due to sequence number overlap during interrupt recovery, preventing history  |
-| [#3719](https://github.com/deepseek-ai/deepseek-harness/discussions/3719) | critical | 其它（非问题类或未归类） | [Bug][POSIX] storage-json can overwrite a published write after directory fsync  | POSIX fsync failure after rename causes stale cache overwrite of published data. |
-| [#3664](https://github.com/deepseek-ai/deepseek-harness/discussions/3664) | critical | 会话日志损坏（seq gap/并发写） | [Analysis] Subagent cancellation & session persistence: root-cause analysis with | Subagent cancellation causes permanent session persistence corruption due to disposal timing issues. |
-| [#3662](https://github.com/deepseek-ai/deepseek-harness/discussions/3662) | critical | 会话日志损坏（seq gap/并发写） | [Bug] Cancelling a task that spawned subagents permanently corrupts session pers | Unclosed turn/tool entries in subagent logs cause parent session persistence failure and data loss. |
-| [#3633](https://github.com/deepseek-ai/deepseek-harness/discussions/3633) | critical | 会话日志损坏（seq gap/并发写） | [Bug] [Update] Missing session-level lock silently corrupts shared-home deployme | Missing file-level locking allows concurrent writers to silently corrupt session logs. |
-| [#3477](https://github.com/deepseek-ai/deepseek-harness/discussions/3477) | critical | 其它（非问题类或未归类） | [bug] async 工具 execute() 内 spawnSync → 事件循环死锁（microtask checkpoint 内嵌套 uv_run 重入 | Event loop deadlock caused by nested uv_run via spawnSync during microtask checkpoint. |
-| [#3401](https://github.com/deepseek-ai/deepseek-harness/discussions/3401) | critical | 会话日志损坏（seq gap/并发写） | [Bug] Concurrent writing to the same session log corrupts seq (corrupt session l | Concurrent writes to the same session log cause seq counter race conditions and backward jumps. |
-| [#3354](https://github.com/deepseek-ai/deepseek-harness/discussions/3354) | critical | 其它（非问题类或未归类） | [Security]DeepSeek Harness `dsh.bundle.patch` 清单字段路径遍历，可读取 bundle 包目录之外的任意 YAML/ | Path traversal vulnerability in loadProfile due to missing validation of bundle patch paths. |
-| [#3294](https://github.com/deepseek-ai/deepseek-harness/discussions/3294) | critical | 会话日志损坏（seq gap/并发写） | 两个 harness 进程共享同一 sessions root 会损坏"回合进行中"的会话日志 —— 一方合成崩溃修复写入 + 另一方盲目追加，且整个持久化栈没 | Lack of cross-process locking allows concurrent writers to corrupt session logs with sequence gaps. |
-| [#3252](https://github.com/deepseek-ai/deepseek-harness/discussions/3252) | critical | 其它（非问题类或未归类） | Sandbox containment: three structural gaps, and a request for a private disclosu | Security vulnerability in sandbox containment logic and missing private disclosure channel. |
-| [#3245](https://github.com/deepseek-ai/deepseek-harness/discussions/3245) | critical | 其它（非问题类或未归类） | [Security]DeepSeek Harness `run_code` (Code Mode) executes model-written TypeScr | Code execution tool lacks sandbox confinement, allowing arbitrary file and process access. |
-| [#3142](https://github.com/deepseek-ai/deepseek-harness/discussions/3142) | critical | 会话日志损坏（seq gap/并发写） | [Bug] 会话续接（resume）写入与中断回合的收尾写入竞态，导致会话日志 seq 重叠损坏 | Race condition during session resume after interruption causes duplicate event writes and sequence n |
-| [#3099](https://github.com/deepseek-ai/deepseek-harness/discussions/3099) | critical | 会话日志损坏（seq gap/并发写） | Session log corruption when two harness processes share one DSH_HOME (stale live | Concurrent writes to shared session log cause sequence gaps, corrupting the log and making it unread |
-| [#3051](https://github.com/deepseek-ai/deepseek-harness/discussions/3051) | critical | 其它（非问题类或未归类） | [Security] DeepSeek Harness `web_fetch` 工具与命令沙箱缺乏 SSRF/私网出口过滤，可被诱导访问云元数据与内网服务 | Missing SSRF and private network filtering in web_fetch tool and command sandbox. |
-| [#3045](https://github.com/deepseek-ai/deepseek-harness/discussions/3045) | critical | 其它（非问题类或未归类） | [Security] WSL2 interop 通道完全穿透 workspace-write 沙箱：bwrap 只读挂载对 Windows 侧进程无效（含 Po | WSL interop bypasses bwrap sandbox isolation, allowing full Windows access. |
-| [#3013](https://github.com/deepseek-ai/deepseek-harness/discussions/3013) | critical | 其它（非问题类或未归类） | Title: [Architecture Audit] v0.1.0-rc.6: Systematic lack of per-item fault toler | Systematic lack of per-item fault tolerance in session persistence and boot chain causes full DoS fr |
-| [#2960](https://github.com/deepseek-ai/deepseek-harness/discussions/2960) | critical | 会话日志损坏（seq gap/并发写） | RFC: Agent Loop 稳定性系统性问题汇总与改进建议（Agent Loop Stability: consolidated issues & prop | Session state replay inconsistencies and tool-call block mismatches cause permanent session corrupti |
-| [#2900](https://github.com/deepseek-ai/deepseek-harness/discussions/2900) | critical | 畸形 tool-call 致会话不可恢复 | DSH Bug 反馈报告：工具执行崩溃后回合被标记为已结束，留下悬空 tool_calls，会话永久 400 卡死 | Tool execution crash leaves orphaned tool_calls, causing session corruption and permanent 400 error. |
-| [#2829](https://github.com/deepseek-ai/deepseek-harness/discussions/2829) | critical | 其它（非问题类或未归类） | Security: dsh web has no authentication and is reachable by every local user on  | Default configuration lacks authentication and uses loopback binding which is shared across users on |
-| [#2802](https://github.com/deepseek-ai/deepseek-harness/discussions/2802) | critical | 其它（非问题类或未归类） | [Bug] rc.6: every tool call fails with "unknown tool """ — streamed deltas drop  | Streamed tool-call deltas lose name/id after first chunk, causing empty tool resolution. |
-| [#2787](https://github.com/deepseek-ai/deepseek-harness/discussions/2787) | critical | 会话日志损坏（seq gap/并发写） | 为什么我的deepseek harness在跑过程中，把我会话、CC Switch、Claude code 的历史记录给清空了！！！！！！！ | File I/O error (ENOENT) caused session data loss and corruption across multiple workspaces. |
-| [#2756](https://github.com/deepseek-ai/deepseek-harness/discussions/2756) | critical | 其它（非问题类或未归类） | deepseek-harness存在安全漏洞导致我的apikey泄露 | Security vulnerability causing unauthorized API key usage and billing leakage. |
-| [#2725](https://github.com/deepseek-ai/deepseek-harness/discussions/2725) | critical | 畸形 tool-call 致会话不可恢复 | [BUG_REPORT] dsh_unknown_tool delta calling | Streaming delta drops tool name, persisting empty tool-call that corrupts session history. |
-| [#2627](https://github.com/deepseek-ai/deepseek-harness/discussions/2627) | critical | 会话日志损坏（seq gap/并发写） | DSH-BUG-REPORT-seq-gap-overlap | Session log corruption due to sequence number overlap/gap during crash recovery, making history unre |
 
 > 仅列出前 80 条（按严重度与编号排序）；完整数据见 `_tools/llm-classify.jsonl`。
 

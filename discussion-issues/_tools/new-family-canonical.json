@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-12T15:28:12.966Z",
-  "distinctLabels": 1706,
-  "clusteredLabels": 92,
+  "generatedAt": "2026-09-30T23:33:19.903Z",
+  "distinctLabels": 2501,
+  "clusteredLabels": 141,
   "clusters": [
     {
       "canonical": "windows-path-truncation",
-      "description": "Path string truncation or encoding issues in Windows native pickers and dialogs.",
-      "posts": 41,
+      "description": "Path string truncation issues in native or Windows-specific pickers and path handling.",
+      "posts": 39,
       "members": [
         {
           "label": "native-picker-path-truncation",
@@ -15,10 +15,6 @@
         {
           "label": "native-picker-utf16-truncation",
           "count": 9
-        },
-        {
-          "label": "windows-dialog-worker-crash",
-          "count": 2
         },
         {
           "label": "windows-native-picker-utf16-truncation",
@@ -47,9 +43,9 @@
       ]
     },
     {
-      "canonical": "sandbox-permission-escalation",
-      "description": "Logic errors, loops, or validation failures in sandbox permission escalation.",
-      "posts": 22,
+      "canonical": "sandbox-security-issues",
+      "description": "Security vulnerabilities and logic errors related to sandbox permission escalation, bypass, and validation.",
+      "posts": 25,
       "members": [
         {
           "label": "sandbox-permission-escalation",
@@ -64,6 +60,10 @@
           "count": 2
         },
         {
+          "label": "sandbox-bypass",
+          "count": 2
+        },
+        {
           "label": "sandbox-escalation-loop",
           "count": 2
         },
@@ -72,31 +72,82 @@
           "count": 2
         },
         {
-          "label": "sandbox-permission-escalation-bug",
-          "count": 3
-        },
-        {
-          "label": "sandbox-escalation-same-mode",
-          "count": 2
-        },
-        {
           "label": "sandbox-permission-idempotency",
           "count": 2
         },
         {
           "label": "sandbox-permission-validation",
-          "count": 2
+          "count": 3
+        },
+        {
+          "label": "sandbox-permission-escalation-bug",
+          "count": 3
         },
         {
           "label": "sandbox-permission-logic",
+          "count": 2
+        },
+        {
+          "label": "sandbox-escalation-same-mode",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "ui-rendering-bugs",
+      "description": "Visual rendering bugs including layout, flickering, IME, and markdown/math display issues.",
+      "posts": 23,
+      "members": [
+        {
+          "label": "ui-stats-truncation",
+          "count": 2
+        },
+        {
+          "label": "rtl-rendering",
+          "count": 2
+        },
+        {
+          "label": "markdown-strikethrough-misparse",
+          "count": 2
+        },
+        {
+          "label": "markdown-rendering-bug",
+          "count": 2
+        },
+        {
+          "label": "math-rendering-failure",
+          "count": 2
+        },
+        {
+          "label": "math-rendering-bug",
+          "count": 2
+        },
+        {
+          "label": "markdown-math-rendering",
+          "count": 2
+        },
+        {
+          "label": "composer-ime",
+          "count": 3
+        },
+        {
+          "label": "ui-flicker",
+          "count": 2
+        },
+        {
+          "label": "ui-overlap",
+          "count": 2
+        },
+        {
+          "label": "ui-layout-scroll",
           "count": 2
         }
       ]
     },
     {
       "canonical": "subagent-model-issues",
-      "description": "Inheritance, override, or staleness issues in subagent model definitions.",
-      "posts": 18,
+      "description": "Problems with subagent model configuration, inheritance, state staleness, and error handling.",
+      "posts": 20,
       "members": [
         {
           "label": "subagent-model-inheritance",
@@ -109,36 +160,121 @@
         {
           "label": "subagent-model-stale",
           "count": 2
+        },
+        {
+          "label": "subagent-error-propagation",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "tool-execution-crash",
+      "description": "Application crashes occurring during tool execution, plugin installation, or native addon loading.",
+      "posts": 16,
+      "members": [
+        {
+          "label": "subprocess-spill-crash",
+          "count": 2
+        },
+        {
+          "label": "plugin-install-crash",
+          "count": 2
+        },
+        {
+          "label": "composer-ui-crash",
+          "count": 2
+        },
+        {
+          "label": "composer-render-crash",
+          "count": 2
+        },
+        {
+          "label": "tool-execution-crash",
+          "count": 4
+        },
+        {
+          "label": "native-addon-crash",
+          "count": 2
+        },
+        {
+          "label": "tool-dispatch-crash",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "tool-call-issues",
+      "description": "Issues with tool call identification, module duplication, runtime initialization, and symbol mismatches.",
+      "posts": 16,
+      "members": [
+        {
+          "label": "tool-runtime-symbol-mismatch",
+          "count": 3
+        },
+        {
+          "label": "tool-call-module-duplication",
+          "count": 5
+        },
+        {
+          "label": "tool-call-empty-string-overwrite",
+          "count": 2
+        },
+        {
+          "label": "tool-call-id-collision",
+          "count": 2
+        },
+        {
+          "label": "tool-symbol-mismatch",
+          "count": 2
+        },
+        {
+          "label": "tool-runtime-init-failure",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "tool-schema-validation",
+      "description": "Errors related to tool schema definition, validation, serialization, and configuration.",
+      "posts": 15,
+      "members": [
+        {
+          "label": "hook-config-validation",
+          "count": 2
+        },
+        {
+          "label": "tool-call-validation-error",
+          "count": 3
+        },
+        {
+          "label": "tool-schema-serialization",
+          "count": 2
+        },
+        {
+          "label": "tool-schema-mismatch",
+          "count": 2
+        },
+        {
+          "label": "tool-schema-validation",
+          "count": 2
+        },
+        {
+          "label": "mcp-schema-validation",
+          "count": 2
+        },
+        {
+          "label": "tool-desc-template-conflict",
+          "count": 2
         }
       ]
     },
     {
       "canonical": "web-security-vulnerabilities",
-      "description": "Security vulnerabilities including SSRF, path traversal, auth, and origin restrictions.",
-      "posts": 18,
+      "description": "Security vulnerabilities including SSRF, path traversal, and origin restriction failures.",
+      "posts": 14,
       "members": [
         {
           "label": "web-origin-restriction",
-          "count": 2
-        },
-        {
-          "label": "web-memory-leak",
-          "count": 2
-        },
-        {
-          "label": "web-auth-missing",
-          "count": 2
-        },
-        {
-          "label": "web-http-secure-context",
-          "count": 2
-        },
-        {
-          "label": "ssrf-vulnerability",
-          "count": 2
-        },
-        {
-          "label": "ssrf-fake-ip-block",
           "count": 2
         },
         {
@@ -150,53 +286,137 @@
           "count": 2
         },
         {
+          "label": "ssrf-vulnerability",
+          "count": 2
+        },
+        {
           "label": "security-path-traversal",
+          "count": 2
+        },
+        {
+          "label": "ssrf-fake-ip-block",
+          "count": 2
+        },
+        {
+          "label": "web-fetch-fake-ip-block",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "tool-call-validation",
-      "description": "Validation, duplication, or collision errors in tool call execution and configuration.",
-      "posts": 13,
+      "canonical": "llm-reasoning-issues",
+      "description": "Errors in LLM reasoning, retry logic, role compatibility, and response generation.",
+      "posts": 11,
       "members": [
         {
-          "label": "hook-config-validation",
-          "count": 2
-        },
-        {
-          "label": "tool-call-validation-error",
+          "label": "llm-retry-misclassification",
           "count": 3
         },
         {
-          "label": "tool-call-module-duplication",
+          "label": "auth-error-misclassification",
           "count": 2
         },
         {
-          "label": "tool-call-empty-string-overwrite",
+          "label": "llm-role-incompatibility",
           "count": 2
         },
         {
-          "label": "tool-call-id-collision",
+          "label": "reasoning-only-empty-response",
           "count": 2
         },
         {
-          "label": "tool-desc-template-conflict",
+          "label": "reasoning-loop",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "windows-path-encoding",
+      "description": "Character encoding problems when handling file paths on Windows or native systems.",
+      "posts": 10,
+      "members": [
+        {
+          "label": "native-path-encoding",
+          "count": 6
+        },
+        {
+          "label": "windows-path-encoding",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "canonical": "ui-state-sync",
+      "description": "Synchronization issues between UI state, settings, and task status.",
+      "posts": 10,
+      "members": [
+        {
+          "label": "settings-race-condition",
+          "count": 3
+        },
+        {
+          "label": "task-status-sync",
+          "count": 3
+        },
+        {
+          "label": "task-state-sync",
+          "count": 2
+        },
+        {
+          "label": "ui-state-stale",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "web-memory-leak",
+      "description": "Memory leaks occurring in web contexts, SDKs, or presets.",
+      "posts": 9,
+      "members": [
+        {
+          "label": "web-memory-leak",
+          "count": 3
+        },
+        {
+          "label": "sdk-memory-leak",
+          "count": 4
+        },
+        {
+          "label": "preset-memory-leak",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "plugin-issues",
+      "description": "Issues with plugin loading, hot reloading, RPC injection, and module duplication.",
+      "posts": 9,
+      "members": [
+        {
+          "label": "plugin-hot-reload-failure",
+          "count": 2
+        },
+        {
+          "label": "plugin-event-ignorable",
+          "count": 3
+        },
+        {
+          "label": "plugin-rpc-injection-failure",
+          "count": 2
+        },
+        {
+          "label": "plugin-module-duplication",
           "count": 2
         }
       ]
     },
     {
       "canonical": "windows-subprocess-issues",
-      "description": "Crashes, crashes, or UI flashes related to Windows subprocess execution.",
-      "posts": 10,
+      "description": "Issues with Windows subprocess execution, including console flashing and popup behavior.",
+      "posts": 8,
       "members": [
         {
           "label": "windows-subprocess-support",
-          "count": 2
-        },
-        {
-          "label": "subprocess-spill-crash",
           "count": 2
         },
         {
@@ -214,82 +434,36 @@
       ]
     },
     {
-      "canonical": "windows-path-encoding",
-      "description": "Character encoding issues when handling file paths on Windows.",
-      "posts": 10,
-      "members": [
-        {
-          "label": "native-path-encoding",
-          "count": 6
-        },
-        {
-          "label": "windows-path-encoding",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "canonical": "ui-rendering-errors",
-      "description": "UI rendering, state staleness, flicker, or selection failures.",
-      "posts": 10,
-      "members": [
-        {
-          "label": "ui-stats-truncation",
-          "count": 2
-        },
-        {
-          "label": "ui-error-display",
-          "count": 2
-        },
-        {
-          "label": "ui-workspace-selection-failure",
-          "count": 2
-        },
-        {
-          "label": "ui-state-stale",
-          "count": 2
-        },
-        {
-          "label": "ui-flicker",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "canonical": "tool-schema-validation",
-      "description": "Serialization, mismatch, or validation errors in tool schemas.",
-      "posts": 8,
-      "members": [
-        {
-          "label": "tool-schema-serialization",
-          "count": 2
-        },
-        {
-          "label": "tool-schema-mismatch",
-          "count": 2
-        },
-        {
-          "label": "tool-schema-validation",
-          "count": 2
-        },
-        {
-          "label": "mcp-schema-validation",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "canonical": "windows-dialog-crashes",
-      "description": "Crashes or focus issues in Windows native dialogs and pickers.",
+      "canonical": "web-ui-perf-bugs",
+      "description": "Performance and layout bugs specific to the web user interface.",
       "posts": 7,
+      "members": [
+        {
+          "label": "web-startup-perf",
+          "count": 3
+        },
+        {
+          "label": "web-ui-scroll-perf",
+          "count": 2
+        },
+        {
+          "label": "web-ui-layout-bug",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "windows-dialog-crash",
+      "description": "Crashes or focus issues related to Windows native dialogs and pickers.",
+      "posts": 6,
       "members": [
         {
           "label": "windows-dialog-focus",
           "count": 2
         },
         {
-          "label": "windows-native-crash",
-          "count": 3
+          "label": "windows-dialog-worker-crash",
+          "count": 2
         },
         {
           "label": "windows-folder-picker-crash",
@@ -298,61 +472,8 @@
       ]
     },
     {
-      "canonical": "tool-execution-crash",
-      "description": "Runtime crashes, unknown tools, or symbol mismatches during tool execution.",
-      "posts": 7,
-      "members": [
-        {
-          "label": "tool-execution-crash",
-          "count": 3
-        },
-        {
-          "label": "unknown-tool-error",
-          "count": 2
-        },
-        {
-          "label": "tool-runtime-symbol-mismatch",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "canonical": "sdk-session-memory",
-      "description": "Session resume failures or memory leaks in the SDK.",
-      "posts": 7,
-      "members": [
-        {
-          "label": "sdk-session-resume-failure",
-          "count": 3
-        },
-        {
-          "label": "sdk-memory-leak",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "canonical": "plugin-crash",
-      "description": "Crashes or failures during plugin installation, hot reloading, or RPC injection.",
-      "posts": 6,
-      "members": [
-        {
-          "label": "plugin-install-crash",
-          "count": 2
-        },
-        {
-          "label": "plugin-hot-reload-failure",
-          "count": 2
-        },
-        {
-          "label": "plugin-rpc-injection-failure",
-          "count": 2
-        }
-      ]
-    },
-    {
       "canonical": "workspace-path-issues",
-      "description": "Validation, resolution, or current working directory mismatches in workspace paths.",
+      "description": "Problems with workspace path validation, current working directory mismatches, and resolution.",
       "posts": 6,
       "members": [
         {
@@ -360,116 +481,226 @@
           "count": 2
         },
         {
-          "label": "workspace-path-resolution",
-          "count": 2
-        },
-        {
           "label": "workspace-cwd-mismatch",
           "count": 2
+        },
+        {
+          "label": "workspace-path-resolution",
+          "count": 2
         }
       ]
     },
     {
-      "canonical": "llm-role-retry-issues",
-      "description": "Misclassification during LLM retries or role incompatibility issues.",
+      "canonical": "dependency-issues",
+      "description": "Problems with missing dependencies, Node version incompatibility, and version pinning.",
+      "posts": 6,
+      "members": [
+        {
+          "label": "npm-dependency-missing",
+          "count": 2
+        },
+        {
+          "label": "node-version-incompatibility",
+          "count": 2
+        },
+        {
+          "label": "dependency-version-pinning",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "session-state-errors",
+      "description": "Issues related to loading, validating, or managing session state integrity.",
+      "posts": 6,
+      "members": [
+        {
+          "label": "acp-session-load-missing",
+          "count": 2
+        },
+        {
+          "label": "session-race-condition",
+          "count": 2
+        },
+        {
+          "label": "session-format-validation-error",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "desktop-environment-issues",
+      "description": "Problems specific to the desktop application environment, build, or protocol handling.",
+      "posts": 6,
+      "members": [
+        {
+          "label": "desktop-clipboard-shortcuts",
+          "count": 2
+        },
+        {
+          "label": "desktop-build-failure",
+          "count": 2
+        },
+        {
+          "label": "desktop-protocol-404",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "macos-security-entitlements",
+      "description": "macOS-specific security issues regarding missing entitlements or sandbox labels.",
+      "posts": 6,
+      "members": [
+        {
+          "label": "macos-entitlement-missing",
+          "count": 4
+        },
+        {
+          "label": "sandbox-integrity-label",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "sdk-session-issues",
+      "description": "Issues with SDK session resumption and logging data integrity.",
       "posts": 5,
       "members": [
         {
-          "label": "llm-retry-misclassification",
+          "label": "sdk-session-resume-failure",
           "count": 3
         },
         {
-          "label": "llm-role-incompatibility",
+          "label": "session-logging-integrity",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "settings-race-condition",
-      "description": "Race conditions or data leaks in settings management.",
-      "posts": 5,
-      "members": [
-        {
-          "label": "settings-race-condition",
-          "count": 3
-        },
-        {
-          "label": "settings-wire-redaction-leak",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "canonical": "composer-crash",
-      "description": "Crashes in the composer UI or rendering engine.",
+      "canonical": "ui-selection-failure",
+      "description": "Failures in selecting or managing workspace items in the UI.",
       "posts": 4,
       "members": [
         {
-          "label": "composer-ui-crash",
+          "label": "ui-workspace-selection-failure",
           "count": 2
         },
         {
-          "label": "composer-render-crash",
+          "label": "workspace-selection-failure",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "markdown-rendering-bugs",
-      "description": "Parsing or rendering bugs in markdown content.",
+      "canonical": "web-auth-issues",
+      "description": "Authentication failures and secure context issues in web environments.",
       "posts": 4,
       "members": [
         {
-          "label": "markdown-strikethrough-misparse",
+          "label": "web-auth-missing",
           "count": 2
         },
         {
-          "label": "markdown-rendering-bug",
+          "label": "web-http-secure-context",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "plugin-event-ignorable",
-      "description": "Issues with ignorable plugin events.",
+      "canonical": "provider-catalog-stale",
+      "description": "Stale data in model or provider catalogs.",
+      "posts": 4,
+      "members": [
+        {
+          "label": "model-catalog-stale",
+          "count": 2
+        },
+        {
+          "label": "provider-catalog-stale",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "data-loss-and-integrity",
+      "description": "Incidents where user data is truncated, lost, or corrupted during operations.",
+      "posts": 4,
+      "members": [
+        {
+          "label": "tool-truncation-data-loss",
+          "count": 2
+        },
+        {
+          "label": "settings-import-data-loss",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "ui-and-rendering-regressions",
+      "description": "Visual or rendering defects affecting the user interface or content display.",
+      "posts": 4,
+      "members": [
+        {
+          "label": "markdown-rendering",
+          "count": 2
+        },
+        {
+          "label": "ui-regression",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "plugin-and-module-errors",
+      "description": "Failures in plugin updates or module loading due to symbol conflicts.",
+      "posts": 4,
+      "members": [
+        {
+          "label": "plugin-update-failure",
+          "count": 2
+        },
+        {
+          "label": "module-duplication-symbol-mismatch",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "transport-and-proxy-failures",
+      "description": "Network transport issues or failures in proxy redirection logic.",
+      "posts": 4,
+      "members": [
+        {
+          "label": "transport-failure",
+          "count": 2
+        },
+        {
+          "label": "proxy-redirect-failure",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "electron-environment-leak",
+      "description": "Resource or environment variable leaks within the Electron runtime.",
+      "posts": 4,
+      "members": [
+        {
+          "label": "electron-env-leak",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "canonical": "tool-execution-failure",
+      "description": "General failures in tool execution not covered by specific crash categories.",
       "posts": 3,
       "members": [
         {
-          "label": "plugin-event-ignorable",
+          "label": "tool-execution-failure",
           "count": 3
-        }
-      ]
-    },
-    {
-      "canonical": "subagent-error-propagation",
-      "description": "Errors failing to propagate correctly from subagents to parent contexts.",
-      "posts": 2,
-      "members": [
-        {
-          "label": "subagent-error-propagation",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "canonical": "math-rendering-failure",
-      "description": "Failure to render mathematical expressions.",
-      "posts": 2,
-      "members": [
-        {
-          "label": "math-rendering-failure",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "canonical": "task-state-sync",
-      "description": "Synchronization failures in task state management.",
-      "posts": 2,
-      "members": [
-        {
-          "label": "task-state-sync",
-          "count": 2
         }
       ]
     },
@@ -485,34 +716,78 @@
       ]
     },
     {
-      "canonical": "node-version-incompatibility",
-      "description": "Incompatibility with specific Node.js versions.",
+      "canonical": "filesystem-hardlink-failure",
+      "description": "Failure to create or manage filesystem hardlinks.",
       "posts": 2,
       "members": [
         {
-          "label": "node-version-incompatibility",
+          "label": "filesystem-hardlink-failure",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "npm-dependency-missing",
-      "description": "Missing npm dependencies causing failures.",
+      "canonical": "preset-tool-conflict",
+      "description": "Conflicts between preset configurations and tool definitions.",
       "posts": 2,
       "members": [
         {
-          "label": "npm-dependency-missing",
+          "label": "preset-tool-conflict",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "skill-yaml-parsing",
-      "description": "Parsing errors in skill YAML files.",
+      "canonical": "provider-header-missing",
+      "description": "Missing provider headers in requests or responses.",
       "posts": 2,
       "members": [
         {
-          "label": "skill-yaml-parsing",
+          "label": "provider-header-missing",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "scope-module-duplicate",
+      "description": "Duplicate scope modules causing conflicts.",
+      "posts": 2,
+      "members": [
+        {
+          "label": "scope-module-duplicate",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "unknown-tool-error",
+      "description": "Errors resulting from referencing unknown or undefined tools.",
+      "posts": 2,
+      "members": [
+        {
+          "label": "unknown-tool-error",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "ui-error-display",
+      "description": "General issues with displaying error messages in the UI.",
+      "posts": 2,
+      "members": [
+        {
+          "label": "ui-error-display",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "plan-mode-ui-bug",
+      "description": "Specific UI bugs occurring in plan mode.",
+      "posts": 2,
+      "members": [
+        {
+          "label": "plan-mode-ui-bug",
           "count": 2
         }
       ]
@@ -529,56 +804,67 @@
       ]
     },
     {
-      "canonical": "model-catalog-stale",
-      "description": "Stale data in the model catalog.",
+      "canonical": "settings-wire-redaction-leak",
+      "description": "Leakage of sensitive data due to failed redaction in settings transmission.",
       "posts": 2,
       "members": [
         {
-          "label": "model-catalog-stale",
+          "label": "settings-wire-redaction-leak",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "preset-tool-conflict",
-      "description": "Conflicts between preset configurations and tools.",
+      "canonical": "skill-yaml-parsing",
+      "description": "Errors in parsing skill definition YAML files.",
       "posts": 2,
       "members": [
         {
-          "label": "preset-tool-conflict",
+          "label": "skill-yaml-parsing",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "session-logging-integrity",
-      "description": "Integrity issues in session logging.",
+      "canonical": "llm-retry-classification",
+      "description": "Specific logic error in classifying or handling LLM retry attempts.",
       "posts": 2,
       "members": [
         {
-          "label": "session-logging-integrity",
+          "label": "llm-retry-classification",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "native-addon-crash",
-      "description": "Crashes in native add-ons.",
+      "canonical": "migration-crash",
+      "description": "Application crash occurring during data migration on Windows systems.",
       "posts": 2,
       "members": [
         {
-          "label": "native-addon-crash",
+          "label": "migration-crash-windows",
           "count": 2
         }
       ]
     },
     {
-      "canonical": "multimodal-upload-failure",
-      "description": "Failure in multimodal file uploads.",
+      "canonical": "tool-call-regression",
+      "description": "Regression in the functionality or behavior of tool invocation mechanisms.",
       "posts": 2,
       "members": [
         {
-          "label": "multimodal-upload-failure",
+          "label": "tool-call-regression",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "canonical": "session-list-title-seeded",
+      "description": "Issue with seeding or displaying titles in the session list.",
+      "posts": 2,
+      "members": [
+        {
+          "label": "session-list-title-seeded",
           "count": 2
         }
       ]

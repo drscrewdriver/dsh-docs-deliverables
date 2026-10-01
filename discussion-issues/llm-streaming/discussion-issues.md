@@ -118,3 +118,51 @@ type MessageRole = 'system' | 'user' | 'assistant' | 'tool' | 'developer'
 | [#5969](https://github.com/deepseek-ai/deepseek-harness/discussions/5969) | pnpm install fails: dsh monolith dependency ranges cannot select published prerelease siblings  | 2022 | 1 |
 
 其余：#5927, #6225, #6441, #6232, #6148, #6003, #6043, #6247, #5945, #6341
+
+---
+
+## 增量补充 — #6443–#8513（2026-10-01）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-10-01/增量分析报告.md`。
+
+### 推理退化循环 / 空响应　`reasoning-loop`
+
+- **规模**: 27 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7194](https://github.com/deepseek-ai/deepseek-harness/discussions/7194) | 执行报错Cannot read properties of undefined (reading 'prepare') | 4150 | 11 |
+| [#6532](https://github.com/deepseek-ai/deepseek-harness/discussions/6532) | [dsh-llm-deepseek] A completed response with no visible content passes as a legal `stop` — the  | 15507 | 6 |
+| [#7270](https://github.com/deepseek-ai/deepseek-harness/discussions/7270) | 空想不运行的解决方案 | 4608 | 5 |
+| [#7123](https://github.com/deepseek-ai/deepseek-harness/discussions/7123) | [bug]「只有 reasoning、无可见正文也无工具调用」的响应被判为成功 ⇒ 静默空回复 | 5169 | 3 |
+| [#7753](https://github.com/deepseek-ai/deepseek-harness/discussions/7753) | [≤0.1.7-rc.1] session-log-deepseek 默认被开启（0.1.6-alpha.1 起）：请求体无上限 → 413 永久自锁，现场报 TRANSPORT 超时（复现 | 14816 | 2 |
+| [#6948](https://github.com/deepseek-ai/deepseek-harness/discussions/6948) | A provider can truncate a response mid-stream and still send finish=stop — mapStopReason() reco | 6601 | 2 |
+| [#7214](https://github.com/deepseek-ai/deepseek-harness/discussions/7214) | [Bug] A length stop with one output token escapes overflow detection, so a dead session never r | 3643 | 2 |
+| [#6970](https://github.com/deepseek-ai/deepseek-harness/discussions/6970) | [Bug] 仅有 reasoning、无 text 与 tool-call 的轮次未被空响应重试兜底 | 831 | 2 |
+| [#7538](https://github.com/deepseek-ai/deepseek-harness/discussions/7538) | [BUG REPORT] Windows 沙箱无法在用户自建目录上 provision 工作区 ACE → 该目录下所有 shell 命令失败 | 9590 | 1 |
+| [#8213](https://github.com/deepseek-ai/deepseek-harness/discussions/8213) | [desktop] 卡巴斯基「加密连接扫描」触发高频 TRANSPORT 传输失败；TRANSPORT 错误丢弃底层原因 | 6920 | 1 |
+| [#7691](https://github.com/deepseek-ai/deepseek-harness/discussions/7691) | classifyPiAiError maps textual HTTP 5xx errors ("Internal Server Error") to non-retryable PI_AI | 4620 | 1 |
+| [#6816](https://github.com/deepseek-ai/deepseek-harness/discussions/6816) | 长会话被服务端以裸 413 拒绝且不可恢复；默认协议切到 messages 后集中出现 | 4235 | 1 |
+
+其余：#8386, #7063, #6972, #8321, #6797, #6960, #7248, #7582, #6743, #7581, #8423, #7096, #6715, #6936, #7284
+
+### npm 安装/构建失败　`npm-install-build`
+
+- **规模**: 82 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7448](https://github.com/deepseek-ai/deepseek-harness/discussions/7448) | [Bug] 0.1.5-rc.* 中任意一个版本都装不上：rc.3 是一次未完成的发布 | 2045 | 7 |
+| [#6678](https://github.com/deepseek-ai/deepseek-harness/discussions/6678) | DSH \| dsh-doctor + dsh-security \| 诊断与安全检查工具：40+31 项检查，含 dsh 起不来时的自救与升级前后复检 | 14046 | 5 |
+| [#7436](https://github.com/deepseek-ai/deepseek-harness/discussions/7436) | [Bug] dsh@0.1.5-rc.2 / rc.3 not installable: missing @deepseek-ai/dsh-client-ui-sidebar-documen | 1558 | 5 |
+| [#7431](https://github.com/deepseek-ai/deepseek-harness/discussions/7431) | @deepseek-ai/dsh is uninstallable on both `latest` and `next` — rc.3 wave shipped dsh-web-app r | 8004 | 4 |
+| [#8097](https://github.com/deepseek-ai/deepseek-harness/discussions/8097) | `dsh web` fails on OpenHarmony/arm64: No usable native binding found for node-addon-require-bui | 5789 | 3 |
+| [#6529](https://github.com/deepseek-ai/deepseek-harness/discussions/6529) | Tool calls crash with "Cannot read properties of undefined (reading 'prepare')" when a profile  | 3797 | 3 |
+| [#7223](https://github.com/deepseek-ai/deepseek-harness/discussions/7223) | [Bug] Tool call fails with "prepare" undefined on fresh install | 3004 | 3 |
+| [#7323](https://github.com/deepseek-ai/deepseek-harness/discussions/7323) | Windows 10 install fails with PowerShell 5.1 / Windows 10 使用 PowerShell 5.1 安装失败 | 2033 | 3 |
+| [#8105](https://github.com/deepseek-ai/deepseek-harness/discussions/8105) | [Bug] Firefox: plain objects rejected as "not losslessly JSON-serializable" — native-constructo | 6778 | 2 |
+| [#8049](https://github.com/deepseek-ai/deepseek-harness/discussions/8049) | [Windows] 桌面宿主把 ELECTRON_RUN_AS_NODE 传给 VS Code,导致「在本地打开」工作区失败(502 launch-failed) | 6268 | 2 |
+| [#7850](https://github.com/deepseek-ai/deepseek-harness/discussions/7850) | 0.1.7 起两个静默升级缺口：`plugin add` 只补「本次新加」的 layer 行；`--dump-config` 对坏树恒返回 exit 0 | 4739 | 2 |
+| [#7031](https://github.com/deepseek-ai/deepseek-harness/discussions/7031) | [0.1.6-alpha.2] 含 jsdom 的插件树无法启动：CJS 解析路由在 require("punycode/") 处崩溃（同 profile 在 alpha.1 正常） | 4260 | 2 |
+
+其余：#7191, #8314, #6605, #7135, #7341, #7377, #7065, #8268, #8237, #7533, #7713, #8411, #8238, #6589, #8018, #7885, #7428, #7362, #7465, #7673, #6692, #6575, #8127, #8223, #8083, #6719, #7903, #6917, #8239, #8061, #8292, #8069, #7503, #7506, #7870, #7206, #6919, #8017, #8447, #6982, #7430, #8464, #8304, #7671, #6715, #7299, #7997, #6528, #6767, #6612, #8377, #6501, #6644, #7710, #6920, #6531, #7166, #6871, #8080, #8230, #8133, #7037, #6860, #8474, #7908, #7429, #7305, #7185, #7500, #7708

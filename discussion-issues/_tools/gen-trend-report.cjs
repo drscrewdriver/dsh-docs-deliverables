@@ -17,6 +17,12 @@ const OUT_BASE = path.resolve(__dirname, '..', '..');        // dsh-docs-deliver
 
 const T = JSON.parse(fs.readFileSync(path.join(OUT_DIR, 'trend-data.json'), 'utf-8'));
 
+// Corpus range derived from the cache so the rendered header never goes stale.
+const RAW_DIR_C = 'E:/test/rewrite-agently/dsh-disscu-cache/raw';
+const CORPUS_MAX = Math.max(...fs.readdirSync(RAW_DIR_C)
+  .filter(f => /^\d+\.json$/.test(f))
+  .map(f => parseInt(f.replace('.json', ''))));
+
 // Static subsystem index — update when a subsystem doc is added/removed.
 const SUBSYSTEMS = [
   ['session-migration', '会话格式迁移失败 v0→v1→v2→v3', '整份拒载语义：一条不合规历史记录即拒绝整份日志', '2026-09-12'],
@@ -80,7 +86,7 @@ function main() {
   }
 
   L.push('> ⚠️ **本文件中的「关键词趋势」已被 LLM 语义分类取代，仅保留作为方法对照。**');
-  L.push('> **权威结论请看 [`趋势报告-LLM.md`](./趋势报告-LLM.md)**（Qwen3.6-35B-A3B 对全部 6321 篇逐帖分类，互斥口径）。');
+  L.push('> **权威结论请看 [`趋势报告-LLM.md`](./趋势报告-LLM.md)**（Qwen3.6-35B-A3B 对全部 ' + T.totalDiscussions + ' 篇逐帖分类，互斥口径）。');
   if (drift) {
     L.push('>');
     L.push(`> 在同一 ${drift.n} 篇语料上实测，关键词法相对模型判定：`);
@@ -94,7 +100,7 @@ function main() {
   L.push('> 本目录按**子系统**分解社区讨论中的故障排查知识。每个子目录下的 `discussion-issues.md` 遵循统一骨架：');
   L.push('> **症状 → 根因 → 临时方案 → 修复状态 → 官方文档参考 → Problem Types by Discussion Family**。');
   L.push('');
-  L.push(`> 趋势数据生成时间：${T.generatedAt.slice(0, 19)}Z　|　语料：${T.totalDiscussions} 篇（#13–#6442）`);
+  L.push(`> 趋势数据生成时间：${T.generatedAt.slice(0, 19)}Z　|　语料：${T.totalDiscussions} 篇（#13–#${CORPUS_MAX}）`);
   L.push('> 趋势原始数据：`_tools/trend-data.json`　|　复现脚本：`_tools/trend-analysis.cjs`');
   L.push('');
   L.push('**工具链**：');
@@ -115,7 +121,7 @@ function main() {
   L.push('| 调用 | 行为 |');
   L.push('|---|---|');
   L.push('| `node llm-classify.cjs` | 默认：按 checkpoint 边界 + 结果文件去重，只跑增量 |');
-  L.push('| `node llm-classify.cjs --since 6442` | 显式指定边界 |');
+  L.push('| `node llm-classify.cjs --since 8513` | 显式指定边界 |');
   L.push('| `node llm-classify.cjs --since all` | 强制全量（**须同时删除 `llm-classify.jsonl`**，否则旧结果仍会被跳过） |');
   L.push('');
   L.push('> **例外**：`trend-analysis.cjs` **不做** checkpoint 门控——趋势分析需要完整历史语料才能对比「基线 vs 增量」，裁剪反而会破坏结论。昂贵的 LLM 环节才需要门控。');

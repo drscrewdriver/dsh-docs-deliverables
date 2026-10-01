@@ -210,3 +210,72 @@ history unavailable f
 | [#5910](https://github.com/deepseek-ai/deepseek-harness/discussions/5910) | [Bug] Commands/list Flood Pins CPU / 自持式 commands/list 洪泛占满 CPU | 14095 | 0 |
 
 其余：#6216, #6295, #6068, #6127, #6351
+
+---
+
+## 增量补充 — #6443–#8513（2026-10-01）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-10-01/增量分析报告.md`。
+
+### 会话格式迁移失败 (v0→v1→v2→v3)　`session-migration`
+
+- **规模**: 53 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#6559](https://github.com/deepseek-ai/deepseek-harness/discussions/6559) | 0.1.5-rc.1: v0→v3 迁移有三道 fail-closed 闸门 —— 49/123 之前的会话点不开（含没人报过的 inbox/spliced 一类），附已验证的修复配方 0/ | 6829 | 18 |
+| [#6779](https://github.com/deepseek-ai/deepseek-harness/discussions/6779) | [Migration] v0→v1 拒收两种由 0.1.1-rc.2 写出的合法形态（descriptor v2 / plugin source summary）—— 升级后 255/256 | 6886 | 9 |
+| [#7995](https://github.com/deepseek-ai/deepseek-harness/discussions/7995) | [Bug] session search fails on any store that ever spawned a subagent — v0→v1 migration rejects  | 4915 | 9 |
+| [#7824](https://github.com/deepseek-ai/deepseek-harness/discussions/7824) | Session unloadable: v1→v2 migration rejects `assistant/message` 4060703 — declared 874 source r | 12436 | 7 |
+| [#7658](https://github.com/deepseek-ai/deepseek-harness/discussions/7658) | [Bug] 会话格式迁移后 dsh_session_log 水位失效：每次请求重发整份日志 → 413 且永久卡死 | 3034 | 7 |
+| [#6493](https://github.com/deepseek-ai/deepseek-harness/discussions/6493) | [Bug] Session format migration (v0→v3) is non-atomic: stopping the process between the gen0 tru | 5016 | 5 |
+| [#7617](https://github.com/deepseek-ai/deepseek-harness/discussions/7617) | v3→v4 read-time migration refuses sessions with unresolved tool calls inside closed steps (dama | 3826 | 5 |
+| [#7800](https://github.com/deepseek-ai/deepseek-harness/discussions/7800) | Bug: SessionFormatError "format v4 message requires a producer-owned source kind" - agent turns | 4199 | 4 |
+| [#7556](https://github.com/deepseek-ai/deepseek-harness/discussions/7556) | V3 accepts {kind:'plugin'} but V4 refuses it — plugin-authored injected messages have no litera | 5108 | 3 |
+| [#7576](https://github.com/deepseek-ai/deepseek-harness/discussions/7576) | 0.1.7 read-time migration refuses released subagent/descriptor v2 sessions (fix available) | 1600 | 3 |
+| [#7889](https://github.com/deepseek-ai/deepseek-harness/discussions/7889) | Legacy (v0-generation) sessions containing `subagent/descriptor` v2 fail to open on 0.1.7-rc.2  | 6265 | 2 |
+| [#6455](https://github.com/deepseek-ai/deepseek-harness/discussions/6455) | [Bug] 重启后子代理列表全部显示"不可用"：v0 日志的 `header.system` 无法迁移到 v3，且错误被降级为可重试的 `unavailable` | 4329 | 2 |
+
+其余：#6545, #6818, #6468, #8251, #6625, #7772, #7260, #7999, #6511, #6603, #6542, #7133, #8034, #7257, #8125, #6630, #7670, #8033, #6840, #6514, #7686, #6719, #6506, #8500, #7944, #8320, #7591, #7606, #7764, #8099, #6890, #7392, #8351, #8432, #7373, #7222, #8074, #8036, #8037, #8479, #7880
+
+### 升级后历史会话无法加载　`session-history-unreadable`
+
+- **规模**: 71 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7802](https://github.com/deepseek-ai/deepseek-harness/discussions/7802) | [Bug] 「加载历史」偶发永久卡住、只有刷新能恢复：等待 socket 的 waiter 永不 settle（含根因与社区补丁）/ Loading history hangs foreve | 22075 | 17 |
+| [#7699](https://github.com/deepseek-ai/deepseek-harness/discussions/7699) | [Bug] [DSH 0.1.7-alpha.2] 默认开启的会话日志遥测字段把请求体撑到 205.87 MB，并永久锁死会话（可复现，附实测数据） | 9939 | 9 |
+| [#6779](https://github.com/deepseek-ai/deepseek-harness/discussions/6779) | [Migration] v0→v1 拒收两种由 0.1.1-rc.2 写出的合法形态（descriptor v2 / plugin source summary）—— 升级后 255/256 | 6886 | 9 |
+| [#6651](https://github.com/deepseek-ai/deepseek-harness/discussions/6651) | Corrupt session log (first frame is not the header) blocks `dsh web` startup and session listin | 2776 | 9 |
+| [#7824](https://github.com/deepseek-ai/deepseek-harness/discussions/7824) | Session unloadable: v1→v2 migration rejects `assistant/message` 4060703 — declared 874 source r | 12436 | 7 |
+| [#7658](https://github.com/deepseek-ai/deepseek-harness/discussions/7658) | [Bug] 会话格式迁移后 dsh_session_log 水位失效：每次请求重发整份日志 → 413 且永久卡死 | 3034 | 7 |
+| [#8084](https://github.com/deepseek-ai/deepseek-harness/discussions/8084) | Session corrupt: seed assistant/message at index 4002 has invalid settlement fields | 635 | 7 |
+| [#7310](https://github.com/deepseek-ai/deepseek-harness/discussions/7310) | [Bug] 一次内容审核 400 会永久废掉整个会话 —— 需要「撤销被拒内容并继续」的回滚能力 | 9777 | 3 |
+| [#7499](https://github.com/deepseek-ai/deepseek-harness/discussions/7499) | [BUG]pnpm dsh web：首次工具调用失败，提示“Cannot read properties of undefined (reading 'prepare')”，并导致会话永久中 | 7645 | 3 |
+| [#6921](https://github.com/deepseek-ai/deepseek-harness/discussions/6921) | Session opens blank stuck on "Loading history…" — client render state machine loops forever on  | 6695 | 3 |
+| [#7556](https://github.com/deepseek-ai/deepseek-harness/discussions/7556) | V3 accepts {kind:'plugin'} but V4 refuses it — plugin-authored injected messages have no litera | 5108 | 3 |
+| [#7265](https://github.com/deepseek-ai/deepseek-harness/discussions/7265) | Cannot read properties of undefined (reading 'prepare') — root cause and one-line patch | 3335 | 3 |
+
+其余：#6031, #7318, #7576, #8105, #7372, #7406, #6815, #8352, #6545, #7857, #8251, #7129, #6625, #6500, #7229, #8484, #6833, #6954, #7957, #6603, #6614, #7103, #7595, #6950, #6782, #7257, #7143, #7144, #8125, #6739, #6875, #8349, #8277, #6840, #8404, #8267, #7582, #6864, #8500, #7944, #7348, #7527, #7021, #8422, #6755, #6521, #7434, #8050, #8051, #8054, #7392, #7222, #8281, #8167, #7994, #7880, #6530, #7359, #7733
+
+### 畸形 tool-call 持久化导致会话不可恢复　`malformed-toolcall`
+
+- **规模**: 49 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7314](https://github.com/deepseek-ai/deepseek-harness/discussions/7314) | Bug: web sidebar lists no workspaces and no sessions after upgrade (0.1.5-rc.2) | 6520 | 4 |
+| [#7499](https://github.com/deepseek-ai/deepseek-harness/discussions/7499) | [BUG]pnpm dsh web：首次工具调用失败，提示“Cannot read properties of undefined (reading 'prepare')”，并导致会话永久中 | 7645 | 3 |
+| [#7236](https://github.com/deepseek-ai/deepseek-harness/discussions/7236) | All tool calls fail with "Cannot read properties of undefined (reading 'prepare')" on a fresh p | 3574 | 3 |
+| [#7265](https://github.com/deepseek-ai/deepseek-harness/discussions/7265) | Cannot read properties of undefined (reading 'prepare') — root cause and one-line patch | 3335 | 3 |
+| [#6928](https://github.com/deepseek-ai/deepseek-harness/discussions/6928) | Official compaction checkpoint: the loader and the writer disagree on the shadowed range — sess | 6992 | 2 |
+| [#8204](https://github.com/deepseek-ai/deepseek-harness/discussions/8204) | resume 后部分会话丢失全部 preset 工具且无报错 | 5713 | 2 |
+| [#7372](https://github.com/deepseek-ai/deepseek-harness/discussions/7372) | Bash tool call fails with "Cannot read properties of undefined (reading 'prepare')", corrupting | 4833 | 2 |
+| [#7386](https://github.com/deepseek-ai/deepseek-harness/discussions/7386) | Bug: session with dangling tool_calls in closed turns cannot resume — permanent 400 INVALID_REQ | 3540 | 2 |
+| [#7241](https://github.com/deepseek-ai/deepseek-harness/discussions/7241) | DSH \| dsh-short-tool-ids \| fix "string too long ... maximum length 64" tool-call ID errors on | 2972 | 2 |
+| [#6824](https://github.com/deepseek-ai/deepseek-harness/discussions/6824) | 会话无法加载："message must have tool source" —— 空 tool callId 能通过 append 写入，却在读取时被拒绝 | 2094 | 2 |
+| [#6970](https://github.com/deepseek-ai/deepseek-harness/discussions/6970) | [Bug] 仅有 reasoning、无 text 与 tool-call 的轮次未被空响应重试兜底 | 831 | 2 |
+| [#6822](https://github.com/deepseek-ai/deepseek-harness/discussions/6822) | [Windows][Desktop] 双击启动的桌面端下所有 shell 工具以 STATUS_DLL_INIT_FAILED (0xC0000142) 失败，命令行 dsh web 宿主正 | 6130 | 1 |
+
+其余：#6564, #7763, #7126, #7879, #7063, #8321, #6603, #6761, #6572, #8240, #6588, #6797, #7257, #6630, #6960, #7670, #7050, #8222, #8509, #7944, #7962, #6702, #7569, #8050, #8051, #8054, #8002, #8331, #8024, #8181, #7040, #8215, #8456, #8477, #7880, #6530, #7572

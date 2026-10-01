@@ -86,7 +86,7 @@ function main() {
   L.push('# Bug 归类趋势报告（LLM 语义分类）');
   L.push('');
   L.push(`> 生成时间：${new Date().toISOString().slice(0, 19)}Z`);
-  L.push(`> 语料：DeepSeek Harness GitHub Discussions #13–#6442，共 ${total} 篇`);
+  L.push(`> 语料：DeepSeek Harness GitHub Discussions #13–#${Math.max(...fs.readdirSync(RAW_DIR).filter(f => /^\d+\.json$/.test(f)).map(f => parseInt(f.replace('.json', ''))))}，共 ${total} 篇`);
   L.push(`> 分类器：**Qwen3.6-35B-A3B**（局域网 vLLM @ \`192.168.100.242:8200\`，温度 0.1，JSON 约束输出）`);
   L.push(`> 已分类：**${llm.length} / ${total}**（覆盖率 ${pct(llm.length, total)}）`);
   L.push('');

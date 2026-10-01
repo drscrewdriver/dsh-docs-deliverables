@@ -406,3 +406,93 @@ transport failure for /api/host.pickDirectory: HTTP 403; dsh Web 目前**明确�
 | [#5895](https://github.com/deepseek-ai/deepseek-harness/discussions/5895) | [Bug] Composition-adjacent events can slip past the guard within the old 10ms window | 1825 | 0 |
 
 其余：#6313
+
+---
+
+## 增量补充 — #6443–#8513（2026-10-01）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-10-01/增量分析报告.md`。
+
+### dsh web 启动性能退化　`web-startup-perf`
+
+- **规模**: 30 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7534](https://github.com/deepseek-ai/deepseek-harness/discussions/7534) | [Bug] 0.1.7-alpha.1 and alpha.2: a failed startup still consumes settings.yaml - legacy section | 8377 | 6 |
+| [#7084](https://github.com/deepseek-ai/deepseek-harness/discussions/7084) | 源码启动（pnpm dsh）在已构建 lib/ 的树上所有工具调用失败：Cannot read properties of undefined (reading 'prepare') | 3392 | 5 |
+| [#6693](https://github.com/deepseek-ai/deepseek-harness/discussions/6693) | Third-party plugin contract violation crashes the entire plugin tree, killing the Web UI (dsh 0 | 15268 | 3 |
+| [#7312](https://github.com/deepseek-ai/deepseek-harness/discussions/7312) | dsh web cold start: newline counting in client-modules dominates bundle composition | 7044 | 2 |
+| [#8376](https://github.com/deepseek-ai/deepseek-harness/discussions/8376) | [Desktop 0.2.0-rc.2][Windows]Windows 沙箱下 pwsh 全命令 0xC0000142 | 6361 | 2 |
+| [#8049](https://github.com/deepseek-ai/deepseek-harness/discussions/8049) | [Windows] 桌面宿主把 ELECTRON_RUN_AS_NODE 传给 VS Code,导致「在本地打开」工作区失败(502 launch-failed) | 6268 | 2 |
+| [#7849](https://github.com/deepseek-ai/deepseek-harness/discussions/7849) | Desktop (0.1.7-rc.2): dsh://open ignores query parameters — please pass session=<id> through to | 4710 | 2 |
+| [#8255](https://github.com/deepseek-ai/deepseek-harness/discussions/8255) | [BUG] Windows 桌面端无法启动：GPU 进程初始化失败直接终止应用（Intel Arc + 多虚拟显示器环境） | 3715 | 2 |
+| [#7061](https://github.com/deepseek-ai/deepseek-harness/discussions/7061) | [bug] 源码启动(tsx)模式下,任何工具调用都会报 Cannot read properties of undefined (reading 'prepare') | 2452 | 2 |
+| [#7167](https://github.com/deepseek-ai/deepseek-harness/discussions/7167) | 本地提交回显在持久节点落地前就被退役 —— 任何耗时的 `agent/pre-step` 监听器都会变成可见的消息延迟 | 2090 | 2 |
+| [#8340](https://github.com/deepseek-ai/deepseek-harness/discussions/8340) | 【DSH 插件升级 0.1.5 → 0.1.7 复盘经验总结】 | 23164 | 1 |
+| [#6723](https://github.com/deepseek-ai/deepseek-harness/discussions/6723) | [Bug] (多人提及) dsh web 恢复会话后主线程常驻 ~100%：preset 挂载失败被 cordis 无限重放，roster 健康扫描不缓存将其放大 | 7296 | 1 |
+
+其余：#6466, #8028, #7306, #7203, #6897, #7445, #8481, #7629, #6917, #7962, #8023, #8483, #8452, #6622, #8109, #6925, #7114, #7951
+
+### dsh web 进程静默死亡　`web-process-death`
+
+- **规模**: 65 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7194](https://github.com/deepseek-ai/deepseek-harness/discussions/7194) | 执行报错Cannot read properties of undefined (reading 'prepare') | 4150 | 11 |
+| [#6584](https://github.com/deepseek-ai/deepseek-harness/discussions/6584) | Bug Report: dsh 0.1.5-rc.1 silently exits on Node.js v24.1.0 / 缺陷报告：dsh 0.1.5-rc.1 在 Node.js v2 | 3571 | 5 |
+| [#6661](https://github.com/deepseek-ai/deepseek-harness/discussions/6661) | [Bug] Python code runtime child process becomes orphaned high-CPU zombie on macOS after host ex | 1018 | 4 |
+| [#6693](https://github.com/deepseek-ai/deepseek-harness/discussions/6693) | Third-party plugin contract violation crashes the entire plugin tree, killing the Web UI (dsh 0 | 15268 | 3 |
+| [#7635](https://github.com/deepseek-ai/deepseek-harness/discussions/7635) | [Bug] 0.1.7-rc.1 no longer heals $DSH_HOME/profiles/node_modules (0.1.6 did) — profiles with lo | 6201 | 3 |
+| [#6665](https://github.com/deepseek-ai/deepseek-harness/discussions/6665) | [Feature] 提供优雅关闭/重启入口：当前 SIGTERM 会直接取消在途 agent 工作 | 1831 | 3 |
+| [#6889](https://github.com/deepseek-ai/deepseek-harness/discussions/6889) | [Bug] Live sessions have no retention policy: heap grows with opened-session count and OOMs at  | 11920 | 2 |
+| [#7836](https://github.com/deepseek-ai/deepseek-harness/discussions/7836) | Sandboxed child-process creation triggers Windows error dialog (0xC0000142 / STATUS_DLL_INIT_FA | 9019 | 2 |
+| [#8485](https://github.com/deepseek-ai/deepseek-harness/discussions/8485) | [BUG] (maybe) DSH Windows ACL sandbox: two defects make `workspace-write` unusable | 8757 | 2 |
+| [#8048](https://github.com/deepseek-ai/deepseek-harness/discussions/8048) | [Bug][Desktop][Windows] workspace-write can poison the DSH Desktop install directory itself, ma | 7597 | 2 |
+| [#8376](https://github.com/deepseek-ai/deepseek-harness/discussions/8376) | [Desktop 0.2.0-rc.2][Windows]Windows 沙箱下 pwsh 全命令 0xC0000142 | 6361 | 2 |
+| [#8255](https://github.com/deepseek-ai/deepseek-harness/discussions/8255) | [BUG] Windows 桌面端无法启动：GPU 进程初始化失败直接终止应用（Intel Arc + 多虚拟显示器环境） | 3715 | 2 |
+
+其余：#8295, #6625, #7639, #6500, #7414, #6605, #6748, #7243, #7846, #8174, #7244, #7898, #6517, #8322, #6655, #7957, #6511, #7719, #7523, #7085, #6771, #8198, #8313, #6705, #7519, #6692, #6575, #8124, #8277, #7593, #7266, #7987, #6508, #6447, #7687, #7531, #6884, #7264, #8471, #8066, #8158, #7051, #7888, #8311, #6769, #7064, #7389, #6581, #6501, #7114, #7974, #8459, #8189
+
+### 升级后 client bundle 陈旧失效　`client-bundle-stale`
+
+- **规模**: 62 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7534](https://github.com/deepseek-ai/deepseek-harness/discussions/7534) | [Bug] 0.1.7-alpha.1 and alpha.2: a failed startup still consumes settings.yaml - legacy section | 8377 | 6 |
+| [#6678](https://github.com/deepseek-ai/deepseek-harness/discussions/6678) | DSH \| dsh-doctor + dsh-security \| 诊断与安全检查工具：40+31 项检查，含 dsh 起不来时的自救与升级前后复检 | 14046 | 5 |
+| [#7084](https://github.com/deepseek-ai/deepseek-harness/discussions/7084) | 源码启动（pnpm dsh）在已构建 lib/ 的树上所有工具调用失败：Cannot read properties of undefined (reading 'prepare') | 3392 | 5 |
+| [#7314](https://github.com/deepseek-ai/deepseek-harness/discussions/7314) | Bug: web sidebar lists no workspaces and no sessions after upgrade (0.1.5-rc.2) | 6520 | 4 |
+| [#7833](https://github.com/deepseek-ai/deepseek-harness/discussions/7833) | [BUG] [0.1.7-rc.1] strict-codec format change makes an out-of-tree Typert Remote plugin fail ac | 4523 | 4 |
+| [#7759](https://github.com/deepseek-ai/deepseek-harness/discussions/7759) | schedule cannot activate outside the web bundle: pending (waiting for service: sessionControlle | 1609 | 3 |
+| [#7522](https://github.com/deepseek-ai/deepseek-harness/discussions/7522) | 讨论：关于DSH架构设计，我的一点个人意见 | 7447 | 2 |
+| [#7312](https://github.com/deepseek-ai/deepseek-harness/discussions/7312) | dsh web cold start: newline counting in client-modules dominates bundle composition | 7044 | 2 |
+| [#7601](https://github.com/deepseek-ai/deepseek-harness/discussions/7601) | Safari: composer model/effort menu unmounts on mousedown, so mouse selection is a no-op (keyboa | 3402 | 2 |
+| [#7290](https://github.com/deepseek-ai/deepseek-harness/discussions/7290) | 客户端插件 bundle 被拼接成一个脚本 —— 同名顶层声明会让两个插件静默串包 | 1782 | 2 |
+| [#8340](https://github.com/deepseek-ai/deepseek-harness/discussions/8340) | 【DSH 插件升级 0.1.5 → 0.1.7 复盘经验总结】 | 23164 | 1 |
+| [#6605](https://github.com/deepseek-ai/deepseek-harness/discussions/6605) | Fix(cli) Proposal: 让入口守卫在 Node 24.0–24.1 上失败可见，并把它们移出 engines 范围 | 7300 | 1 |
+
+其余：#8028, #6954, #7924, #6673, #6897, #7445, #6726, #7549, #6718, #6922, #8009, #7008, #8481, #7347, #7629, #8047, #8234, #8323, #7348, #7544, #7962, #8441, #7209, #8343, #7630, #8093, #7278, #8159, #7289, #7640, #8452, #7981, #6925, #7382, #7911, #7210, #7645, #6452, #7959, #8250, #6633, #8487, #7856, #8271, #6531, #7174, #8280, #7631, #7269, #6778
+
+### Composer 输入法/翻译干扰　`composer-ime`
+
+- **规模**: 25 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7964](https://github.com/deepseek-ai/deepseek-harness/discussions/7964) | Terminal on Windows: CJK bytes escaped as M-... in the prompt, and IME (pinyin) input does not  | 5417 | 3 |
+| [#7803](https://github.com/deepseek-ai/deepseek-harness/discussions/7803) | [Bug] Web 输入框：微软拼音打中文出现拼音落框、候选词错乱，换输入法即恢复（Lexical 0.49.0） | 3016 | 2 |
+| [#6646](https://github.com/deepseek-ai/deepseek-harness/discussions/6646) | [Plugin] DSH BrowserScope 把完整 Chromium DevTools 搬进 DSH：断点调试、网络拦截与 30 个自动化工具 \| Full Browser Dev | 3800 | 1 |
+| [#7628](https://github.com/deepseek-ai/deepseek-harness/discussions/7628) | 桌面端：认领命令（/计划 等）后用拼音输入法打字，整行变色、退格失效（Lexical error #14） | 3719 | 1 |
+| [#6673](https://github.com/deepseek-ai/deepseek-harness/discussions/6673) | [Web GUI] 开启微信输入法「跨设备复制粘贴」后,粘贴图片无法发送:"A requested file or directory could not be found at the t | 2605 | 1 |
+| [#6770](https://github.com/deepseek-ai/deepseek-harness/discussions/6770) | [Desktop] macOS: ⌘V/⌘C/⌘X/⌘A do nothing — the packaged application menu has no Edit menu | 2221 | 1 |
+| [#6550](https://github.com/deepseek-ai/deepseek-harness/discussions/6550) | [Bug] 安卓语音输入：输入法组字里带换行时，输入框只落地一部分文本（首段整段丢失） | 2151 | 1 |
+| [#6552](https://github.com/deepseek-ai/deepseek-harness/discussions/6552) | [Bug] 安卓语音输入：输入法组字里带换行时，输入框只落地一部分文本（首段整段丢失） | 2151 | 1 |
+| [#7148](https://github.com/deepseek-ai/deepseek-harness/discussions/7148) | 输入框的shift存在问题。 | 1326 | 1 |
+| [#6682](https://github.com/deepseek-ai/deepseek-harness/discussions/6682) | DeepSeek Harness 前端输入框对中文输入法 IME 兼容问题 | 1124 | 1 |
+| [#8291](https://github.com/deepseek-ai/deepseek-harness/discussions/8291) | Desktop: scroll sampling forces repeated synchronous layout on long conversations | 12047 | 0 |
+| [#7007](https://github.com/deepseek-ai/deepseek-harness/discussions/7007) | [browser-use] Web profile: mounting the provider rejects creation/resume of every session excep | 4325 | 0 |
+
+其余：#7659, #6724, #8325, #7831, #7923, #7385, #7883, #6868, #6556, #7524, #6969, #8119, #6945

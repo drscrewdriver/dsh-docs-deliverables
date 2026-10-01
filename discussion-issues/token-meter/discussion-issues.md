@@ -80,3 +80,30 @@ Token 计数随对话长度增加呈指数级变慢。
 | [#6202](https://github.com/deepseek-ai/deepseek-harness/discussions/6202) | Fail soft on client-module registration mismatch: validate at dsh plugin add + isolate single-m | 4232 | 0 |
 
 其余：#6128, #6346
+
+---
+
+## 增量补充 — #6443–#8513（2026-10-01）
+
+> 本批次新增讨论中与本子系统相关的帖子。原始全量分析见 `dsh-discussion-summary/incremental-2026-10-01/增量分析报告.md`。
+
+### dsh web 启动性能退化　`web-startup-perf`
+
+- **规模**: 30 篇（正文 >500 字）
+
+| # | 标题 | 正文 | 评论 |
+|---|---|---|---|
+| [#7534](https://github.com/deepseek-ai/deepseek-harness/discussions/7534) | [Bug] 0.1.7-alpha.1 and alpha.2: a failed startup still consumes settings.yaml - legacy section | 8377 | 6 |
+| [#7084](https://github.com/deepseek-ai/deepseek-harness/discussions/7084) | 源码启动（pnpm dsh）在已构建 lib/ 的树上所有工具调用失败：Cannot read properties of undefined (reading 'prepare') | 3392 | 5 |
+| [#6693](https://github.com/deepseek-ai/deepseek-harness/discussions/6693) | Third-party plugin contract violation crashes the entire plugin tree, killing the Web UI (dsh 0 | 15268 | 3 |
+| [#7312](https://github.com/deepseek-ai/deepseek-harness/discussions/7312) | dsh web cold start: newline counting in client-modules dominates bundle composition | 7044 | 2 |
+| [#8376](https://github.com/deepseek-ai/deepseek-harness/discussions/8376) | [Desktop 0.2.0-rc.2][Windows]Windows 沙箱下 pwsh 全命令 0xC0000142 | 6361 | 2 |
+| [#8049](https://github.com/deepseek-ai/deepseek-harness/discussions/8049) | [Windows] 桌面宿主把 ELECTRON_RUN_AS_NODE 传给 VS Code,导致「在本地打开」工作区失败(502 launch-failed) | 6268 | 2 |
+| [#7849](https://github.com/deepseek-ai/deepseek-harness/discussions/7849) | Desktop (0.1.7-rc.2): dsh://open ignores query parameters — please pass session=<id> through to | 4710 | 2 |
+| [#8255](https://github.com/deepseek-ai/deepseek-harness/discussions/8255) | [BUG] Windows 桌面端无法启动：GPU 进程初始化失败直接终止应用（Intel Arc + 多虚拟显示器环境） | 3715 | 2 |
+| [#7061](https://github.com/deepseek-ai/deepseek-harness/discussions/7061) | [bug] 源码启动(tsx)模式下,任何工具调用都会报 Cannot read properties of undefined (reading 'prepare') | 2452 | 2 |
+| [#7167](https://github.com/deepseek-ai/deepseek-harness/discussions/7167) | 本地提交回显在持久节点落地前就被退役 —— 任何耗时的 `agent/pre-step` 监听器都会变成可见的消息延迟 | 2090 | 2 |
+| [#8340](https://github.com/deepseek-ai/deepseek-harness/discussions/8340) | 【DSH 插件升级 0.1.5 → 0.1.7 复盘经验总结】 | 23164 | 1 |
+| [#6723](https://github.com/deepseek-ai/deepseek-harness/discussions/6723) | [Bug] (多人提及) dsh web 恢复会话后主线程常驻 ~100%：preset 挂载失败被 cordis 无限重放，roster 健康扫描不缓存将其放大 | 7296 | 1 |
+
+其余：#6466, #8028, #7306, #7203, #6897, #7445, #8481, #7629, #6917, #7962, #8023, #8483, #8452, #6622, #8109, #6925, #7114, #7951

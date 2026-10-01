@@ -7,9 +7,11 @@
  *   <OUT_BASE>/dsh-discussion-summary/incremental-<batch>/增量分析报告.md
  *   <OUT_BASE>/dsh-discussion-summary/incremental-<batch>/插件展示增量.md
  *   <OUT_BASE>/dsh-discussion-summary/incremental-<batch>/bug讨论增量.md
- *   <OUT_BASE>/discussion-issues/session-migration/discussion-issues.md   (new)
- *   <OUT_BASE>/discussion-issues/session-fork/discussion-issues.md        (new)
  *   <OUT_BASE>/discussion-issues/<existing>/*.md                          (appended)
+ *
+ * This batch creates NO new subsystem docs (SUBSYS_DOCS is empty): the two docs
+ * the 2026-09-12 batch created live under discussion-issues/ and must not be
+ * overwritten with new-batch-only content. Only the incremental appends run.
  *
  * IDEMPOTENT: re-running strips the previously appended
  * "## 增量补充 — #<range>（<date>）" block before appending again, and rewrites
@@ -28,8 +30,8 @@ const CLUSTERED = JSON.parse(fs.readFileSync(path.join(OUT_DIR, 'new-clustered.j
 const { discussions, counts, families } = CLUSTERED;
 const famName = Object.fromEntries(families.map(f => [f.id, f.name]));
 
-const RANGE = '#5886–#6442';
-const BATCH_DATE = '2026-09-12';
+const RANGE = '#6443–#8513';
+const BATCH_DATE = '2026-10-01';
 const APPEND_MARKER = `## 增量补充 — ${RANGE}（${BATCH_DATE}）`;
 
 function excerpt(s, n = 300) {
@@ -113,6 +115,19 @@ const FAMILY_DETAIL = {
     root: '续接 Web 会话时，部分原生工具与对应提示词节在轮次之间丢失，模型能力面随会话年龄漂移。',
     fix: '工具注册表需在每次装配时做完整性校验，并对丢失项显式告警。',
   },
+  // --- families discovered in the #6443–#8513 batch ---
+  'tool-runtime-duplication': {
+    root: '0.1.6-alpha.2 起源码启动的默认 runtime 解析模式把 `@deepseek-ai/dsh-tools` 装载成**两个独立实例**（workspace 链接与 node_modules shadow 并存），两实例各持一份模块级状态（已 prepare 的命令表 / Schema 注册表）。注册走 A 副本、调用走 B 副本时读到未初始化状态，表现为所有工具调用持续报 `Cannot read properties of undefined (reading \'prepare\')`（#7035，83 评论）。',
+    fix: 'runtime 解析需对 workspace 包做单例归一（解析结果去重 / exports 收敛）；检测到同包多实例时**响亮报错**而非静默分裂；升级/源码混装场景需清理旧 shadow 副本。',
+  },
+  'sandbox-acl': {
+    root: '0.1.7-rc / 0.2.0-rc 把 Windows 沙箱授权下沉到文件/目录 ACL 粒度（`SetNamedSecurityInfoW`），在受限令牌或 ACL 继承异常的卷上返回 Win32 5（拒绝访问）；授权失败**不聚合**，逐文件弹审批形成审批洪泛（#7564、#8513），用户要么无限确认、要么功能不可用。',
+    fix: 'ACL 授权按目录聚合为一次性授权；失败路径显式报错并给出可操作提示（涉及哪个路径、为何被拒）；对不可授权路径白名单化或降级为只读。',
+  },
+  'macos-entitlements': {
+    root: 'macOS 打包缺少必要的沙箱 entitlements / 完整性标签，系统层拒绝子进程派生、网络或钥匙串访问，表现为启动即崩或特定功能静默失败。',
+    fix: '签名打包时补齐 entitlements 清单并纳入发布检查；启动时自检 entitlements 完整性并输出诊断。',
+  },
 };
 
 function genIncrementalReport() {
@@ -122,9 +137,9 @@ function genIncrementalReport() {
 
   lines.push(`# DSH 讨论区增量分析报告 ${RANGE}`);
   lines.push('');
-  lines.push(`> 生成时间：${BATCH_DATE}　|　数据源：${discussions.length} 篇新增 GitHub Discussions（${RANGE}）`);
-  lines.push('> 基线：`DSH讨论区全量分析报告.md`（截至 #5885，5779 篇）');
-  lines.push('> 累计覆盖：#13–#6442，共 6321 篇');
+  lines.push(`> 生成时间：${BATCH_DATE}　|　数据源：${discussions.length} 篇新增 GitHub Discussions（${RANGE}，另含 #2906/#2907/#6031 三篇补齐空洞帖）`);
+  lines.push('> 基线：`incremental-2026-09-12/增量分析报告.md`（截至 #6442，6321 篇）');
+  lines.push('> 累计覆盖：#13–#8513，共 8377 篇缓存（GitHub 现存 8370 篇，136 个编号已被删除）');
   lines.push('');
   lines.push('本报告聚焦增量讨论，回答三个问题：**新增了哪些问题族**、**版本演进带来什么破坏**、**插件生态增量如何**。');
   lines.push('');
@@ -164,7 +179,7 @@ function genIncrementalReport() {
   Object.entries(vers).sort((a, b) => b[1] - a[1]).slice(0, 10)
     .forEach(([k, v]) => lines.push(`| \`${k}\` | ${v} |`));
   lines.push('');
-  lines.push('> **关键判断**：增量讨论的版本焦点已从 `0.1.2-rc.1` 迁移到 **`0.1.5-rc.1` / `0.1.5-rc.2`**，升级破坏集中在**会话持久化格式迁移链**。');
+  lines.push('> **关键判断**：增量讨论的版本焦点已扩散为 `0.1.5-rc.2`（762 次）、`0.1.7-rc.2`（633 次）、`0.1.6-alpha.2`（468 次）与 `0.2.0-rc.2`（318 次）多版本并存；升级破坏从会话持久化迁移链扩展到 **runtime 解析分裂（dsh-tools 双实例）** 与 **Windows 沙箱 ACL 授权 / 审批洪泛**。');
   lines.push('');
   lines.push('---');
   lines.push('');
@@ -237,68 +252,9 @@ function genIncrementalReport() {
 }
 
 // ============================================================
-// 2. New subsystem docs
+// 2. New subsystem docs — EMPTY for this batch (see file header)
 // ============================================================
-const SUBSYS_DOCS = [
-  {
-    dir: 'session-migration',
-    title: 'Session Format Migration Failure — Discussion Issues',
-    origin: `GitHub Discussions ${RANGE} 会话格式迁移相关帖子`,
-    belongs: '`packages/core/session-format-v0-to-v1` / `session-format-v1-to-v2` / `session-format-v2-to-v3` — 会话日志格式迁移链',
-    symptoms: [
-      '升级到 0.1.5-alpha.1 / 0.1.5-rc.1 后，历史会话在侧边栏显示「历史加载失败」',
-      '日志报 `SessionFormatUnsupportedMigrationError` 或 `source v0 artifact remains unchanged`',
-      '受影响会话**永久**无法打开，无产品内恢复路径',
-    ],
-    roots: [
-      '**整份拒载语义**：迁移器只要遇到**一条**不合规记录，就拒绝**整份**日志。触发字段往往只是第三方插件当年写入的一个无实际用途的可选字段。',
-      '**版本号单独判定**：`session-format-v0-to-v1` 对任意 v0 `subagent/descriptor` 仅按 `version` 数字判定；`SUBAGENT_DESCRIPTOR_VERSION` 在 #2663（2026-08-24 合并）之前一直是 2，因此该日期之前的所有发布版写出的都是 version 2，全部被拒。',
-      '**轮次连续性假设**：v2→v3 迁移要求 `turn/start N+1` 开期望的 `turn N`；被用户 steer 跳过的 `turn/end`、或「中断轮次重启」场景下缺少 `legacyInterruptedTurnRestart: true` 的会话会被整体拒绝。',
-      '**已发布形状被拒**：0.1.5-rc.1 拒绝了**已发布过**的 v0 形状（如 `permission`/`preset` 带 `origin` 字段、`turn/end` abort cause 多一个成员），而这些形状是真实历史版本写出的。',
-    ],
-    workaround: [
-      '**降级读取**：暂时回退到迁移前的版本读取会话（不可写），或等官方补丁。',
-      '**保留原始日志**：在修复前**不要**让新版本重写日志——迁移失败时源文件保持不变（`source v0 artifact remains unchanged`），这是目前唯一的保命属性。',
-    ],
-    fixStatus: '根因位于会话格式迁移包。永久修复方向：迁移器改为「逐条容忍 + 显式隔离」而非整份拒载；对已发布 v0 形状做白名单而非全等校验；提供产品内恢复入口（降级读取 / 跳过不合规记录 / 导出可读副本）。',
-    docs: [
-      ['持久化目录', 'persistence-catalog.zh.md', '会话事件与迁移版本清单'],
-      ['子系统', 'subsystems/session.zh.md', '会话服务与格式版本'],
-    ],
-    types: [
-      { name: '整份日志拒载', en: 'Whole-log Refusal', family: 'session-migration' },
-      { name: '历史形状校验过严', en: 'Over-strict Legacy Shape', family: 'session-history-unreadable' },
-    ],
-  },
-  {
-    dir: 'session-fork',
-    title: 'Session Fork & Inbox Inheritance — Discussion Issues',
-    origin: `GitHub Discussions ${RANGE} 分叉与队列继承相关帖子`,
-    belongs: '`packages/core/session` — `session.fork` seed 切割与 pending inbox 归属',
-    symptoms: [
-      '分叉出的会话发送新消息时，**重放源会话的旧 prompt（A）**，新 prompt（B/C）永久滞留在队列不执行',
-      '子会话自动重跑父会话的下一条任务，且没有任何干预窗口',
-      '分叉子代理会话整份复制父会话日志，列举子代理目录时整读全文，长会话上导致数 GB 内存峰值',
-    ],
-    roots: [
-      '**seed 切割边界**：`session.fork` 从边界 `turn/end` 向前走到下一个 `turn/start`，把两者之间**已入队未执行**的 `agent/inbox/spliced` 事件一并复制进子会话。',
-      '**队列归属未重置**：pending inbox 队列随分叉被继承，子会话因此持有父会话的未决输入。',
-      '**日志整体复制**：子代理会话复制父会话日志而非引用，目录列举时整读全文。',
-    ],
-    workaround: [
-      '分叉后先在子会话中发送一条空操作消息消耗掉继承的队列，再执行真实任务。',
-      '对长会话避免使用分叉子代理；改用新建会话 + 显式上下文传递。',
-    ],
-    fixStatus: '根因位于 `session.fork` 的 seed 切割逻辑。修复方向：fork 时显式清空 pending inbox，或在 seed 切割时排除 `agent/inbox/*` 事件族。',
-    docs: [
-      ['事件生产者消费者', 'event-producer-consumer.zh.md', '事件族与顺序契约'],
-      ['子系统', 'subsystems/session.zh.md', '会话服务'],
-    ],
-    types: [
-      { name: '队列跨会话泄漏', en: 'Inbox Leak on Fork', family: 'fork-inbox' },
-    ],
-  },
-];
+const SUBSYS_DOCS = [];
 
 function genSubsystemDocs() {
   for (const doc of SUBSYS_DOCS) {
@@ -371,11 +327,11 @@ function genSubsystemDocs() {
 // ============================================================
 function appendToExisting() {
   const APPEND_MAP = {
-    'session-projection': ['session-history-unreadable', 'malformed-toolcall'],
-    'web-server': ['client-bundle-stale', 'web-process-death', 'web-startup-perf', 'composer-ime'],
+    'session-projection': ['session-migration', 'session-history-unreadable', 'malformed-toolcall'],
+    'web-server': ['web-startup-perf', 'web-process-death', 'client-bundle-stale', 'composer-ime'],
     'filesystem': ['windows-reveal', 'sandbox-windows'],
     'llm-streaming': ['reasoning-loop', 'npm-install-build'],
-    'code-runtime': ['sandbox-windows', 'npm-install-build'],
+    'code-runtime': ['sandbox-windows', 'npm-install-build', 'tool-runtime-duplication', 'sandbox-acl', 'macos-entitlements'],
     'token-meter': ['web-startup-perf'],
     'subagent': ['fork-inbox'],
   };
@@ -458,7 +414,7 @@ function genPluginShowcase() {
   L.push(`# 插件展示增量 — ${RANGE}`);
   L.push('');
   L.push(`> 生成时间：${BATCH_DATE}　|　数据源：${plugins.length} 篇新增「Show Your Plugins!」讨论`);
-  L.push('> 基线：`real-plugin-showcases.md`（截至 #5885）');
+  L.push('> 基线：`incremental-2026-09-12/插件展示增量.md`（截至 #6442）');
   L.push('');
   L.push('## 全部新增插件展示帖');
   L.push('');
@@ -507,7 +463,7 @@ function genBugDigest() {
   L.push(`# Bug 讨论增量 — ${RANGE}`);
   L.push('');
   L.push(`> 生成时间：${BATCH_DATE}　|　数据源：${bugs.length} 篇新增 Bug 类讨论`);
-  L.push('> 基线：`bug-discussions-full.md`（截至 #5885）');
+  L.push('> 基线：`incremental-2026-09-12/bug讨论增量.md`（截至 #6442）');
   L.push('');
   L.push('## 按正文长度排序（内容充实度 = 可复现性代理指标）');
   L.push('');
