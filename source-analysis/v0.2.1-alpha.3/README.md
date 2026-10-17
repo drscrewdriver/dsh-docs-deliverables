@@ -20,7 +20,7 @@
 - **JobId 换代**（指南 `job-id-identity`，持久化承认 `job-session-lifecycle`）：注册表返回 **`<kind>-<short-uuid>`**（16 位小写十六进制），不再 `<kind>-N`；生命周期记录**删除 `executionId`**；`JobExecutionId` 导入移除；`job/registered`/`job/settled` 用同一 `JobId` 配对；
 - **子代理 preset 组装**（指南 `subagent-preset-composition`）：`dsh-tool-subagent` **拒绝 `persona` 与 `toolFilter` 配置**；`SubagentStartRequest` 与能力声明同步删两字段；spawn 改 `agentPreset` 选 preset、`allowedAgentPresets` 对父模型开放多选；fork 继承父 preset 不可独立改；`standard`/`ptc`/`cordis` 委派工具**不再隐藏 `schedule_*`**；
 - **CUA 桌面操作成建制**（204 提交，新包 `experimental/cua` + `cua-macos`）：共享执行层与 macOS 原生 provider 分离（`f65cb889b8`/`c36a40656b`）、跨 Agent 连接共享原生 helper（`1e67f8da60`）、截图元数据由协议 schema 派生（`688137b0a2`）、像素映射 + 可选相对坐标（`5658751da0`）、系统指针显式 hover 与悬停跨观察保持（`17c253ce7e`/`fd3868adc6`）、无激活恢复窗口并拒绝陈旧坐标（`a83cebc4cf`）；
-- **客户端契约符号换代（定义类缝隙，符号级扫描确认，grep 全仓无残影）**：`@deepseek-ai/dsh-client-connection` **删 `OperatorPeer` 导出**（`operator-peer.ts` 整文件消失）；`ui-primitives` user-text **删 `projectUserText()`/`UserTextReferences`，代之以 `UserTextRun`/`ReferenceChip` 组件**；`ui-conversation` 契约 **删 `RenderMessageImages`**（代以 `MessageImagesOwnerProps`/`MessageImagesContentInput` + slot key `conversation.images.content`）；`ui-chat` 契约删 `TURN_PROCESS_INDEPENDENT_KINDS`；`api/terminal-controller` 删 `TerminalAttachmentId`；`typert/generator` 删 `WorkspaceTypertGenerator`；`app-boot` index 收口 `readProfilePatches/resolveTelemetryPatch/addHarnessSourceSection/HARNESS_SOURCE_SECTION`（`ProfileContext` 等移 `profile-context.ts`）；**images 槽拆分**：`conversation.message.images` 消失 → `conversation.chat.message.images` + `conversation.chat.user.images`；新增 `conversation.hero.options`、`conversation.user.text.node`、`workspace.toast` 三槽；
+- **客户端契约符号换代（定义类缝隙，符号级扫描确认，grep 全仓无残影）**：`@deepseek-ai/dsh-client-connection` **删 `OperatorPeer` 导出**（`operator-peer.ts` 整文件消失）；`ui-primitives` user-text **删 `projectUserText()`/`UserTextReferences`，代之以 `UserTextRun`/`ReferenceChip` 组件**；`ui-conversation` 契约 **删 `RenderMessageImages`**（代以 `MessageImagesOwnerProps`/`MessageImagesContentInput` + slot key `conversation.images.content`）；`ui-chat` 契约删 `TURN_PROCESS_INDEPENDENT_KINDS`；`api/terminal-controller` 删 `TerminalAttachmentId`；`app-boot` index 收口 `readProfilePatches/resolveTelemetryPatch/addHarnessSourceSection/HARNESS_SOURCE_SECTION`（`ProfileContext` 等移 `profile-context.ts`）；**images 槽拆分**：`conversation.message.images` 消失 → `conversation.chat.message.images` + `conversation.chat.user.images`；新增 `conversation.hero.options`、`conversation.user.text.node`、`workspace.toast` 三槽；
 - **插件安装/热替换语义收紧**（指南 `plugin-install-over-installed`）：HMR 运行中对已安装包再 `installBundle(spec)` → **pnpm 前失败**，返 `application:'failed'` + `error.code:'already-installed'`；升级须 `removeBundle` → `installBundle`；配套 `879ad372ac` HMR 在 profile 重组期替换包文件已变的插件；
 - **凭据优先级反转**（指南 `stored-credentials-precedence`）：`.credentials.yaml` 存储条目**优先于导出的同名环境变量**（此前相反）；随附 `headless` profile 禁用凭据存储/authorization/DeepSeek account（要旧行为须显式恢复 patch）；
 - **非页面 Connection 默认 `interactions:'none'`**（指南 `operator-connect`）：不开 `$events`、无 `$on()`/`$stream()`；要回答转发交互须显式 `interactions=answer`；API operator 隔离不改浏览器身份（`0f7ac58213`）；
@@ -50,7 +50,7 @@ dsh-v0.2.1-alpha.3   ← 当前版（2fbf4359b8，2026-10-14，PR #6234）
 |---|--------|------|--------|
 | 1 | **Remote 访问 RBAC** | ~30 commits | 新包 `api/remote-access` + 新缝 `ctx.remoteAccess`；typert Remote 统一定义 + 方法/事件资源声明；principal 入消息源；client hooks；撤销丢缓冲 |
 | 2 | **CUA 桌面操作** | 204 commits | 新包 `experimental/cua` + `cua-macos`；像素映射/相对坐标、系统指针 hover、无激活恢复、共享原生 helper |
-| 3 | **客户端契约换代** | ~30 commits | 删 `OperatorPeer`/`projectUserText`/`UserTextReferences`/`RenderMessageImages`/`TURN_PROCESS_INDEPENDENT_KINDS`/`TerminalAttachmentId`/`WorkspaceTypertGenerator`；images 槽拆分；+5 新槽 |
+| 3 | **客户端契约换代** | ~30 commits | 删 `OperatorPeer`/`projectUserText`/`UserTextReferences`/`RenderMessageImages`/`TURN_PROCESS_INDEPENDENT_KINDS`/`TerminalAttachmentId`；images 槽拆分；+5 新槽 |
 | 4 | **持久化/PTC 打磨** | 76 commits | JSONL 命名空间插件化 + listing 并发上限（`6aa157a05a`）；PTC replay 记录 job 生命周期；工作区文件资源声明 |
 | 5 | **JobId 换代** | ~11 commits | `<kind>-<short-uuid>`；删 `executionId`；wait 语义与文档修正（`61fa9c0bab`）；持久化承认 `job-session-lifecycle` |
 | 6 | **子代理 preset 组装** | ~7 commits | `persona`/`toolFilter` 拒绝；`agentPreset` + `allowedAgentPresets`；fork 继承；spawn 选/恢复 preset（`a9afe76200`）；头带排序（`a6207eae63`） |
@@ -94,7 +94,7 @@ dsh-v0.2.1-alpha.3   ← 当前版（2fbf4359b8，2026-10-14，PR #6234）
 | # | 变更 | 影响对象 | 危险度 |
 |---|------|----------|--------|
 | 15 | slot 目录换代：**+5 槽**（`conversation.chat.message.images`/`conversation.chat.user.images`/`conversation.hero.options`/`conversation.user.text.node`/`workspace.toast`）、**−1 槽**（`conversation.message.images` 改名进 chat 家族） | 注入旧 `conversation.message.images` 的客户端插件（注入名失效不报错、渲染消失） | 🔴 槽名换代 |
-| 16 | `connection` 删 `OperatorPeer` 导出（`operator-peer.ts` 消失）；`terminal-controller` 删 `TerminalAttachmentId`；`ui-chat` 契约删 `TURN_PROCESS_INDEPENDENT_KINDS`；`typert/generator` 删 `WorkspaceTypertGenerator` | 深引这些具名符号的插件/测试 | 🔴 引用才炸 |
+| 16 | `connection` 删 `OperatorPeer` 导出（`operator-peer.ts` 消失）；`terminal-controller` 删 `TerminalAttachmentId`；`ui-chat` 契约删 `TURN_PROCESS_INDEPENDENT_KINDS`（注意：符号扫描曾报的 `WorkspaceTypertGenerator` 删除系**误报**——其实现移 `workspace.ts` 后仍由 index 再导出，无断裂） | 深引这些具名符号的插件/测试 | 🔴 引用才炸 |
 | 17 | `app-boot` index 收口：`readProfilePatches`/`resolveTelemetryPatch`/`addHarnessSourceSection`/`HARNESS_SOURCE_SECTION` 不再自 index 导出 | 引 app-boot 内部面的脚本 | 🟡 内部面 |
 | 18 | 新缝 `ctx.remoteAccess`（core）与 `ctx.webApp`（web-app bundle 行） | 只增不改，无迁移义务 | 🟢 增量 |
 | 19 | typert Remote 定义统一 + 惰性 method info（`efdaa86fb8`）；`Remote/RemoteScope/TypertCodec` 形状换代 | 用 typert 声明 Remote 的一方：随 RBAC 需要改形状 | 🟡 有则核 |
@@ -103,6 +103,7 @@ dsh-v0.2.1-alpha.3   ← 当前版（2fbf4359b8，2026-10-14，PR #6234）
 | 22 | HMR 重组期替换包文件已变的插件（`879ad372ac`） | 覆盖安装流程（配合 #4） | 🟢 改善 |
 | 23 | 持久化 2 条同版本加性承认（job-session-lifecycle / user-rpc-principal）；`historical-formats/` 档案目录 | 旧构建读含新事件日志会被拒（老规则不变） | 🟡 读取侧 |
 | 24 | vendor 列车：cordis 4.0.5-alpha.2 / schemastery 3.18.5-alpha.2（仅版本号 bump） | 钉死 vendor 版本的策略 | 🟢 版本层 |
+| 24b | `boot/hmr` 内部重构（`src/index.ts`/`module-files.ts`/`watch-config.ts` +测试，本段 settings/hmr 目录 19 files +2027/−83 的主体）：watcher 排除无关文件、重组期替换等宿主内部面——未触及插件契约（settings src 与 `package-manifest.ts` 确实零 diff） | 依赖 HMR 重载时序的覆盖安装流 | 🟡 内部面 |
 
 > **a.1/a.2 的风险表在本版仍逐条成立**，本版是其上叠加。升级 0.1.7→0.2.x 总迁移仍以 `plugin-framework/v0.2.0-migration.md` 为主文档；0.2.1 线逐段见各版本目录。
 

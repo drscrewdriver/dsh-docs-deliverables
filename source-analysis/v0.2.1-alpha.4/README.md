@@ -80,6 +80,7 @@ dsh-v0.2.1-alpha.4   ← 当前版（86a402200d，2026-10-15，PR #6301）
 | 6 | 跨 host release 的插件更新被拒（`no plugin update from another host release`） | 灰度升级/混版 profile 的更新流 | 🟡 行为 |
 | 7 | 新槽 `plugins.tab` + 新缝 `ctx.pluginMarket`（0 删除 0 改名） | 市场/展示类插件（机会面） | 🟢 增量 |
 | 8 | experimental 包纳入 published dependency policy 检查 | mine-dsh-plugins 同款实验目录构建 | 🟡 门禁 |
+| 8b | `client/hmr` 新增 **PageTransport** 载体（shell 自持页面传输时装入，如 worker preview 隧道；页面全局 `__DSH_TRANSPORT__.fetch` + eventsource-parser） | 自定义宿主页面传输的 shell 级集成（普通插件不触及） | 🟡 新内部面 |
 | 9 | slot-catalog 文档面 +63/−8（除 `plugins.tab` 外为描述刷新） | 依 catalog 定位注入面的读者 | 🟢 文档 |
 
 > a.1–a.3 风险表在本版仍逐条成立。0.2.1 线合并处方见 `plugin-framework/v0.2.1-migration.md`。

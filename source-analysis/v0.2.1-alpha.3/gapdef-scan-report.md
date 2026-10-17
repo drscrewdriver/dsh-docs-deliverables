@@ -190,3 +190,20 @@
 - packages/typert::TypertCodec
 - packages/util::writeFileAtomic
 - packages/workflow::mountPtcRuntime
+
+---
+
+## 勘误（2026-10-17，MAIN tag 全仓 grep 复核）
+
+本报告的 removed-gaps 判定对**多成员 `export { A, B } from` 单行**存在解析缺陷（成员串并入一个 key，与单符号删除行对不上），导致同包搬家类变动误报为删除。逐符号全仓复核结果：
+
+| 符号 | a.2 命中 | a.3 命中 | 裁定 |
+|---|---|---|---|
+| `projectUserText` | 11 | **0** | 删除成立 |
+| `RenderMessageImages` | 9 | **0** | 删除成立 |
+| `OperatorPeer` | 6 | **0** | 删除成立 |
+| `TURN_PROCESS_INDEPENDENT_KINDS` | 5 | **0** | 删除成立 |
+| `TerminalAttachmentId` | 7 | **0** | 删除成立 |
+| `WorkspaceTypertGenerator` | 8 | **12** | ⚠ **误报**：实现移 `src/workspace.ts`，index 仍再导出，无断裂 |
+
+同理，a.1→a.2 段的 `packages/sdk::DeepSeekHarness,HarnessSession`（多成员行）与 a.2→a.3 的 `llm-deepseek` config 组均为同一解析缺陷的假阳；已在正文文档修正。

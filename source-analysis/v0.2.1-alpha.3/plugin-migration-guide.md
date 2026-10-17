@@ -52,10 +52,10 @@ ctx.plugin(JsonlSessionPersistence, config)
 | `@deepseek-ai/dsh-client-connection` | `OperatorPeer`（`operator-peer.ts` 整文件消失） | `Peer` + `PeerAdmission`（配合 `interactions` 模式，见 §5） |
 | `ui-chat` 契约 | `TURN_PROCESS_INDEPENDENT_KINDS` | 无同名替代——按 a.3 turn-process 契约重接 |
 | `api/terminal-controller` | `TerminalAttachmentId` | 深引该类型的插件需重核形状 |
-| `typert/generator` | `WorkspaceTypertGenerator` | `Remote/RemoteScope/TypertCodec/RemoteMethodOptions` 形状换代（RBAC 驱动） |
+| ~~`typert/generator` `WorkspaceTypertGenerator`~~ | **系扫描误报，非删除**：实现移 `src/workspace.ts`，index 仍 `export { findWorkspaceRoot, WorkspaceTypertGenerator }` 再导出，importer 无感 | 无需行动 |
 | `app-boot` index | `readProfilePatches`/`resolveTelemetryPatch`/`addHarnessSourceSection`/`HARNESS_SOURCE_SECTION`（`ProfileContext` 等移 `profile-context.ts`） | 内部面收口，一般插件不触及 |
 
-> 快速自查：`grep -rn "projectUserText\|UserTextReferences\|RenderMessageImages\|OperatorPeer\|TURN_PROCESS_INDEPENDENT_KINDS\|TerminalAttachmentId\|WorkspaceTypertGenerator" src/ tools/`——`tsc` 对 import 被删符号直接编译不过，typecheck 即闸。
+> 快速自查：`grep -rn "projectUserText\|UserTextReferences\|RenderMessageImages\|OperatorPeer\|TURN_PROCESS_INDEPENDENT_KINDS\|TerminalAttachmentId" src/ tools/`——`tsc` 对 import 被删符号直接编译不过，typecheck 即闸。
 
 ## 行为核对（无需改码但要有感）
 
