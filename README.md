@@ -12,7 +12,7 @@
 |------|------|------|------|
 | **官方文档** | `official-repo/` | GitHub 官方仓库 | docs/ 完整镜像（85 文件 / 12 子目录） |
 | **社区讨论** | `dsh-discussion-summary/` | GitHub Discussions 6321 篇 | 高质量帖子、bug 分析、插件仓库归类、增量批次 |
-| **源码解析** | `source-analysis/` | StudyDocs + 各版本 CHANGELOG | 架构总览 + 模块深度解析（v0.1.0-rc.5 首版 / v0.1.5-rc.2 最新） |
+| **源码解析** | `source-analysis/` | StudyDocs + 各版本 CHANGELOG | 架构总览 + 模块深度解析（v0.1.0-rc.5 首版 / v0.2.1-alpha.2 最新；0.1.6 起为大版本增量目录链） |
 | **插件框架** | `plugin-framework/` | 开发实践文档 | 文件结构、版本策略、兼容性、投稿指南、插件骨架模板 |
 
 此外还有：
@@ -87,12 +87,19 @@ dsh-docs-deliverables/
 │   │   ├── 11-protocol-sdk.md          ← 协议与 SDK
 │   │   ├── 12-engineering.md           ← 工程体系
 │   │   └── module-template.md          ← 模块详解模板
-│   ├── v0.1.5-rc.2/                    ← 【最新】模块详解（13 篇）
+│   ├── v0.1.5-rc.2/                    ← 模块详解（13 篇）
 │   │   ├── architecture-overview.md    ← 架构总览
 │   │   ├── 01-cordis-framework.md      ← Cordis 框架层
 │   │   ├── 02..08, 10..12-*.md         ← 各模块详解
 │   │   ├── changelog-rc1-rc2.md        ← rc.1 → rc.2 变更
 │   │   └── plugin-migration-guide.md   ← 插件侧迁移指引
+│   ├── v0.1.6-alpha.1/                 ← 能力族矩阵 14 篇（ssh/ptc/browser/computer-use）
+│   ├── v0.1.7-rc.1/                    ← 契约换代 14 篇（设置+清单+会话 V4）+ 跨两版 diff
+│   ├── v0.1.7-rc.2/                    ← 增量目录（providers 拆分/动态工具更新）
+│   ├── v0.2.0-rc.1/                    ← 世代门槛 + OTel 收口（14 篇基线沿用）
+│   ├── v0.2.0-rc.2/                    ← 计时提问 two-settlements
+│   ├── v0.2.1-alpha.1/                 ← Schedule 挂载制换代 + mods 桥 + 显示面换代
+│   ├── v0.2.1-alpha.2/                 ← 【最新】编排/provider 面换代（breaking ×10、新缝 ×4、核心契约面零 diff）
 │   ├── v0.1.5-rc.1/changelog-alpha1-rc1.md  ← alpha.1 → rc.1 变更
 │   ├── v0.1.5-alpha.1/CHANGELOG.md
 │   ├── v0.1.3-alpha.2/CHANGELOG.md
@@ -150,8 +157,8 @@ dsh-docs-deliverables/
 
 ### 深度研究路径
 
-1. `source-analysis/v0.1.5-rc.2/` — **最新**模块详解（13 篇，含插件迁移指引）
-2. `source-analysis/v0.1.0-rc.5/` — 首版模块详解（14 篇，架构基线）
+1. `source-analysis/v0.2.1-alpha.1/` — **最新**增量分析（Schedule 换挂载制 + mods 桥 + 显示面换代，含插件迁移指引）；增量链：`v0.2.0-rc.2/` ← `v0.2.0-rc.1/` ← `v0.1.7-rc.2/` ← `v0.1.7-rc.1/`（契约换代 14 篇）← `v0.1.6-alpha.1/`（能力族 14 篇）
+2. `source-analysis/v0.1.5-rc.2/` — 模块详解（13 篇，含插件迁移指引）；`source-analysis/v0.1.0-rc.5/` — 首版模块详解（14 篇，架构基线）
 3. `official-repo/docs/subsystems/` — 53 个子系统官方文档
 4. `dsh-015-notes.md` — 版本演进脉络
 

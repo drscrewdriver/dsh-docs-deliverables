@@ -972,6 +972,8 @@ DSH 版本                          settings API                      客户端�
 | 🟢 | `dsh.bundle.patch` 支持有序文件列表 | 可选 |
 | 🟢 | 插件显示元数据 `locale/<lang>.json` 的 `meta` | 可选 |
 
+> **基线遗漏订正（2026-10-01）**：本节实证链以 `dsh-v0.1.6-alpha.1` 为"旧"基线，而**客户端会话导航删除恰好发生在 `alpha.1 → alpha.2` 之间**（`ISessions.open` 与 `SessionListState.current` 同 commit 移除），故未入上表——完整影响面、逐版本源码坐标与迁移写法见 §二十三。
+
 ### 21.2 设置：从"独立设置库 + 席位"到"Config 派生"
 
 | 项 | ≤0.1.6 | 0.1.7 |
@@ -1005,7 +1007,7 @@ ctx.inject(['settings'], (child) => {
 
 声明权威位置：`packages/client/ui-settings/src/client/contract/slots.ts`（`settings.section` 在 `:57`、`settings.plugins.tab` 在 `:66`）。详见 [settings-seat-pinning.md](settings-seat-pinning.md)。
 
-### 21.4 peer 范围强制校验（**不是 `engines.dsh`**）
+### 21.4 peer 范围强制校验（**≤0.2.1-alpha.3 时代：不是 `engines.dsh`**；≥0.2.1-alpha.4 判据已换代，见 §25.2）
 
 `apps/cli/README.md`（区间新增）：安装期与 profile 启动期都会校验声明的 DSH peer 范围，比对 `dsh --version` 所示运行时。
 
@@ -1150,4 +1152,238 @@ git -C $repo diff dsh-v0.1.7-rc.2..dsh-v0.2.0-rc.1 -- packages/client/ui-workspa
 
 # 会话格式（预期 4）
 git -C $repo grep -n "currentVersion" dsh-v0.2.0-rc.1 -- packages/session/session-format-catalog/src/generated.ts
+```
+
+### 22.3 rc.2 增量（dsh-v0.2.0-rc.1 → dsh-v0.2.0-rc.2，2026-09-29，187 commits）
+
+**结论：本节上方的 §22.1 / §22.2 全部原样适用于 rc.2，无新增必做项。** rc.2 没有触及任何插件契约：
+
+| 契约 | rc.2 核对 | 结果 |
+|------|-----------|------|
+| peer 兼容性校验 | `git diff dsh-v0.2.0-rc.1..dsh-v0.2.0-rc.2 -- packages/boot/app-boot/src/plugin-compatibility.ts` | **空 diff** |
+| manifest / settings 核心 / 加载器 / HMR | 对应路径 diff | **空 diff** |
+| 会话格式 | `SESSION_FORMAT_VERSION` @ `packages/core/session/src/types.ts` | **仍为 4** |
+| 包结构 | `--diff-filter=ADR -- "*package.json"` | **无新增/删除/改名** |
+
+增量变化（全部非 breaking）：
+
+1. **`ask_user_question` `mode: 'timed'`**（opt-in，默认仍 `legacy` 阻塞 schema）：超时 → pending；迟到回答以 durable user 消息到达（source `user-question-reply`，same-version 持久化承认 `2026-09-21-user-question-reply`）；plan review 仍走阻塞 `ask()`。
+2. `ui-user-questions` 问题卡契约**增量字段**（`waitState` / `countdown` / `channel` / `dismissal`；拒绝码 + `ASK_TIMED_OUT`），无字段删除。
+3. Schedule 到期提醒首行框架统一为 "This is a scheduled message from the user"（`SCHEDULED_MESSAGE_FRAMING`）。
+4. 插件管理页升级引导文案改为"重装以升级"；cordis Client inspect 查询有界化（`clientInspectTimeoutMs`）；pi-ai 0.87.1。
+
+详见 [../source-analysis/v0.2.0-rc.2/plugin-migration-guide.md](../source-analysis/v0.2.0-rc.2/plugin-migration-guide.md)。
+
+### 22.4 0.2.1-alpha.1 增量（dsh-v0.2.0-rc.2 → dsh-v0.2.1-alpha.1，2026-10-03，266 commits）
+
+**结论：核心契约继续零 diff——peer 范围 `>=0.2.0-rc.1 <0.3.0-0` 覆盖 0.2.1 线，manifest schema / settings 核心 / 加载器 / 会话 V4 未动，无新增持久化承认。** 但本版有**四处官方升级指南级变化**（`docs/upgrade-guide/v0.2.0-rc.2/`），其中两处直接改写插件契约的边缘：
+
+| 契约 | 0.2.1-alpha.1 核对 | 结果 |
+|------|---------------------|------|
+| peer 兼容性校验 | `git diff dsh-v0.2.0-rc.2..dsh-v0.2.1-alpha.1 -- packages/boot/app-boot/src/plugin-compatibility.ts` | **空 diff** |
+| manifest schema / settings 核心 / 加载器 | 对应路径 diff | **空 diff**（`util/package-manifest/src/types.ts` 仅 icon 注释更新：允许来自导出 `<specifier>/icon`） |
+| 会话格式 | `SESSION_FORMAT_VERSION` @ `packages/core/session/src/types.ts` | **仍为 4** |
+| 包结构 | `--diff-filter=ADR -- "*package.json"` | **4 增（tool-schedule / claude-code-mods / client-ui-claude-code-mods / session-inspector）/ 1 删（runtime-diagnostics/invariants）/ 1 改名（experimental/schedule-bundle → inspector-profile）** |
+
+四处指南级变化（前两处为插件必做项）：
+
+1. **子路径插件显示面换代** 🔴：subpath 不再读 `<subpath>/package.json`（`8339f16c1d`）——标题/简介只认 `<subpath>/locale/*.json` 的 `meta`，图标只认导出 `<subpath>/icon`；包根插件保留 package.json 文案 + `icon` 字段（缺省回落导出 `./icon`，优先级 `d12257c959`）；`verify-package-meta` 拒绝解析到 build 产物的 manifest 导出（`f8a274b76e`）。症状是管理页**可见降级**（无标题/图标），非静默失效。
+2. **runtime invariants 全家删除** 🔴：`@deepseek-ai/dsh-invariants`、`InvariantRegistry` 等符号、`*/invariant` 子路径导出、sdk-minimal 5 行移除（`f028f25667`）；引用行加载失败（`patch: entry not found`）；`credentials/reference-updated`、`credentials/record-updated`、`authorization/settled`、`llm/adapters-updated` 四发射器**包容并日志记录**监听失败、不再 rethrow `INVARIANT`——依赖 rethrow 上报的插件改自建通道。
+3. **schedule-bundle 退役** 🟡：Web 组合全 profile 挂载 `schedule`/`ui-schedule`；`time-context` 与四工具改由 preset 声明（`standard`/`cordis`/`ptc` 有、`minimal` 无；工具经新包 `@deepseek-ai/dsh-tool-schedule`）；加载 profile 自动摘 bundle 并重写 `package.json`；**顶层 `time-context` override 不再命中**（§22.2 与 v0.2.0-migration.md §二的"改引 bundle"处方作废）；子代理侧 preset `toolFilter.deny` + service 结构化拒绝。
+4. **插件生命周期放宽** 🟢：GUI install/enable/disable/remove 后运行时解析即时刷新（覆盖安装仍 `restart-required`；无 HMR 时停用的启动 bundle 插件继续跑）；HMR 新增 `PackageManifests.invalidate()`——纯配置型 manifest 变更**不再触发模块重载**（`6fe4a2e184`，新 `packages/boot/hmr/src/package-manifest.ts`）。
+
+其余增量：composer stats dock `stats` 拆 `activity`/`usage`（按 id 替换 pills 的插件改 id）；Claude Code mods 桥（experimental `defineMod`）+ Web band；Session 检查器族；桌面默认 OS 分配端口；公网部署需显式 public URL。
+
+详见 [../source-analysis/v0.2.1-alpha.1/plugin-migration-guide.md](../source-analysis/v0.2.1-alpha.1/plugin-migration-guide.md) 与 [v0.2.0-migration.md](v0.2.0-migration.md) §九。
+
+## 二十三、会话导航静默删除：`sessions.open` / `list.current` → `uiWorkspace.openSession`（0.1.6-alpha.2 起）⚠️
+
+> 2026-10-01 增补。来源：`dsh-search-index` 内容跳转失效复查 + `dsh-arrowkey-nav` 方向键失效根因分析双插件实证。
+> 两个插件家族在同一宿主断点上先后翻车，且**翻车形态都是静默 no-op、console 零信号**，故单独立节。
+> 与 §二十一（0.1.6/0.1.7 速查，基线遗漏订正见其 21.1 末注）、[upgrade-pitfalls.md](upgrade-pitfalls.md) 配合阅读。
+
+### 23.1 事实：一次提交删了两个消费面
+
+删除发生在 **`dsh-v0.1.6-alpha.1` → `dsh-v0.1.6-alpha.2`**，单提交 **`6830e1460d`**（`refactor(session-controller): own Client Session generations`）同时移除：
+
+| 被删消费面 | 末次存在的位置（alpha.1） | 用途 |
+|---|---|---|
+| `ISessions.open(id)` | `packages/api/session-controller/src/client/contract/sessions.ts:44` | 客户端打开/切换会话 |
+| `SessionListState.current` | `packages/api/session-controller/src/client/sessions/service.ts:74`（接口）、`:235`（空态初始化） | 读取"当前会话" |
+
+同 commit 在 `contract/sessions.ts:50` 留下归属声明注释，**alpha.2 至 0.2.0-rc.2 逐字未动**：
+
+```
+/** Host catalog and local reference-source counts; navigation belongs to view owners. */
+```
+
+### 23.2 逐 rc 版本存在性矩阵（10 个 tag 逐一核证）
+
+| 宿主 tag | `ISessions.open` | `list.current` | `uiWorkspace.openSession`（navigation.ts 实现行） |
+|---|---|---|---|
+| `dsh-v0.1.5-rc.2` / `rc.3` | ✅ | ✅ | ✅（已存在） |
+| `dsh-v0.1.6-alpha.1` | ✅（`contract:44`） | ✅（`service:74`） | ✅ |
+| **`dsh-v0.1.6-alpha.2`** | ❌ **删除** | ❌ **删除** | ✅（`:161`） |
+| `dsh-v0.1.7-alpha.1` / `alpha.2` / `rc.1` | ❌ | ❌ | ✅（`:200`） |
+| `dsh-v0.1.7-rc.2` | ❌ | ❌ | ✅（`:199`） |
+| `dsh-v0.2.0-rc.1` / `rc.2` | ❌ | ❌ | ✅（`:200`） |
+
+替代面声明（**全区间稳定**，迁移一次即可跨 0.1.6-alpha.2 ~ 0.2.0 全部 rc）：
+
+- `uiWorkspace.openSession(target: SessionTarget): void`，契约声明在 `packages/client/ui-workspace/src/client/navigation.ts:34`；
+- `SessionTarget = SessionId | SubagentAddress`（`packages/api/session-controller/src/client/contract/sessions.ts:22`，0.1.6-alpha.2 与 0.2.0-rc.2 同为 `:22`）——**直接传会话 id 字符串即可**；
+- 备选：`sessions.retain(target, { source: 'mainView' })`（`contract/sessions.ts:58`），但那是"保留"语义，导航请走 `openSession`（宿主侧边栏自身即走它，`tree.ts:38-41` 推导当前会话：扫 `byId` 找 `retainedBy.mainView > 0`）。
+
+### 23.3 失效机理：为什么 typecheck 全绿、console 无声
+
+1. **静默守卫**：插件普遍以 `if (typeof sessions.open === 'function') sessions.open(id)` 调用（防御旧宿主的家规写法）。方法被删后守卫为 false → **点击无动作、无报错**。`dsh-search-index` 的内容跳转、`dsh-arrowkey-nav` 的全部方向键，都死在这一行。
+2. **typecheck 零信号**：插件家族不 import 官方包，服务面全是本地手写结构接口 + `as` 强转软读——`tsc` 根本不从宿主包解析这些类型，**宿主删方法不产生任何编译错误**。
+3. **声明层对齐 ≠ 行为面兼容**：两个插件的 compat 换代（engines / peers / lockfile / manifest）都做完且发布，行为面未复测，带着断点上了线。**换代的发布物必须在目标宿主上点一遍核心动作**（本节案例：点一次搜索结果 / 按一次方向键）。
+
+### 23.4 迁移写法（单点派发 + 回落，两条线同一份）
+
+```ts
+/** 0.1.7+ 会话导航面（宿主自 0.1.6-alpha.2 起归属 uiWorkspace）。 */
+export interface SwitchUiWorkspaceService {
+  openSession(target: string): void
+}
+/** pre-0.1.6-alpha.2 旧面，仅作回落保留。 */
+export interface SwitchSessionsService {
+  open(id: string): void
+}
+
+/** 单点派发：uiWorkspace 优先 → sessions.open 回落 → 双缺静默（不炸面板）。 */
+export function openSessionThrough(get: (name: string) => unknown, sessionId: string): void {
+  const uiWorkspace = get('uiWorkspace') as SwitchUiWorkspaceService | undefined
+  if (uiWorkspace !== undefined && typeof uiWorkspace.openSession === 'function') {
+    uiWorkspace.openSession(sessionId)
+    return
+  }
+  const sessions = get('sessions') as SwitchSessionsService | undefined
+  if (sessions !== undefined && typeof sessions.open === 'function') sessions.open(sessionId)
+}
+```
+
+三条纪律：
+
+- 服务名**点击时惰性解析**（`ctx.get`），不要 eager inject——客户端插件加载序早于 session-controller / ui-workspace，eager 捕获 `undefined`（0.1.x 时代踩过，dsh-search-index 注释在案）；
+- "当前会话"不得再读 `list.current`，复刻宿主推导：`Object.values(byId).find(s => (s.retainedBy?.mainView ?? 0) > 0)?.id`（宿主 `tree.ts:38-41` 同款）；
+- 派发逻辑抽成**可单测纯函数**，用测试钉住三分支（新面 / 旧面回落 / 双缺静默）——静默降级正是 no-op 断裂的藏身处。范例：dsh-search-index `tests/client-open-session.test.mjs`。
+
+### 23.5 已知受害者与修复存档
+
+| 插件 | 受害版本 | 断点 | 修复 |
+|---|---|---|---|
+| dsh-search-index | 0.5.x（compat/0.1.7）、0.6.0（main） | 内容/标题搜索点击跳转 | 0.6.1（`94e5eef`）/ 0.5.8（`b4e673e`），`openSessionThrough` |
+| dsh-arrowkey-nav | 0.3.3（compat/0.1.7）、0.4.0（main） | 方向键切换 + `list.current` 双断 | 主线已落地 `plan.uiWorkspace.openSession`；0.1.7 回移植待办 |
+
+### 23.6 可复核命令
+
+```bash
+repo=E:/test/rewrite-agently/deepseek-harness
+
+# 存在性矩阵复扫（预期：alpha.1 有 / alpha.2 起无）
+for t in dsh-v0.1.6-alpha.1 dsh-v0.1.6-alpha.2 dsh-v0.1.7-rc.2 dsh-v0.2.0-rc.2; do
+  echo "$t open=$(git -C $repo grep -c 'open(id' $t -- packages/api/session-controller/src/client/contract/sessions.ts | wc -l) current=$(git -C $repo grep -c '  current' $t -- packages/api/session-controller/src/client/sessions/service.ts | wc -l)"
+done
+
+# 移除提交（预期 6830e1460d refactor(session-controller): own Client Session generations）
+git -C $repo log --oneline dsh-v0.1.6-alpha.1..dsh-v0.1.6-alpha.2 -S"open(id" -- packages/api/session-controller/src/client/contract/sessions.ts
+
+# 归属注释（alpha.2 起固定在 :50）
+git -C $repo grep -n "navigation belongs to view owners" dsh-v0.1.6-alpha.2 -- packages/api/session-controller/src/client/contract/sessions.ts
+
+# 替代面（各 tag 实现行号见 23.2 表）
+git -C $repo grep -n "openSession(target: SessionTarget): void {" dsh-v0.2.0-rc.2 -- packages/client/ui-workspace/src/client/navigation.ts
+
+# 插件侧复发体检：两条 grep 都应为 0 命中（或在 openSessionThrough 单点内）
+grep -rn "sessions\.open\|list\.current\|state\.list" your-plugin/src/
+```
+
+---
+
+## 二十四、v0.2.1-alpha.2 接缝增量（2026-10-11，`dsh-v0.2.1-alpha.1 → dsh-v0.2.1-alpha.2`）
+
+### 24.1 能力缝增删（§21.9 口径）
+
+`docs/capability-seams.md` 生成区实测 **+4 缝/服务、0 删除**：
+
+| 新缝 | 提供方包 | 主要消费者 |
+|---|---|---|
+| `ctx.workingDirectory` | `packages/session/working-directory` | `tool-working-directory`、`tool-fs`、`tool-bash`、`tool-pwsh`、`subagent`、`sdk-jsonrpc-server`（接替 loop 内置 `{{cwd}}` 与子代理 `cwd` 配置键，两者本版删除） |
+| `ctx.worktrees` | `experimental/worktree` | `tool-worktree`（保留式 Git worktree 创建/进入） |
+| `ctx.translator` | `experimental/translator` | 匿名文本翻译（Google/Bing/DeepSeek Flash） |
+| `ctx.cotTranslation` | `experimental/client-ui-cot-translation` | 思维链翻译 Remote（`cot-translation-bundle` 挂载） |
+
+### 24.2 插件契约面 zero-diff 检查（逐面实测）
+
+| 面 | 路径 | 结果 |
+|---|---|---|
+| peer 闸门 | `packages/boot/app-boot/src/plugin-compatibility.ts` | **零 diff** |
+| settings 核心 | `packages/settings/` | +1/−1（仅 package.json 版本号）＝实质零 diff |
+| vendor | `vendor/cordis/`、`vendor/schemastery/` | **零 diff**；`vendor/loader/` 仅 peer `node-addon-require-builtin` ^0.1.6→^0.1.9 |
+| HMR 包过期 | `packages/boot/hmr/src/package-manifest.ts` | **零 diff**（a1 新增机制未续改） |
+| locale/图标装载 | `packages/boot/app-boot/src/package-meta.ts` | +5/−4：`realpathSync`→`realModuleFile` 软链加固，接口形状不变 |
+| 槽位面 | `packages/extensions/cordis-client-runner/src/client/slot-catalog.ts` | +109/−25：新增 `conversation.chat.flow`、`conversation.chat.reasoning.body`；`chat.node`/`input.activity` `declaredBy` 由 `conversation.view` 移位；**无删除槽** |
+| 技能面 | `packages/skill/` | `skill-badge` 迁 experimental；`tool-skill` inject 加 `workingDirectory`；**`ctx.skills` provider 接口形状不变**（dsh-docs-deliverables-skill 免改） |
+| 会话格式 | `packages/core/session/src/types.ts:89` | `SESSION_FORMAT_VERSION` 保持 **4**；`docs/persistence-changes/` +20 文件＝**5 条同版本加性承认** |
+
+### 24.3 对既有结论的影响（接缝变化趋势）
+
+- **三代 waist / volatile / 双闸门结论续有效到 0.2.1-alpha.2**：settings 核心、schemastery、cordis、loader、闸门判定面全零 diff——§十七~二十的处方与 0.2.0 迁移清单免改。
+- **收缩重心迁移**：a1 收的是"安装/挂载/显示"（bundle 退役、subpath 显示、invariants），a2 收的是**编排 API 与 provider 面**（subagent 激活换代、session-title 三导出删除、`BundleInfo` 必填 `official`/`availability`、`{{cwd}}` 删除）。对插件作者最高危两项：读 bundle 卡片/详情槽的**精确断言方**与写过 `{{cwd}}` 的 **persona/preset suffix 作者**。
+- 指南级 breaking ×10 的逐条处方不在此重复：见 [v0.2.0-migration.md](v0.2.0-migration.md) §十与 [../source-analysis/v0.2.1-alpha.2/plugin-migration-guide.md](../source-analysis/v0.2.1-alpha.2/plugin-migration-guide.md)。
+
+### 24.4 可复核命令
+
+```sh
+# 契约面 zero-diff 复扫
+git -C $repo diff --shortstat dsh-v0.2.1-alpha.1..dsh-v0.2.1-alpha.2 -- packages/boot/app-boot/src/plugin-compatibility.ts packages/settings vendor/cordis vendor/schemastery packages/boot/hmr/src/package-manifest.ts
+# 能力缝增删（§21.9 口径）
+git -C $repo diff dsh-v0.2.1-alpha.1..dsh-v0.2.1-alpha.2 -- docs/capability-seams.md | grep -E "^\+.*ctx\.(workingDirectory|worktrees|translator|cotTranslation)"
+# 持久化承认（5 条）
+git -C $repo diff --name-status --diff-filter=A dsh-v0.2.1-alpha.1..dsh-v0.2.1-alpha.2 -- docs/persistence-changes/
+```
+
+---
+
+## 二十五、v0.2.1-alpha.3 → rc.1 接缝增量（2026-10-17，尾版收口）
+
+### 25.1 alpha.3：闸门零 diff，消费契约三类换代
+
+- 契约面复扫：`plugin-compatibility.ts` / settings 核心 / vendor cordis·schemastery **零 diff**（a.2 结论继续成立）；`SESSION_FORMAT_VERSION` 恒 4，+2 同版本承认（job-session-lifecycle、user-rpc-principal）。
+- 官方指南 14 篇；必做六类：JSONL 命名空间导入 / JobId `<kind>-<short-uuid>`（删 `executionId`）/ 子代理 `persona`·`toolFilter`→`agentPreset` / `installBundle` 已装报 `already-installed`（先 remove）/ 凭据存储>env / 非页面 Connection 默认 `interactions:'none'`。
+- 槽面：`conversation.message.images` **改名**入 chat 家族（旧名注入静默失效，§十九槽位纪律再验证）；新缝 `ctx.remoteAccess`/`ctx.webApp`。
+- 详单：[../source-analysis/v0.2.1-alpha.3/plugin-migration-guide.md](../source-analysis/v0.2.1-alpha.3/plugin-migration-guide.md)。
+
+### 25.2 alpha.4：装载闸门换代（本篇多处「只读 peers、不读 engines.dsh」结论的**时代边界**在此）
+
+`packages/boot/app-boot/src/plugin-compatibility.ts` +41/−27（指南 `docs/upgrade-guide/v0.2.1-alpha.3/plugin-engines-dsh/`）：
+
+| | ≤0.2.1-alpha.3（§二十一时代） | ≥0.2.1-alpha.4（含 rc.1） |
+|---|---|---|
+| `engines.dsh` | 不被读（写了无效，仅元数据卫生） | **存在即单独裁决**，dsh peers 全忽略；`workspace:` 值判不兼容；非字符串=拒载 |
+| dsh peers | 唯一开关（§21.4 全套规则仍适用于无 engines.dsh 的包） | 仅当无 `engines.dsh` 时回落（规则逐字不变） |
+| 拒载记录 | `PluginCompatibility.peers` | 改名 **`requirements`**（`IncompatiblePlugin` 同步；engines 判定键 `engines.dsh`，peer 判定键包名） |
+| 豁免 | `allow-version` 精确键 | 不变 |
+
+**对 §C 双闸门口径的重写**：旧时代「engines/peer 不一致 = P2 元数据卫生」；新时代若包声明了 `engines.dsh`，它就是 **P0 装载生死字段**（范围写窄=自锁）。sync-hosts 单源下发时必须同源同范围（或直接省略 engines.dsh 维持 peer 时代行为）。
+
+其伞行为变化：解析图前先比宿主 release，**跨宿主 release 的插件更新不自动应用**并弹重载提示；插件市场进门（`ctx.pluginMarket` 缝 + `plugins.tab` 槽，安装原语仍走 plugin manager）。
+
+### 25.3 alpha.5 与 rc.1
+
+- a.5：`AccountBonusNotification` 形状放宽（可选 JsonValue 元数据 / `orderId` 任意串 / 空 `expiresAt`=永久 / 新增可选 `title`）；新槽 `conversation.input.model.label`；PTC 指令组合化。闸门/包结构/承认零变化。
+- rc.1：**纯版本 bump**（355 个 package.json ±355，零代码）；唯一动作是把 runtime 字符串 `0.2.1-rc.1` 纳入命中判定（`^0.2.1-alpha.1` 经 includePrerelease 可命中；精确枚举止于 alpha.5 的写法会漏）。vendor 转正式线（cordis 4.0.5 / schemastery 3.18.5 / hmr 1.0.20）。
+- 缝总账：a.3→rc.1 累计新缝 3（remoteAccess/webApp/pluginMarket），删除 0；包结构 +10。
+
+### 25.4 可复核命令
+
+```sh
+# 闸门换代位置一分不差：a.3 零 diff、a.4 非零、a.5/rc.1 零 diff
+git -C $repo diff --shortstat dsh-v0.2.1-alpha.2..dsh-v0.2.1-alpha.3 -- packages/boot/app-boot/src/plugin-compatibility.ts   # 空
+git -C $repo diff --shortstat dsh-v0.2.1-alpha.3..dsh-v0.2.1-alpha.4 -- packages/boot/app-boot/src/plugin-compatibility.ts   # +41/-27
+git -C $repo diff --shortstat dsh-v0.2.1-alpha.4..dsh-v0.2.1-rc.1   -- packages/boot/app-boot/src/plugin-compatibility.ts   # 空
+# rc.1 = 纯 bump
+git -C $repo diff --name-only dsh-v0.2.1-alpha.5..dsh-v0.2.1-rc.1 | grep -v 'package.json$'                              # 空集
 ```

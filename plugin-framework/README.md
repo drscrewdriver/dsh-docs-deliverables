@@ -2,6 +2,10 @@
 
 DSH 插件开发框架文档。涵盖标准文件结构、版本分发策略、兼容性指南、v0.1.5 / v0.1.7 / v0.2.0 迁移指南、awesome-dsh-plugin 投稿。
 
+> **⚠️ 2026-10-04 更新（`dsh-v0.2.1-alpha.1`）**：核心契约仍零 diff（peer 校验 / manifest / settings / 加载器 / 会话 V4），peer 范围 `>=0.2.0-rc.1 <0.3.0-0` **继续免改**；但有 **三类必做项**（官方升级指南 4 篇）：①**subpath 插件显示换代**——不再读 `<subpath>/package.json`，标题/简介只认 locale `meta`、图标只认导出 `<subpath>/icon`；②**runtime invariants 全家删除**——引用行加载失败、四发射器不再 rethrow `INVARIANT`；③**schedule-bundle 退役**——Web 组合全挂载 + preset 声明 `time-context`/四工具（新包 `tool-schedule`），顶层 `time-context` override 不再命中。行为面：GUI 装包/启停后运行时解析**即时刷新**（覆盖安装仍需重启）、HMR 纯配置 manifest 不再触发模块重载、composer stats dock 拆 `activity`/`usage`、Claude Code mods 桥进门——见 [v0.2.0-migration.md](v0.2.0-migration.md) §九 与 [../source-analysis/v0.2.1-alpha.1/plugin-migration-guide.md](../source-analysis/v0.2.1-alpha.1/plugin-migration-guide.md)。
+
+> **✅ 2026-09-30 更新（`dsh-v0.2.0-rc.2`）**：rc.2（187 commits）**没有任何插件契约变化**——peer 兼容性校验 / manifest / settings 核心 / 加载器 / HMR 零 diff，会话格式保持 V4，无新增包。**rc.1 的迁移动作清单在 rc.2 宿主上原样适用、零新增必做项**（peer 范围 `>=0.2.0-rc.1 <0.3.0-0` 天然覆盖 rc.2）。rc.2 新增 `ask_user_question` `mode: 'timed'` 计时提问（**opt-in，默认组合的 legacy schema 不变**）与问题卡契约增量字段——见 [v0.2.0-migration.md](v0.2.0-migration.md) §八 与 [../source-analysis/v0.2.0-rc.2/plugin-migration-guide.md](../source-analysis/v0.2.0-rc.2/plugin-migration-guide.md)。
+
 > **✅ 2026-09-29 更新（`dsh-v0.2.0-rc.1`）**：0.2.0 **没有 API 层破坏性变更**（manifest / settings API / 加载器 / HMR / slot / 会话格式 V4 全部未动），但 **peer 世代门槛**会把 `>=0.1.7-rc.1 <0.2.0-0` 的插件**挡在安装之外**（semver 中 `0.2.0-0` < `0.2.0-rc.1`）。peer 范围改 `>=0.2.0-rc.1 <0.3.0-0` 即可，另需复核 Schedule 三 id 与 `displayTitle` 空串语义——见 [v0.2.0-migration.md](v0.2.0-migration.md)。
 
 > **⚠️ 2026-09-25 重要更新（`dsh-v0.1.7-rc.1`）**：本版有 **6 项必须动手的破坏性变更**，其中 `settings.installSection()` 已从宿主**完全删除**（无兼容垫片），`settings.plugin.item` 席位已移除，`$DSH_HOME/settings.yaml` 已移除，且**兼容性校验读的是 `peerDependencies` 而不是 `engines.dsh`**。若你在 0.1.5/0.1.6 上维护插件，请**先读 [v0.1.7-migration.md](v0.1.7-migration.md)**。
@@ -46,8 +50,8 @@ dsh plugin --profile web add /path/to/your-plugin
 | [file-structure.md](file-structure.md) | 标准插件文件结构 | 新建插件时的文件组成参考 |
 | [distribution-strategy.md](distribution-strategy.md) | 版本分发策略 | 同一 npm 包名适配不同 DSH 版本 |
 | **[version-line-sync.md](version-line-sync.md)** | **多版本线同步（兼容分支治理）** | **主线前进、兼容线落后的定期同步：先量 merge 成本与独有价值，再选树对齐；把两线差异写成脚本 + 断言，用钉死的 SHA 当基线** |
-| [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径；**§二十一 = v0.1.6/0.1.7 源码实证速查；§二十二 = v0.2.0-rc.1 速查** |
-| **[v0.2.0-migration.md](v0.2.0-migration.md)** | **v0.2.0 迁移指南（可操作版）** | **无 API breaking，但 peer 世代门槛（`<0.2.0-0` 挡安装）、Schedule 默认组合移除（opt-in bundle）、`displayTitle` 空串、`forkSession` / composer 契约扩展、`ctx.otel` / `ctx.productAnalytics` 新服务** |
+| [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径；**§二十一 = v0.1.6/0.1.7 源码实证速查；§二十二 = v0.2.0 速查（22.4 = 0.2.1-alpha.1 增量）；§二十三 = 会话导航静默删除** |
+| **[v0.2.0-migration.md](v0.2.0-migration.md)** | **v0.2.0 迁移指南（可操作版）** | **无 API breaking，但 peer 世代门槛（`<0.2.0-0` 挡安装）、`displayTitle` 空串、`forkSession` / composer 契约扩展、`ctx.otel` / `ctx.productAnalytics` 新服务；§八 = rc.2 增量；§九 = 0.2.1-alpha.1 增量（Schedule 挂载制换代取代 §二处方 + subpath 显示与 invariants 必做项）** |
 | **[v0.1.7-migration.md](v0.1.7-migration.md)** | **v0.1.7 迁移指南（可操作版）** | **设置席位 API 换代（`installSection` 删除 → `configure`）、peer 范围强制（`engines.dsh` 无效）、`settings.yaml` 移除、`patchReload` 移除、HMR 改名、会话 V4、本地化显示元数据** |
 | **[v0.1.5-migration.md](v0.1.5-migration.md)** | **v0.1.5 迁移指南**（历史） | **Token/Permission/Inbox/Adapter 全面迁移**；其设置席位部分已被 v0.1.7 取代 |
 | **[v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md)** | **v0.1.5 迁移补充（实战校准）** | **插件启动 await、firehose seed 盲区、设置席位单注册、peer 预发布陷阱、宿主 LLM 目录接缝** |
