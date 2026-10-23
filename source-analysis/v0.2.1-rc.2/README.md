@@ -39,18 +39,19 @@ dsh-v0.2.1-rc.2   ← 当前版（687f282e86 = origin/master tip，PR #6408）�
 
 | # | 变更 | 影响对象 | 危险度 |
 |---|------|----------|--------|
-| 1 | `ctx.web` 新增 provider `web-deepseek-api`（settings 开关后）；`tool-web` 稳定工具名不变 | 消费 `ctx.web`/web 搜索工具的插件——形状无变化 | 🟢 增量 |
+| 1 | `ctx.web` 新增 provider `web-deepseek-api`（settings 开关后）；`tool-web` 稳定工具名不变；**但 search/fetch provider 钉选机制换代**（见 #5） | 消费 `ctx.web`/web 搜索工具的插件：seam 形状无变化，但接管 provider 钉选的方式变了 | 🟡 内部机制 |
 | 2 | `conversation.input.model.label` 槽出现**官方 occupant**（1017 徽章，`replaceRisk: shadows-shipped-ui`） | 同槽自挂模型标签的插件：注入仍生效但与官方徽章互相遮蔽可见性需自查 | 🟡 同槽竞争 |
 | 3 | 持久化承认 +1（deepseek-search-thinking，同版本加性） | 旧构建读含新事件日志被拒（老规则不变） | 🟡 读取侧 |
 | 4 | "改 bundled 显示名"方案落地即 revert（`32efe36a4e`）——模型展示名保持原样 | 依赖显示名的断言/脚本不受影响 | 🟢 行为 |
+| 5 | **`packages/web/web/src/index.ts`：`searchProvider`/`fetchProvider` 由构造期快照的 `readonly string`（private `searchProviderId`/`fetchProviderId`）改为 `Volatile<string\|undefined>`（`z.string().volatile()`），改在调用点 `config.*.get()` 实时读** | 依赖内存赋值/构造注入接管 search/fetch provider 的插件**静默失效**——需改用 `settings.mutate` 持久钉选 | 🔴 行为换代 |
 
-> a.1–rc.1 全部风险表在本版仍逐条成立；本版零叠加。
+> a.1–rc.1 全部风险表在本版仍逐条成立；本版契约面零叠加，但 #5 为**内部实现换代**（不在 seam/tool-name 断裂面，故旧「零断裂」结论仅适用于形状层）。VERIFIED：`git diff dsh-v0.2.1-rc.1 dsh-v0.2.1-rc.2 -- packages/web/web/src/index.ts`。
 
 ---
 
 ## 阅读路径
 
-- 插件要不要改：**不用**——[plugin-migration-guide.md](plugin-migration-guide.md) 结论为"零必做 + 一个同槽自查项"
+- 插件要不要改：**契约面零必做**——[plugin-migration-guide.md](plugin-migration-guide.md) 结论为"零必做 + 一个同槽自查项"；**例外**：接管 `ctx.web` search/fetch provider 钉选的插件需从内存赋值/构造注入改为 `settings.mutate`（观察点 #5，内部机制换代非契约断裂）
 - 提交明细：[diff-vs-0.2.1-rc.1.md](diff-vs-0.2.1-rc.1.md) ｜ [CHANGELOG.md](CHANGELOG.md)
 - 官方升级指南：**0 篇**
 - 能力缝增删：0 新增 0 删除（`ctx.web` providers +1）

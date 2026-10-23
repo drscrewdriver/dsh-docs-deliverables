@@ -10,9 +10,9 @@
 
 | 板块 | 目录 | 来源 | 内容 |
 |------|------|------|------|
-| **官方文档** | `official-repo/` | GitHub 官方仓库 | docs/ 完整镜像（85 文件 / 12 子目录） |
+| **官方文档** | `official-repo/` | GitHub 官方仓库 | docs/ 完整镜像（基于 `dsh-v0.2.1-rc.2`；723 文件 / 10 子目录，含 upgrade-guide、persistence-changes、defensive-patterns；生成物 schema/目录 JSON 不收录） |
 | **社区讨论** | `dsh-discussion-summary/` | GitHub Discussions 6321 篇 | 高质量帖子、bug 分析、插件仓库归类、增量批次 |
-| **源码解析** | `source-analysis/` | StudyDocs + 各版本 CHANGELOG | 架构总览 + 模块深度解析（v0.1.0-rc.5 首版 / v0.2.1-alpha.2 最新；0.1.6 起为大版本增量目录链） |
+| **源码解析** | `source-analysis/` | StudyDocs + 各版本 CHANGELOG | 架构总览 + 模块深度解析（v0.1.0-rc.5 首版 / v0.2.1-rc.2 最新；0.1.6 起为大版本增量目录链） |
 | **插件框架** | `plugin-framework/` | 开发实践文档 | 文件结构、版本策略、兼容性、投稿指南、插件骨架模板 |
 
 此外还有：
@@ -33,10 +33,14 @@ dsh-docs-deliverables/
 ├── dsh-015-notes.md                    ← 版本变更矩阵（0.1.1→0.1.5）+ 插件侧模块可用性矩阵
 ├── dsh-version-migration-guide.md      ← 跨插件版本迁移统一指南
 │
-├── official-repo/                      ← 官方仓库 docs/ 完整镜像
-│   └── docs/                           ← 85 文件 / 12 子目录
+├── official-repo/                      ← 官方仓库 docs/ 完整镜像（基线 dsh-v0.2.1-rc.2）
+│   └── docs/                           ← 723 文件 / 10 子目录（不含生成 JSON）
 │       ├── architecture.md + .zh.md    ← 架构文档
-│       ├── subsystems/                 ← 53 子系统文档（中英对）
+│       ├── capability-seams.md 等      ← 顶层文档中英对（含 tool-catalog / persistence-catalog / graph-atlas 等）
+│       ├── subsystems/                 ← 子系统文档（中英对 + i18n，201 文件）
+│       ├── upgrade-guide/              ← 官方升级指南 6 版（v0.1.7-rc.2 ~ v0.2.1-alpha.4）
+│       ├── persistence-changes/        ← 持久化契约变更记录（98 篇 md）
+│       ├── defensive-patterns/         ← 防御式编程模式
 │       ├── cordis-api/                 ← 6 个 API 文档
 │       ├── cordis-tutorial/            ← Cordis 框架教程 7 篇
 │       ├── cookbook/                   ← 开发手册 12 篇
@@ -99,7 +103,12 @@ dsh-docs-deliverables/
 │   ├── v0.2.0-rc.1/                    ← 世代门槛 + OTel 收口（14 篇基线沿用）
 │   ├── v0.2.0-rc.2/                    ← 计时提问 two-settlements
 │   ├── v0.2.1-alpha.1/                 ← Schedule 挂载制换代 + mods 桥 + 显示面换代
-│   ├── v0.2.1-alpha.2/                 ← 【最新】编排/provider 面换代（breaking ×10、新缝 ×4、核心契约面零 diff）
+│   ├── v0.2.1-alpha.2/                 ← 编排/provider 面换代（breaking ×10、新缝 ×4、核心契约面零 diff）
+│   ├── v0.2.1-alpha.3/                 ← Remote RBAC + CUA 成建制；JSONL/JobId/子代理 preset/槽名四类换代
+│   ├── v0.2.1-alpha.4/                 ← 【闸门换代】engines.dsh 独裁 + peers→requirements；插件市场族进门
+│   ├── v0.2.1-alpha.5/                 ← 收尾打磨：账号通知契约放宽、model.label 新槽、PTC 指令组合化
+│   ├── v0.2.1-rc.1/                     ← 纯版本 bump（含 0.2.0-rc.2→0.2.1-rc.1 全程缝隙总账）
+│   ├── v0.2.1-rc.2/                     ← 【最新，master tip】两新包进门（web-deepseek-api / model-label-1017）；契约面零断裂
 │   ├── v0.1.5-rc.1/changelog-alpha1-rc1.md  ← alpha.1 → rc.1 变更
 │   ├── v0.1.5-alpha.1/CHANGELOG.md
 │   ├── v0.1.3-alpha.2/CHANGELOG.md
@@ -157,17 +166,17 @@ dsh-docs-deliverables/
 
 ### 深度研究路径
 
-1. `source-analysis/v0.2.1-alpha.1/` — **最新**增量分析（Schedule 换挂载制 + mods 桥 + 显示面换代，含插件迁移指引）；增量链：`v0.2.0-rc.2/` ← `v0.2.0-rc.1/` ← `v0.1.7-rc.2/` ← `v0.1.7-rc.1/`（契约换代 14 篇）← `v0.1.6-alpha.1/`（能力族 14 篇）
+1. `source-analysis/v0.2.1-rc.2/` — **最新**增量分析（DeepSeek Search/Fetch API + Flash 1017 徽章，契约面零断裂）；增量链：`v0.2.1-rc.1/` ← `v0.2.1-alpha.5/` ← `v0.2.1-alpha.4/`（闸门换代）← `v0.2.1-alpha.3/`（RBAC/CUA）← `v0.2.1-alpha.2/`（编排换代）← `v0.2.1-alpha.1/`（挂载制/mods 桥）← `v0.2.0-rc.2/` ← `v0.2.0-rc.1/` ← `v0.1.7-rc.2/` ← `v0.1.7-rc.1/`（契约换代 14 篇）← `v0.1.6-alpha.1/`（能力族 14 篇）
 2. `source-analysis/v0.1.5-rc.2/` — 模块详解（13 篇，含插件迁移指引）；`source-analysis/v0.1.0-rc.5/` — 首版模块详解（14 篇，架构基线）
-3. `official-repo/docs/subsystems/` — 53 个子系统官方文档
+3. `official-repo/docs/subsystems/` — 子系统官方文档（201 文件，中英对 + i18n）
 4. `dsh-015-notes.md` — 版本演进脉络
 
 ---
 
 ## 版本说明
 
-- **官方文档镜像**: 基于 `deepseek-ai/DeepSeek-Harness` master 分支
-- **源码解析**: 首版基于 v0.1.0-rc.5 快照；**最新为 v0.1.5-rc.2**（13 篇模块详解 + 插件迁移指引）；另附 rc.7 / 0.1.1-rc.2 / 0.1.2-rc.1 / 0.1.3-alpha.2 / 0.1.5-alpha.1 / 0.1.5-rc.1 的 CHANGELOG
+- **官方文档镜像**: 基线 `dsh-v0.2.1-rc.2`（= `deepseek-ai/DeepSeek-Harness` origin/master tip，2026-10-17；补齐 upgrade-guide / persistence-changes / defensive-patterns 与缺失子系统，生成 schema/目录 JSON 不收录）
+- **源码解析**: 首版基于 v0.1.0-rc.5 快照；**最新为 v0.2.1-rc.2**（0.2.1 线各版四件套 + 插件迁移指引）；另附 rc.7 / 0.1.1-rc.2 / 0.1.2-rc.1 / 0.1.3-alpha.2 / 0.1.5-alpha.1 / 0.1.5-rc.1 的 CHANGELOG
 - **社区讨论**: 基于 GitHub Discussions **6321 篇**帖子（#13–#6442）
 - **DSH 运行版本**: 0.1.1-rc.2（主机环境）
 

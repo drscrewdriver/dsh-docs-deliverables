@@ -6,6 +6,10 @@ Slots are the Web Client's typed React composition system. [`dsh-client-ui-slots
 
 This page documents slot ownership, component inputs, extension APIs, and the shipped hierarchy. The surrounding boot, Remote, Client model, and Conversation paths are in [Web Client architecture](web-client.md).
 
+`plugins.bundle.config` supplies bundle detail configuration, keyed by npm package name. `plugins.bundle.activation` renders optional guidance after user-requested enablement, with owner callbacks to dismiss or open that bundle’s details. `conversation.input.activity` supplies one action between the model selector and Send, with toolbar expansion released on unmount.
+
+The plugin catalog declares `plugins.add.actions`, a root-scoped list for `MenuItemButton` rows after installation in the Add plugin menu. Its owner supplies `onDismiss()` to close the menu before starting an action. The slot follows the owning Plugins page declaration lifetime.
+
 ## Declaration and lifecycle
 
 `SlotMap` is the compile-time registry. A package declaration-merges the key, cardinality, scope, owner props, keyed props, and optional slot-level inject face. The runtime declaration is the matching `children` entry on the component that owns the render location.
@@ -52,8 +56,8 @@ The slot declaration fixes two independent axes.
 | cardinality | `keyed` | The owner dispatches an `entryKey`; the matching cell renders with any key-specific props. |
 | cardinality | `chain` | Each entry supplies a pure `select(owner)` function. The first non-null result in priority order renders and receives that result as `matched`; otherwise the owner fallback renders. |
 | scope | `root` | One root-scoped component and store instance. |
-| scope | `session-maybe` | Follows current selection but stays renderable without a Session; Session values are optional. |
-| scope | `session` | Requires a resolved Session binding and receives definite Session values. |
+| scope | `session-maybe` | Inherits the surrounding Provider binding but stays renderable without one; Session values are optional. |
+| scope | `session` | Requires a resolved surrounding Provider binding and receives definite Session values. |
 
 `priority` is a shadowing rank for `single`, `list`, and `keyed` cells and an election order for `chain`. Lower values run or render first. Ordinary additive contributions should choose a fresh list `id` or keyed `key`; intentionally reusing a shipped cell replaces its presentation.
 
@@ -70,7 +74,7 @@ A registered component receives inputs assembled at its binding site. Components
 | localized `t` function | the registration's `locale` namespace | `PropsLocale<N>` |
 | selected chain value | the registration's `select` result | `matched` through `ComposedProps` |
 
-`SessionProvider` is also present in `PropsRenderSlots` when an entry declares a strict Session child. It binds that subtree to the current Session identity and remounts the body when the identity changes.
+`SessionProvider` is also present in `PropsRenderSlots` when an entry declares a `session` or `session-maybe` child. With no `session` prop it inherits the surrounding binding; an explicit `SessionReference` or `undefined` overrides only that subtree. The Provider does not key its whole body. A strict `session` entry remounts when its binding generation changes. A blank `session-maybe` entry adopts its first binding without remounting, then remounts for a later generation or a return to absence.
 
 Components never receive `ctx`. Parent-owned point-in-time values enter through the owner argument to `renderSlot`; shared view state uses a declared store; services and model objects stay in the `apply` closure and are projected into callbacks or observable sources.
 
@@ -80,10 +84,12 @@ The shipped adapters add these standard props. They are available according to t
 
 | Availability | Props | Owner |
 |---|---|---|
-| every scope | `useSessions`, `useSessionPendingInteraction` | `ui-session` |
-| every scope | `useWorkspaces` | `ui-workspace` |
-| `session` | `sessionId`, `useSession`, `useProjection` | `ui-session` |
-| `session-maybe` | optional `sessionId`, `useSession`, `useProjection` results | `ui-session` |
+| every scope | `useSessions`, `useSessionStatus`, `useSessionRetainInfo`, `useSessionAccess` | `ui-session` |
+| every scope | `useWorkspaces`, `useWorkspaceAccess` | `ui-workspace` |
+| every scope | `useRemoteAccess` (the `global` resource) | `api-remote-access` |
+| every scope | `usePanelInfo` | `ui-layout` |
+| `session` | `sessionId`, `useSession`, `useProjection`, `useAccess` (the bound Session's answer) | `ui-session` |
+| `session-maybe` | optional `sessionId`, `useSession`, `useProjection`, `useAccess` results | `ui-session` |
 | `session` | `useConversation`, `useInput`, `inputActions` | `ui-conversation` |
 | `session-maybe` | optional `useConversation`, `useInput`, `inputActions` results | `ui-conversation` |
 | `session` | `useChat` | `ui-chat` |
@@ -103,71 +109,86 @@ The owner of a slot may put an `inject` face in the child declaration when every
 
 Use owner props for values already known at one render occurrence, registration `inject` for one entry's callbacks and private observables, slot-level `inject` for a capability controlled by the slot owner, and a declared store for mutable view state shared across entries or preserved across remounts. React nodes compose through child slots, not through injected values.
 
-## Current hierarchy
+<a id="current-hierarchy"></a>
 
-The hierarchy below is the shipped declaration tree. A child exists only while the named parent entry is mounted; optional feature entries can therefore make a subtree appear or disappear as one lifecycle unit.
+## Conversation hierarchy
+
+The following Conversation paths distinguish declaration owners from reusable Factory roots; unrelated shell positions are omitted. An entry owns its declared children, while a Factory owns its child declarations for the lifetime of its registered definition. Bracketed names identify the default React components; a plain React descendant can render its owner's Slot. Factory calls are references to independent reusable definitions, not new Slot declarations.
 
 ```text
-root
-├─ sidebar
-│  ├─ sidebar.brand.mark
-│  ├─ sidebar.brand.name
-│  ├─ sidebar.footer.action
-│  ├─ sidebar.workspaces
-│  │  └─ sidebar.workspaces.directoryFlow
-│  └─ sidebar.settings
-│     ├─ settings.trigger
-│     ├─ settings.header
-│     ├─ settings.action
-│     ├─ settings.close
-│     ├─ settings.onboarding
-│     └─ settings.section
-│        ├─ settings.general.item
-│        ├─ settings.models.provider-card
-│        ├─ settings.models.footer
-│        └─ settings.plugins.tab
-│           └─ settings.plugin.item
-├─ conversation
-│  ├─ conversation.session
-│  │  └─ conversation.view
-│  │     ├─ conversation.chat.node
-│  │     │  ├─ conversation.chat.assistant-actions
-│  │     │  ├─ conversation.chat.commandview
-│  │     │  ├─ conversation.chat.turnTail
-│  │     │  └─ tool.call.toolview
-│  │     │     ├─ tool.call.images
-│  │     │     └─ tool.view.cordis
-│  │     ├─ conversation.message.images
-│  │     └─ conversation.trajectory.images
-│  ├─ conversation.session.header
-│  │  ├─ conversation.session.header.lineage
-│  │  ├─ conversation.session.header.actions
-│  │  ├─ conversation.session.header.utilities
-│  │  └─ conversation.session.header.corner
-│  ├─ conversation.composer
-│  │  └─ conversation.approval.detail
-│  ├─ conversation.composer.bar
-│  │  ├─ conversation.input.attachments
-│  │  ├─ conversation.input.plan
-│  │  └─ conversation.input.model
+root [AppFrame]
+└─ main[key=conversation] [ConversationPanel]
+   └─ main.conversation [ConversationRoot / ConversationMainPanel]
+      ├─ conversation.header [ConversationHeader]
+      │  ├─ conversation.header.leading
+      │  └─ conversation.session.header [ConversationSessionHeader]
+      │     ├─ conversation.session.header.lineage
+      │     ├─ conversation.session.header.actions
+      │     ├─ conversation.session.header.utilities
+      │     └─ conversation.session.header.corner
+      └─ calls Factory: conversation.content
+
+Factory: conversation.content [ConversationContent]
+├─ conversation.session [ConversationSession / DefaultConversationViews]
+│  └─ conversation.view
+│     ├─ id=chat [ChatView]
+│     │  └─ conversation.chat.flow [ChatFlow]
+│     │     └─ conversation.chat.node [ChatNodeSeat dispatch]
+│     │        ├─ key=user,steering [UserMessageNodeView]
+│     │        │  └─ calls Factory: conversation.chat.user.content
+│     │        ├─ key=assistant-step [AssistantNodeView / AssistantMarkdown]
+│     │        │  ├─ conversation.chat.message.images [MessageImages]
+│     │        │  └─ conversation.chat.reasoning.body [DefaultReasoningBody]
+│     │        │     └─ calls Factory: conversation.chat.reasoning.content
+│     │        ├─ key=tool-call [ToolCallTree]
+│     │        │  └─ tool.call.toolview
+│     │        │     └─ key=read_image [ReadImageRow / ToolRow]
+│     │        │        └─ tool.call.images [MessageImages]
+│     │        ├─ key=command-input [GoalCommandInputView]
+│     │        │  └─ calls Factory: conversation.user.text
+│     │        ├─ key=command [CommandNodeView]
+│     │        │  └─ conversation.chat.commandview
+│     │        └─ key=turn-tail [TurnTailNodeView]
+│     │           ├─ conversation.chat.turnTail
+│     │           └─ conversation.chat.assistant-actions
+│     └─ id=trajectory [TrajectoryView / TrajectoryTable]
+│        └─ conversation.trajectory.images [MessageImages]
+├─ conversation.composer
+│  ├─ conversation.approval.detail
+│  └─ conversation.plan-review.actions
+├─ conversation.composer.bar [InputBar]
+│  ├─ conversation.input.attachments
+│  ├─ conversation.input.permission
+│  ├─ conversation.input.plan
+│  ├─ conversation.input.model
+│  │  └─ conversation.input.model.label
 │  ├─ conversation.input.overlay
-│  ├─ conversation.input.dock
 │  ├─ conversation.composer.dock
 │  ├─ conversation.input.left
-│  ├─ conversation.input.right
-│  ├─ conversation.hero.brand.mark
-│  ├─ conversation.hero.workspace
-│  │  └─ conversation.hero.workspace.directoryFlow
-│  └─ conversation.hero.agentPreset
-├─ rightbar
-│  ├─ sidebar.right.pane.tab
-│  │  └─ sidebar.right.tab.guide
-│  ├─ sidebar.right.pane.tab.title
-│  └─ sidebar.right.tab.menu.item
-└─ shell.overlay
+│  └─ conversation.input.right
+├─ conversation.input.dock
+│  └─ id=queue [QueueDock]
+│     └─ calls Factory: conversation.user.text
+├─ conversation.hero.brand.mark
+├─ conversation.hero.workspace
+│  └─ conversation.hero.workspace.directoryFlow
+├─ conversation.hero.agentPreset
+└─ conversation.hero.options
+
+Factory: conversation.chat.user.content [UserContent]
+├─ conversation.chat.user.images [MessageImages]
+└─ calls Factory: conversation.user.text
+
+Factory: conversation.user.text [UserText]
+└─ conversation.user.text.node [keyed, inline]
+
+Factory: conversation.images.content [MessageImagesContent / ImageGallery]
+Factory: conversation.chat.reasoning.content [ReasoningContent / MarkdownText]
 ```
 
-The generated Client inspect catalog is the exhaustive contract for each key: cardinality, scope, owner props, standard props, current occupants, declaration owner, and replacement risk. A running dynamic package can query the live tree and an exact key with `cordis_inspect what:"client"`; the source catalog is generated from `SlotMap` declarations and `slots.register()` call sites by `pnpm run gen-client-catalog`.
+All four image Slots default to `MessageImages`, which calls `conversation.images.content` with the caller's image references and authorized loader. User and output image replacements are independent. The `conversation.user.text` Factory is shared by user content, Queue, and Goal; its `inline: true` keyed Slot renders span anchors and inline error placeholders rather than block wrappers.
+
+The generated [Client inspect catalog](../../packages/extensions/cordis-client-runner/src/client/slot-catalog.ts) covers all shell branches and is the exhaustive contract for each key: cardinality, scope, owner props, standard props, current occupants, declaration owner, and replacement risk. A running dynamic package can query the live tree and an exact key with `cordis_inspect what:"client"`; the source catalog is generated from `SlotMap` declarations and `slots.register()` call sites by `pnpm run gen-client-catalog`.
 
 ## Extension rules
 

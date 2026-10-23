@@ -17,7 +17,7 @@ Domain vocabulary for DeepSeek Harness uses one canonical term per concept. Term
 - **scoped dispatch** — the rule: an event about one agent's activity dispatches with that agent's carrier. Events about a registry itself (a tool was added) are *registry-subject* and stay unfiltered.
 - **shadowing** — most-specific-wins name resolution: a scoped tool/section/variable replaces its same-named global twin for that scope alone. The per-agent persona and per-agent tool-variant mechanism.
 - **restriction / scope-local registration** — a restriction (`tools.restrict`) filters the GLOBAL tool set for one scope (compose by intersection); scope-local registrations are merged after that filter. A filtered-away global tool is absent from the prompt AND refuses execution, indistinguishably from a nonexistent one.
-- **setup window** — the creation slot where a creator composes an agent's scoped world (`CreateAgentOptions.setup`): after the scope and agent object exist but before the agent or session is published, `agent/session-start` fires, or the first prompt is assembled. Setup registers; it never drives the agent.
+- **setup window** — the creation slot where a creator composes an agent's scoped world (`CreateAgentOptions.setup`): after the scope and agent object exist but before the agent or session is published, `agent/created` fires, or the first prompt is assembled. Setup registers; it never drives the agent.
 - **lineage** — parent/child facts carried as data (`parentSession`, durable `delegationDepth`, runtime `subagentDepth`); never affects visibility. <a id="lineage"></a>
 
 ## goal
@@ -37,6 +37,7 @@ Domain vocabulary for DeepSeek Harness uses one canonical term per concept. Term
 - **turn** — one drain of admitted input in a session, ending after the model and its tools stop or a terminal policy intervenes. <a id="turn"></a>
 - **step** — one model request plus the tool executions caused by its response; a turn contains zero or more steps. <a id="step"></a>
 - **round** — an outer policy iteration containing a turn, such as a [goal round](#goal-round) or one fresh-agent Ralph attempt. Round counters belong to that policy and do not count every turn in a session. <a id="round"></a>
+- **exchange** — consecutive [turns](#turn) from a turn whose first [step](#step) admits human input until the next such turn; turns woken by notices, such as settled subagents, goal rounds, or schedules, stay in the preceding exchange. Chat's next-message folding keeps the latest exchange expanded. <a id="exchange"></a>
 
 ## Ralph
 
