@@ -26,8 +26,9 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | v0.2.1-alpha.5 | `v0.2.1-alpha.5/` | +36 | ⭐⭐ | 收尾打磨段：账号通知契约放宽（`AccountBonusNotification` 元数据可选未校验、`orderId` 任意串、空 `expiresAt`=永久）、新槽 `conversation.input.model.label`、PTC 指令组合化 + persona 回补、斜杠菜单随 plugin manager 刷新；0 包增删改；无新持久化承认；指南 1 篇 |
 | v0.2.1-rc.1 | `v0.2.1-rc.1/` | +4 | ⭐ | **纯版本 bump**：355 个 package.json 版本行，零代码面变化；对插件唯一意义是 runtime 字符串变 `0.2.1-rc.1` 的命中判定；含 0.2.0-rc.2→0.2.1-rc.1 全程缝隙总账 |
 | v0.2.1-rc.2 | `v0.2.1-rc.2/` | +9 | ⭐⭐ | 功能补丁车（当前 master tip）：**2 新包**——`web-deepseek-api`（DeepSeek Search/Fetch API，既有 `ctx.web` 缝 provider，settings 开关后）+ `ui-deepseek-model-label-1017`（Flash 1017 徽章，成 `conversation.input.model.label` 槽首个官方 occupant，replaceRisk 升 `shadows-shipped-ui`）；闸门/settings/vendor/slot 结构**零断裂**（探针 13 列与 rc.1 逐项全等）；+1 同版本承认 deepseek-search-thinking；指南 0 篇 |
+| v0.2.1-rc.3 | `v0.2.1-rc.3/` | +6 | ⭐⭐⭐ | 导航条目自定义功能车（现 master tip）：**1 新包** `client/ui-entry-customization`；三域（左侧栏面板/View 页签/guide 卡）条目用户可钉选/隐藏/收进 More，**slot +3**（`*.actions` 行槽，0 删 0 改名）；**New Session 空白会话复用**（`startSession`/`openWorkspace`/`connectWorkspace` 签名不变语义变，官方指南 1 篇）；DeepSeek API-key 路由改跟随官方 `/models` listing（新 additive volatile 键 modelsTimeoutMs/modelsMaxAgeMs）；闸门/settings/vendor/缝/会话 V4 零 diff，无新承认 |
 
-> **未覆盖的中间版本**：`dsh-v0.1.5-rc.3`（3 commits）、`dsh-v0.1.6-alpha.2`（887）、`dsh-v0.1.7-alpha.1`（1299）、`dsh-v0.1.7-alpha.2`（162）尚无独立目录。`0.1.7-rc.1` 的文档已把 `0.1.6-alpha.1 → 0.1.7-rc.1` 的 2504 commits 全部纳入（区间包含上述中间版本）；`0.1.7-rc.2` 至 **`0.2.1-rc.2`** 各线尾版（rc.1/rc.2、alpha.1–alpha.5）均有独立目录。**0.2.0-rc.2 → 0.2.1-rc.2 全线无分析空白**（相邻 tag 间均无中间 tag）。
+> **未覆盖的中间版本**：`dsh-v0.1.5-rc.3`（3 commits）、`dsh-v0.1.6-alpha.2`（887）、`dsh-v0.1.7-alpha.1`（1299）、`dsh-v0.1.7-alpha.2`（162）尚无独立目录。`0.1.7-rc.1` 的文档已把 `0.1.6-alpha.1 → 0.1.7-rc.1` 的 2504 commits 全部纳入（区间包含上述中间版本）；`0.1.7-rc.2` 至 **`0.2.1-rc.3`** 各线尾版均有独立目录。**0.2.0-rc.2 → 0.2.1-rc.3 全线无分析空白**（相邻 tag 间均无中间 tag）。
 
 > 版本变更详情（0.1.1→0.1.5 完整提交级记录）参见 [dsh-015-notes.md](../dsh-015-notes.md)。
 
@@ -51,7 +52,8 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | 0.2.1-alpha.3 → 0.2.1-alpha.4 | 🔴 高 | **装载闸门换代（0.2.1 线分水岭）**：`engines.dsh` 存在即单独决定兼容性并**忽略 dsh peers**（`workspace:` 值被拒；非字符串=拒载）；`PluginCompatibility.peers`→`requirements`（`IncompatiblePlugin` 同步）；插件市场族进门（`ctx.pluginMarket` 缝 + `plugins.tab` 槽 + 5 新包）；跨宿主 release 的更新不自动应用；其余零断裂（无新承认、settings 不动） |
 | 0.2.1-alpha.4 → 0.2.1-alpha.5 | 🟡 中 | 账号通知契约放宽（`AccountBonusNotification` 元数据可选未校验、`orderId` 任意串、空 `expiresAt`=永不过期、新增可选 `title`）；新槽 `conversation.input.model.label`；PTC 指令组合化（prompt 形状敏感者注意）；闸门/包结构/承认清单零变化 |
 | 0.2.1-alpha.5 → 0.2.1-rc.1 | 🟢 低 | **纯版本 bump**（355 个 package.json 版本行），零代码面变化；唯一动作是把 `0.2.1-rc.1` 加进宿主矩阵重跑冒烟（精确枚举止于 alpha.5 的写法会漏 rc.1） |
-| 0.2.1-rc.1 → 0.2.1-rc.2 | 🟢 低 | 零必做：两新包全走既有缝 provider（`ctx.web`+`web-deepseek-api`）/ 既有槽 occupant（`model.label`+1017 徽章）路径；闸门/settings/vendor/slot 结构/会话 V4 零 diff（探针 13 列全等）；同三元组故 `^0.2.1-alpha.1` 与枚举写法天然覆盖 rc.2；唯一自查：同挂 `conversation.input.model.label` 的插件与官方徽章遮蔽竞争 |
+| 0.2.1-rc.1 → 0.2.1-rc.2 | 🟢 低 | 零必做：两新包全走既有缝 provider（`ctx.web`+`web-deepseek-api`）/ 既有槽 occupant（`model.label`+1017 徽章）路径；闸门/settings/vendor/slot 结构/会话 V4 零 diff（探针 13 列全等）；同三元组故 `^0.2.1-alpha.1` 与枚举写法天然覆盖 rc.2；唯一自查：同挂 `conversation.input.model.label` 的插件与官方徽章遮蔽竞争；⚠ 后续实证补记：`ctx.web` search/fetch provider 钉选由构造期快照改 volatile config 实时读，接管型插件需改 `settings.mutate`（见 v0.2.1-rc.2/README 观察点 #5） |
+| 0.2.1-rc.2 → 0.2.1-rc.3 | 🟡 中 | 核心契约（闸门/settings/vendor/缝/slot 结构删改/会话 V4）**零 diff**，但**官方升级指南 1 篇**：`startSession`/`openWorkspace`/`connectWorkspace` 从每次新建改为**按 preset 复用空白会话**（签名不变语义变）；slot **+3**（三域 `*.actions` More 行，0 删）；条目可见性让渡用户（钉选/隐藏/More）；DeepSeek API-key 路由模型目录改跟随官方 `/models`（新 additive volatile 键 ×2）；枚举式 engines.dsh/peer 清单需加 `0.2.1-rc.3` 行 |
 
 ## 推荐阅读路径
 
@@ -69,6 +71,7 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 10. **v0.2.1-alpha.3** — 第八次（**消费面契约换代**：JSONL 插件命名空间、JobId 身份、子代理 preset 组装、RBAC/CUA 两大能力族进门；闸门仍零 diff）
 11. **v0.2.1-alpha.4** — 第九次（**装载闸门换代**：`engines.dsh` 独裁 + `requirements` 改名；插件市场进门——0.2.1 线的兼容性判定分水岭）
 12. **v0.2.1-alpha.5 → v0.2.1-rc.2** — 收口段（通知契约放宽；rc.1 纯 bump，功能面即 a.5；rc.2 = 两小功能包进门零断裂）
+13. **v0.2.1-rc.3** — 导航条目自定义车（三域 pins/隐藏/More + slot×3；**New Session 空白复用带官方指南 1 篇——本段唯一语义级行为变化**；DeepSeek 模型跟官方 /models）
 
 ### 按角色
 
@@ -225,9 +228,9 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | [diff-vs-0.2.0-rc.2.md](v0.2.1-alpha.1/diff-vs-0.2.0-rc.2.md) | 13 个变更族逐 diff + 提交号链 + 复核命令 |
 | [plugin-migration-guide.md](v0.2.1-alpha.1/plugin-migration-guide.md) | 三类必做项（subpath 显示迁移 / invariants 清理 / schedule bundle 收尾）+ rc.1 条目状态表 + 检查清单 |
 
-## v0.2.1-alpha.3 / alpha.4 / alpha.5 / rc.1 / rc.2 详细目录
+## v0.2.1-alpha.3 / alpha.4 / alpha.5 / rc.1 / rc.2 / rc.3 详细目录
 
-> 快照基准：`dsh-v0.2.1-alpha.3`（`2fbf4359b8`，2026-10-14）→ `dsh-v0.2.1-alpha.4`（`86a402200d`，2026-10-15）→ `dsh-v0.2.1-alpha.5`（`1517a4dbca`，2026-10-16）→ `dsh-v0.2.1-rc.1`（`1600d8a1e1`，2026-10-16）→ `dsh-v0.2.1-rc.2`（`687f282e86`，2026-10-16，= master tip）；相邻 tag 间无中间 tag。各目录均为四件套（不含编号模块文档，14 篇基线沿用 v0.2.0-rc.1）。
+> 快照基准：`dsh-v0.2.1-alpha.3`（`2fbf4359b8`，2026-10-14）→ `dsh-v0.2.1-alpha.4`（`86a402200d`，2026-10-15）→ `dsh-v0.2.1-alpha.5`（`1517a4dbca`，2026-10-16）→ `dsh-v0.2.1-rc.1`（`1600d8a1e1`，2026-10-16）→ `dsh-v0.2.1-rc.2`（`687f282e86`，2026-10-17）→ `dsh-v0.2.1-rc.3`（`1f81c047fc`，2026-10-23，= master tip）；相邻 tag 间无中间 tag。各目录均为四件套（不含编号模块文档，14 篇基线沿用 v0.2.0-rc.1）。
 
 | 目录 | 文件 | 主题 |
 |---|---|---|
@@ -235,12 +238,13 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | `v0.2.1-alpha.4/` | [README](v0.2.1-alpha.4/README.md) · [CHANGELOG](v0.2.1-alpha.4/CHANGELOG.md) · [diff-vs-0.2.1-alpha.3](v0.2.1-alpha.4/diff-vs-0.2.1-alpha.3.md) · [migration](v0.2.1-alpha.4/plugin-migration-guide.md) | **闸门换代 `engines.dsh` 独裁 + `requirements` 改名**；插件市场族；闸门双时代对照表 |
 | `v0.2.1-alpha.5/` | [README](v0.2.1-alpha.5/README.md) · [CHANGELOG](v0.2.1-alpha.5/CHANGELOG.md) · [diff-vs-0.2.1-alpha.4](v0.2.1-alpha.5/diff-vs-0.2.1-alpha.4.md) · [migration](v0.2.1-alpha.5/plugin-migration-guide.md) | 账号通知契约放宽；model.label 槽；PTC 指令组合化 |
 | `v0.2.1-rc.1/` | [README](v0.2.1-rc.1/README.md) · [CHANGELOG](v0.2.1-rc.1/CHANGELOG.md) · [diff-vs-0.2.1-alpha.5](v0.2.1-rc.1/diff-vs-0.2.1-alpha.5.md) · [migration](v0.2.1-rc.1/plugin-migration-guide.md) | 纯 bump；含 **0.2.0-rc.2 → 0.2.1-rc.1 全程缝隙总账** |
-| `v0.2.1-rc.2/` | [README](v0.2.1-rc.2/README.md) · [CHANGELOG](v0.2.1-rc.2/CHANGELOG.md) · [diff-vs-0.2.1-rc.1](v0.2.1-rc.2/diff-vs-0.2.1-rc.1.md) · [migration](v0.2.1-rc.2/plugin-migration-guide.md) | DeepSeek Search/Fetch API + 1017 徽章（model.label 槽首个官方 occupant）；契约面零断裂 |
+| `v0.2.1-rc.2/` | [README](v0.2.1-rc.2/README.md) · [CHANGELOG](v0.2.1-rc.2/CHANGELOG.md) · [diff-vs-0.2.1-rc.1](v0.2.1-rc.2/diff-vs-0.2.1-rc.1.md) · [migration](v0.2.1-rc.2/plugin-migration-guide.md) | DeepSeek Search/Fetch API + 1017 徽章（model.label 槽首个官方 occupant）；契约面零断裂（provider 钉选 volatile 化见 README 观察点 #5） |
+| `v0.2.1-rc.3/` | [README](v0.2.1-rc.3/README.md) · [CHANGELOG](v0.2.1-rc.3/CHANGELOG.md) · [diff-vs-0.2.1-rc.2](v0.2.1-rc.3/diff-vs-0.2.1-rc.2.md) · [migration](v0.2.1-rc.3/plugin-migration-guide.md) | 导航条目自定义（新包 ui-entry-customization；三域 pins/隐藏/More，slot +3）；**New Session 空白复用（官方指南 1 篇，签名不变语义变）**；DeepSeek 跟官方 /models listing |
 
 ## 原始来源
 
-- 源码快照: `deepseek-harness/` 各 tag（本地已 fetch 至 **`dsh-v0.2.1-rc.2`**（`687f282e86`，= origin/master tip）；历史分析 worktree 已清理，逐 tag 直读用 `git show|grep <tag>`，对象库含 dsh-v0.2.1-alpha.1..rc.2 全 tag）
-- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.2.1-rc.2`
+- 源码快照: `deepseek-harness/` 各 tag（本地已 fetch 至 **`dsh-v0.2.1-rc.3`**（`1f81c047fc`，= origin/master tip）；历史分析 worktree 已清理，逐 tag 直读用 `git show|grep <tag>`，对象库含 dsh-v0.2.1-alpha.1..rc.3 全 tag）
+- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.2.1-rc.3`
 - **跨版本综述**: `roadmap-0.1.5-to-0.1.7-rc.2.md`（0.1.5 → 0.1.6 → 0.1.7-rc.2 三阶段必要性总述）；`v0.2.1-rc.1/README.md` 内含 0.2.1 线缝隙总账；`v0.2.1-alpha.3/` 起为最新增量目录链
 - 侦察底稿: `_analysis_output/dsh016/RECON.md`（0.1.5-rc.2 → 0.1.6-alpha.1）、**`_analysis_output/dsh017/`**（`BRIEF.md` 写作规范 + `notes-added.txt` 区间新增 note 全清单 + `notes-index.txt`）
 - 原始文章: `详解/ 第01-12篇`
@@ -256,4 +260,4 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 
 ---
 
-*最后更新: 2026-10-17（经回环 HTTP 代理拉取 `dsh-v0.2.1-alpha.3/4/5 + rc.1` 四 tag；新增四个分析目录；建 rc.2→rc.1 专用缝隙 worktree；上一轮 2026-10-04 新增 v0.2.1-alpha.1 目录）*
+*最后更新: 2026-10-24（经回环 HTTP 代理补拉 `dsh-v0.2.1-rc.3` tag，新增 rc.3 四件套；上一轮 2026-10-17 经代理拉取 alpha.3/4/5+rc.1 并建 rc.2 目录）*
