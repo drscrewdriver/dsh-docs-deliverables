@@ -110,7 +110,8 @@ dsh-docs-deliverables/
 │   ├── v0.2.1-rc.1/                     ← 纯版本 bump（含 0.2.0-rc.2→0.2.1-rc.1 全程缝隙总账）
 │   ├── v0.2.1-rc.2/                     ← 两新包进门（web-deepseek-api / model-label-1017）；契约面零断裂（provider 钉选 volatile 化除外）
 │   ├── v0.2.1-rc.3/                     ← 导航条目自定义（slot +3）；New Session 空白复用（官方指南 1 篇）；DeepSeek 跟官方 /models
-│   ├── v0.2.1-rc.4/                     ← 【最新 tag，≠ master tip】纯修复车：页签 tooltip 精化 + ACP stdout 保留×2；契约面零 diff
+│   ├── v0.2.1-rc.4/                     ← 0.2.1 线尾版：纯修复车：页签 tooltip 精化 + ACP stdout 保留×2；契约面零 diff
+│   ├── v0.2.2-alpha.2/                  ← 【动态登记，非全量分析】0.2.2 线首 tag（现 master tip，2026-10-28）：换代段，缝隙四件套待做；alpha.1 未发布
 │   ├── v0.1.5-rc.1/changelog-alpha1-rc1.md  ← alpha.1 → rc.1 变更
 │   ├── v0.1.5-alpha.1/CHANGELOG.md
 │   ├── v0.1.3-alpha.2/CHANGELOG.md
@@ -178,7 +179,7 @@ dsh-docs-deliverables/
 ## 版本说明
 
 - **官方文档镜像**: 基线 `dsh-v0.2.1-rc.3`（2026-10-23；rc.3↔rc.4 间 docs/ 整目录零 diff，镜像对 `dsh-v0.2.1-rc.4`（`504a01a957`，2026-10-26）仍逐字成立；含 upgrade-guide / persistence-changes / defensive-patterns，生成 schema/目录 JSON 不收录）
-- **源码解析**: 首版基于 v0.1.0-rc.5 快照；**最新为 v0.2.1-rc.4**（0.2.1 线各版四件套 + 插件迁移指引）；另附 rc.7 / 0.1.1-rc.2 / 0.1.2-rc.1 / 0.1.3-alpha.2 / 0.1.5-alpha.1 / 0.1.5-rc.1 的 CHANGELOG
+- **源码解析**: 首版基于 v0.1.0-rc.5 快照；**最新全量分析为 v0.2.1-rc.4**（0.2.1 线各版四件套 + 插件迁移指引）；另附 rc.7 / 0.1.1-rc.2 / 0.1.2-rc.1 / 0.1.3-alpha.2 / 0.1.5-alpha.1 / 0.1.5-rc.1 的 CHANGELOG；**v0.2.2-alpha.2（现 master tip，2026-10-28）已登动态条目，全量缝隙分析待做**
 - **社区讨论**: 基于 GitHub Discussions **6321 篇**帖子（#13–#6442）
 - **DSH 运行版本**: 0.1.1-rc.2（主机环境）
 

@@ -27,7 +27,8 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | v0.2.1-rc.1 | `v0.2.1-rc.1/` | +4 | ⭐ | **纯版本 bump**：355 个 package.json 版本行，零代码面变化；对插件唯一意义是 runtime 字符串变 `0.2.1-rc.1` 的命中判定；含 0.2.0-rc.2→0.2.1-rc.1 全程缝隙总账 |
 | v0.2.1-rc.2 | `v0.2.1-rc.2/` | +9 | ⭐⭐ | 功能补丁车：**2 新包**——`web-deepseek-api`（DeepSeek Search/Fetch API，既有 `ctx.web` 缝 provider，settings 开关后）+ `ui-deepseek-model-label-1017`（Flash 1017 徽章，成 `conversation.input.model.label` 槽首个官方 occupant，replaceRisk 升 `shadows-shipped-ui`）；闸门/settings/vendor/slot 结构**零断裂**（探针 13 列与 rc.1 逐项全等）；+1 同版本承认 deepseek-search-thinking；指南 0 篇 |
 | v0.2.1-rc.3 | `v0.2.1-rc.3/` | +6 | ⭐⭐⭐ | 导航条目自定义功能车：**1 新包** `client/ui-entry-customization`；三域（左侧栏面板/View 页签/guide 卡）条目用户可钉选/隐藏/收进 More，**slot +3**（`*.actions` 行槽，0 删 0 改名）；**New Session 空白会话复用**（`startSession`/`openWorkspace`/`connectWorkspace` 签名不变语义变，官方指南 1 篇）；DeepSeek API-key 路由改跟随官方 `/models` listing（新 additive volatile 键 modelsTimeoutMs/modelsMaxAgeMs）；闸门/settings/vendor/缝/会话 V4 零 diff，无新承认 |
-| v0.2.1-rc.4 | `v0.2.1-rc.4/` | +9 | ⭐⭐ | 纯修复车（现 0.2.1 线最新 tag，≠ master tip）：369 文件中 349 仅版本行，实质 20 文件三主题——①View 页签 tooltip 改估算溢出才出现 + More 按钮文案不再含当前视图名（**locale 键 session.moreViewsCurrent 删除**）；②ACP stdout 保留给协议消息×2（账号目录诊断 stdout→stderr；MCP 未宣告 resources 的服务器列表短路空页不触服务器）；**契约面（闸门/settings/vendor/缝/槽/docs 整目录）零 diff**，指南 0 篇，配对探针 14 列与 rc.3 全等 |
+| v0.2.1-rc.4 | `v0.2.1-rc.4/` | +9 | ⭐⭐ | 纯修复车（0.2.1 线尾版）：369 文件中 349 仅版本行，实质 20 文件三主题——①View 页签 tooltip 改估算溢出才出现 + More 按钮文案不再含当前视图名（**locale 键 session.moreViewsCurrent 删除**）；②ACP stdout 保留给协议消息×2（账号目录诊断 stdout→stderr；MCP 未宣告 resources 的服务器列表短路空页不触服务器）；**契约面（闸门/settings/vendor/缝/槽/docs 整目录）零 diff**，指南 0 篇，配对探针 14 列与 rc.3 全等 |
+| v0.2.2-alpha.2 | `v0.2.2-alpha.2/` | +2153 | ⭐⭐⭐⭐⭐ | **0.2.2 线首个已发布 tag（现 master tip `f3803c9697`，2026-10-28，npm 挂 `alpha` 标）——换代级大段，本目录仅动态登记、四件套未做**：7242 files +311k/−696k；闸门两文件仍零 diff；能力缝 +50 行（forge/liveshare/action-cards/pluginRecommendations/cuaAccess/headlessStartup 新缝族）；≥26 新包（forge 族/tool-executor 拆分/message-quotes/file-drag 等）；upgrade-guide **集中补挂 +39 篇**（含 rc.2×31、rc.3×6、rc.4/model-listing-refresh）；**⚠ 0.2.2-alpha.1 在 git/npm 均不存在（未对外发布）**；SESSION_FORMAT_VERSION 仍 4 |
 
 > **未覆盖的中间版本**：`dsh-v0.1.5-rc.3`（3 commits）、`dsh-v0.1.6-alpha.2`（887）、`dsh-v0.1.7-alpha.1`（1299）、`dsh-v0.1.7-alpha.2`（162）尚无独立目录。`0.1.7-rc.1` 的文档已把 `0.1.6-alpha.1 → 0.1.7-rc.1` 的 2504 commits 全部纳入（区间包含上述中间版本）；`0.1.7-rc.2` 至 **`0.2.1-rc.4`** 各线尾版均有独立目录。**0.2.0-rc.2 → 0.2.1-rc.4 全线无分析空白**（相邻 tag 间均无中间 tag）。
 
@@ -56,6 +57,7 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | 0.2.1-rc.1 → 0.2.1-rc.2 | 🟢 低 | 零必做：两新包全走既有缝 provider（`ctx.web`+`web-deepseek-api`）/ 既有槽 occupant（`model.label`+1017 徽章）路径；闸门/settings/vendor/slot 结构/会话 V4 零 diff（探针 13 列全等）；同三元组故 `^0.2.1-alpha.1` 与枚举写法天然覆盖 rc.2；唯一自查：同挂 `conversation.input.model.label` 的插件与官方徽章遮蔽竞争；⚠ 后续实证补记：`ctx.web` search/fetch provider 钉选由构造期快照改 volatile config 实时读，接管型插件需改 `settings.mutate`（见 v0.2.1-rc.2/README 观察点 #5） |
 | 0.2.1-rc.2 → 0.2.1-rc.3 | 🟡 中 | 核心契约（闸门/settings/vendor/缝/slot 结构删改/会话 V4）**零 diff**，但**官方升级指南 1 篇**：`startSession`/`openWorkspace`/`connectWorkspace` 从每次新建改为**按 preset 复用空白会话**（签名不变语义变）；slot **+3**（三域 `*.actions` More 行，0 删）；条目可见性让渡用户（钉选/隐藏/More）；DeepSeek API-key 路由模型目录改跟随官方 `/models`（新 additive volatile 键 ×2）；枚举式 engines.dsh/peer 清单需加 `0.2.1-rc.3` 行 |
 | 0.2.1-rc.3 → 0.2.1-rc.4 | 🟢 低 | **纯修复车，契约面全零**（闸门/settings/vendor/缝/槽/docs 整目录零 diff，指南 0 篇，配对探针 14 列全等）；三处运行态行为变：①View 页签 tooltip 仅估算溢出才挂、More 按钮文案不再含当前视图名（**locale 键 `session.moreViewsCurrent` 删**）——DOM 探针文案锚需改；②MCP 未宣告 resources 的服务器列表**短路空页不触服务器**（消费形状不变）；③账号目录诊断 stdout→stderr（ACP stdout 与协议消息分道）；枚举式清单需加 `0.2.1-rc.4` 行，caret 免 |
+| 0.2.1-rc.4 → 0.2.2-alpha.2 | 🔴 待析 | **0.2.2 换代段（动态登记，分析未做）**：2153 commits / 7242 files +311k/−696k；闸门零 diff（装载判据不变，未列 0.2.2 的枚举串在 a.2 宿主仍拒载）；新缝族 forge/liveshare/action-cards 等；≥26 新包；指南补挂 +39 篇；插件影响面待逐主题核，**跟进前勿盲补枚举** |
 
 ## 推荐阅读路径
 
@@ -247,8 +249,8 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 
 ## 原始来源
 
-- 源码快照: `deepseek-harness/` 各 tag（本地已 fetch 至 **`dsh-v0.2.1-rc.4`**（`504a01a957`，2026-10-26；origin/master tip `f3803c9697` 更晚且未发版，不入分析边界）；历史分析 worktree 已清理，逐 tag 直读用 `git show|grep <tag>`，对象库含 dsh-v0.2.1-alpha.1..rc.4 全 tag）
-- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.2.1-rc.4`
+- 源码快照: `deepseek-harness/` 各 tag（本地已 fetch 至 **`dsh-v0.2.2-alpha.2`**（`f3803c9697`，2026-10-28，= origin/master tip）；历史分析 worktree 已清理，逐 tag 直读用 `git show|grep <tag>`，对象库含 dsh-v0.2.1-alpha.1..rc.4 全 tag + dsh-v0.2.2-alpha.2）
+- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.2.1-rc.4`，及 `dsh-v0.2.2-alpha.2`（**0.2.2 线无 alpha.1 tag**）
 - **跨版本综述**: `roadmap-0.1.5-to-0.1.7-rc.2.md`（0.1.5 → 0.1.6 → 0.1.7-rc.2 三阶段必要性总述）；`v0.2.1-rc.1/README.md` 内含 0.2.1 线缝隙总账；`v0.2.1-alpha.3/` 起为最新增量目录链
 - 侦察底稿: `_analysis_output/dsh016/RECON.md`（0.1.5-rc.2 → 0.1.6-alpha.1）、**`_analysis_output/dsh017/`**（`BRIEF.md` 写作规范 + `notes-added.txt` 区间新增 note 全清单 + `notes-index.txt`）
 - 原始文章: `详解/ 第01-12篇`
@@ -264,4 +266,4 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 
 ---
 
-*最后更新: 2026-10-28（补拉 `dsh-v0.2.1-rc.4` tag（`504a01a957`），新增 rc.4 四件套 + rc.3↔rc.4 配对探针 14 列全等实证；上一轮 2026-10-24 补拉 rc.3 并建 rc.3 四件套）*
+*最后更新: 2026-10-28（二轮：登记 0.2.2-alpha.2 动态——即原「master tip」已发版，`v0.2.2-alpha.2/` 单 README 动态条目，全量缝隙分析待做；上一轮同日：补拉 rc.4 建四件套 + 配对探针；2026-10-24 补拉 rc.3）*
