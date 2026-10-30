@@ -60,7 +60,7 @@
 
 ### 1.2 实现面（`packages/client/ui-chat`）
 
-- **`packages/client/ui-chat/src/client/reasoning-text.ts`（新增文件）**——`reasoningText(raw: string): { text: string; hidden: boolean }`：Chat 内部展示文本预处理助手；`hidden` 标记 = `text !== raw && text.trim() === ''`（处理过后为空但原文非空 → 隐藏整块）
+- **`packages/client/ui-chat/src/client/reasoning-text.ts`（新增文件）**——`reasoningText(raw: string): string`：Chat 内部展示文本预处理助手（2026-10-31 重核逐行实读）：raw 以 `<signature>` 开头且含闭合 → 返 `</signature>` 后正文（跳紧邻换行）；未闭合/前缀流式态 → `''`；非 `<` 或非签名 `<` 前缀 → 原样透传。`hidden` 标记在 `ReasoningRow` 调用侧算：`text !== rawText && text.trim() === ''`（签名块清空 → 整块不渲染）
 - **`packages/client/ui-chat/src/client/chat/ReasoningRow.tsx`**（+10/−4 大致规模）：
   - `ReasoningRow` 形参解构改名 `text` → `text: rawText`
   - 新增 `const { text, hidden } = useMemo(() => { const t = reasoningText(rawText); return { text: t, hidden: t.text !== rawText && t.text.trim() === '' } }, [rawText])`
@@ -140,7 +140,7 @@
 | 消费点 | 是否受影响 | 说明 |
 |---|---|---|
 | 不注入 `conversation.chat.reasoning.body` slot | ❌ 不受影响 | 代码零改动；只需元数据枚举加 rc.5 行避免拒载 |
-| 注入 body slot 且把 `text` 直接原样渲染 Markdown / DOM | ⚠️ 语义变化但通常无行为差 | 现 `text` 已是展示文本，官方已做过 `**` 剥离等预处理；渲染效果通常一致或更好；若依赖旧 `text` 是"raw"来做后续处理需注意 |
+| 注入 body slot 且把 `text` 直接原样渲染 Markdown / DOM | ⚠️ 目标口径变了但多数无值差 | 现 `text` 是"展示文本"：仅 raw 带 `<signature>` 签名块时被剥/置空，其余原样透传（`text === rawText`）；`**` 只在折叠摘要层清洗，body 内不受影响（2026-10-31 重核） |
 | 注入 body slot 且把 `text` 当**原始模型输出**（正则/字数/复制/二次翻译源） | ✅ **行为静默漂移** | 必须切 `rawText`——否则拿到的是 Chat 处理后文本 |
 | 依赖 `ReasoningContentInput extends ReasoningBodyOwnerProps` 做泛型约束 | ✅ **类型不通** | ContentInput 脱钩，需显式声明 `{ text, running, labels? }` |
 | 官方 cot-translation（本包） | ⚠️ JSDoc 更新，代码不动 | 展示文本翻译消费方，语义反转兼容 |

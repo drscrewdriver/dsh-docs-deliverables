@@ -6,9 +6,9 @@
 ## Features / Breaking（作者面向）
 
 - 🔌 `b830ec950f`（PR #7572 release-dsh-0.2.1-rc.5 车） **feat(ui-chat): expose raw + display-ready reasoning to Body Slot**
-  - `packages/client/ui-chat/src/client/contract/slots.ts`：`ReasoningBodyOwnerProps` **新增 required 字段 `rawText: string`**（模型完整或流式原始输出）；**`text` 字段语义反转**——从"Complete or streaming reasoning text"改为"Reasoning text prepared for display"（Chat 内部已处理，例如剥离 `**` 双星标记）
+  - `packages/client/ui-chat/src/client/contract/slots.ts`：`ReasoningBodyOwnerProps` **新增 required 字段 `rawText: string`**（模型完整或流式原始输出）；**`text` 字段语义反转**——从"Complete or streaming reasoning text"改为"Reasoning text prepared for display"（Chat 内部预处理：`reasoningText()` 仅对 `<signature>` 开头签名块剥离/置空，其余原样透传；`**` 剥离仅发生在折叠摘要层不影响 body text，2026-10-31 重核）
   - `packages/client/ui-chat/src/client/contract/slots.ts`：`ReasoningContentInput` **不再 `extends ReasoningBodyOwnerProps`**——独立声明 `{ text: string; running: boolean; labels?: MarkdownLabels }`；`conversation.chat.reasoning.content` Factory 签名不变
-  - `packages/client/ui-chat/src/client/reasoning-text.ts`（**新增文件**）：`reasoningText(raw: string): { text: string; hidden: boolean }`——Chat 内部展示文本预处理助手；`hidden = text !== raw && text.trim() === ''`（预处理后空态标记）
+  - `packages/client/ui-chat/src/client/reasoning-text.ts`（**新增文件**）：`reasoningText(raw: string): string`——Chat 内部展示文本预处理助手（仅处理 `<signature>` 签名块：闭合→返正文；未闭合/前缀流式态→置空；非 `<` 前缀原样透传）；`hidden` 在调用侧 `ReasoningRow` 计算：`text !== rawText && text.trim() === ''`（处理过后为空但原文非空 → 整块隐藏）
   - `packages/client/ui-chat/src/client/chat/ReasoningRow.tsx`：`ReasoningRow` 消费点形参 `text` → `rawText`；`useMemo` 中先算 `reasoningText(rawText)` 得 `text`/`hidden` 再向下传；`DefaultReasoningBody` 向 Content Factory 传的是处理后的 `text`
   - `packages/client/ui-chat/src/client/chat/ReasoningContent.tsx`：`DefaultReasoningBody` JSDoc 从 "original reasoning" 改 "display-ready reasoning"（内容 Factory 签名保持 `{ text, running, labels? }`）
   - `packages/client/ui-chat/src/client/conversation-nodes/process-activity.ts`：会话节点分派链路适配新字段名（`text` → `rawText`）

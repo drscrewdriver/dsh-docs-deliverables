@@ -8,7 +8,7 @@
 > **结构变化**: **0 新增包 / 0 删除 / 0 改名**；新增 1 个内部模块 `packages/client/ui-chat/src/client/reasoning-text.ts`
 > **持久化契约**: `SESSION_FORMAT_VERSION` **保持 4**；`docs/persistence-changes/` 零 diff
 > **插件契约**: 闸门（`plugin-compatibility.ts`/`compatibility-preflight.ts`）**零 diff**（gate=5↔5 两侧同）；settings 核心 / vendor cordis·schemastery / `docs/capability-seams.md` / `slot-catalog.ts` key 集合 / `docs/upgrade-guide/` 目录树 **零 diff**；**官方升级指南 1 篇**（`v0.2.1-rc.4/reasoning-body-props/`，目录按迁移源命名，非 rc.5 目录）
-> **⚡ 唯一作者面向断裂面**: slot `conversation.chat.reasoning.body` 的 owner props `ReasoningBodyOwnerProps` **新增必填字段 `rawText: string`**；同时 `text` 字段**语义反转**（从"原始模型输出"→"Chat 处理后展示文本"）——依赖旧语义把 `text` 当 raw 用（正则、字数、复制原文）的自定义 reasoning renderer **行为静默漂移**
+> **⚡ 唯一作者面向断裂面**: slot `conversation.chat.reasoning.body` 的 owner props `ReasoningBodyOwnerProps` **新增必填字段 `rawText: string`**；同时 `text` 字段**目标语义反转**（"原始模型输出"→"Chat 处理后展示文本"）——实读助手仅处理 `<signature>` 签名块（剥体/置空），非 `<` 前缀原样透传（2026-10-31 重核），故真受影响的是**依赖签名块完整内容**的自定义 renderer（签名审计/原文完整复制/签名计入字数）
 
 ---
 
@@ -16,7 +16,7 @@
 
 rc.5 是 rc.4 修复车之后的**契约精化段**，一个主题、一处作者面向 breaking：
 
-- **Reasoning Body Slot 双轨文本化**（PR #7572 车）：`conversation.chat.reasoning.body` slot 的 `ReasoningBodyOwnerProps` 加 `rawText`（模型原始输出）并**语义反转** `text`（Chat 已处理展示文本，走新增内部助手 `reasoningText()` 剥离 `**` 标记等）；官方 cot-translation 只改了 JSDoc 未改码（因为它本就是"翻译展示文本"消费方）；`ReasoningContentInput`（`conversation.chat.reasoning.content` Factory 输入）**不再 extends `ReasoningBodyOwnerProps`**，字段独立化为 `{ text, running, labels? }`；
+- **Reasoning Body Slot 双轨文本化**（PR #7572 车）：`conversation.chat.reasoning.body` slot 的 `ReasoningBodyOwnerProps` 加 `rawText`（模型原始输出）并**语义反转** `text`（目标口径为"Chat 已处理展示文本"，走新增内部助手 `reasoningText()`——实为 **`<signature>` 签名块剥离/置空**，非 `\*\*` 剥离；非 `<` 前缀的 raw 原样透传，故**多数模型下 `text === rawText` 无值差**，2026-10-31 重核定）；官方 cot-translation 只改了 JSDoc 未改码（因为它本就是"翻译展示文本"消费方）；`ReasoningContentInput`（`conversation.chat.reasoning.content` Factory 输入）**不再 extends `ReasoningBodyOwnerProps`**，字段独立化为 `{ text, running, labels? }`；
 - **契约面**：闸门两文件零 diff、capability-seams 零 diff、slot-catalog key 集合零增删（只更新 `conversation.chat.reasoning.body` 条目的 summary/doc/ownerProps 描述与其他 slot 的行号位移）；
 - 其余为 `ui-chat` 三语 README 同步 + release bump（349 个 `package.json` 版本行 → runtime 字符串变 `0.2.1-rc.5`）。
 
@@ -53,7 +53,7 @@ dsh-v0.2.2-alpha.2   ← 0.2.2 线首 tag（f3803c9697，2026-10-27，= master t
   - `packages/client/ui-chat/src/client/contract/slots.ts` — `ReasoningBodyOwnerProps` 新增 `rawText: string`（required），`text` 语义反转（`Complete or streaming model output` → `Reasoning text prepared for display`）；`ReasoningContentInput` **不再 extends `ReasoningBodyOwnerProps`**，独立字段化为 `{ text, running, labels? }`
   - `packages/extensions/cordis-client-runner/src/client/slot-catalog.ts` — slot 目录中 `conversation.chat.reasoning.body` 条目的 summary/doc/ownerProps 同步；其他 slot 因 slots.ts 行号位移导致 source 锚点更新（444→447 等，非 key 增删）
 - 实现面：
-  - `packages/client/ui-chat/src/client/reasoning-text.ts` — **新增文件**，导出 `reasoningText(raw: string): { text, hidden }`，供 Chat 内部把 raw 转成展示文本（当前实现：剥离 `**` 双星标记 + 空态标记）
+  - `packages/client/ui-chat/src/client/reasoning-text.ts` — **新增文件**，导出 `reasoningText(raw: string): string`，供 Chat 内部把 raw 转成展示文本（**2026-10-31 重核逐行实读定稿**：raw 以 `<signature>` 开头且含闭合标 → 返回 `</signature>` 后正文（跳紧邻换行）；未闭合或 raw 为签名前缀流式态 → `''`；首字符非 `<` 或非签名 `<` 前缀 → **原样透传**。`ReasoningRow` 中 `hidden = text !== rawText && text.trim() === ''` → 签名块清空时整块不渲染。`**` 双星剥离仅发生在折叠摘要链（`summaryText.replaceAll('**','')`），**不影响 body slot 的 text**）
   - `packages/client/ui-chat/src/client/chat/ReasoningRow.tsx` — 消费点参数改名 `text` → `rawText`，内部先 `reasoningText(rawText)` 得到展示 `text` 和 `hidden` 标记，然后再传给 body slot；`DefaultReasoningBody` 传给 Content Factory 的是处理后的 text
   - `packages/client/ui-chat/src/client/chat/ReasoningContent.tsx` — JSDoc 从 "original reasoning" 改 "display-ready reasoning"（内容 Factory 签名不变，仍是 `{ text, running, labels? }`）
   - `packages/client/ui-chat/src/client/conversation-nodes/process-activity.ts` — 会话节点分派链路适配新字段名
@@ -69,7 +69,7 @@ dsh-v0.2.2-alpha.2   ← 0.2.2 线首 tag（f3803c9697，2026-10-27，= master t
 
 **判据要点**（作者读这一条即可）：
 - 不注入 `conversation.chat.reasoning.body` slot 的插件：代码零改动
-- 注入且**将 `text` 用作原始模型输出**（正则匹配、字数统计、原文复制、以 raw 作为翻译源）：**必须切 `rawText`**，否则行为静默漂移（不报错但语义变化）
+- 注入且**将 `text` 用作原始模型输出**（签名块审计、字数统计、原文复制、以 raw 作为翻译源）：**必须切 `rawText`**——但命中面窄于初判（2026-10-31 重核）：仅 raw 以 `<signature>` 开头时 `text` 才与原始分岔（签名体被剥/整块隐），其余模型 `text === rawText` 无值差
 - 注入且**将 `text` 用作展示文本**（原样渲染 Markdown、渲染到 DOM）：可继续用 `text`；官方 cot-translation 属此类
 - 依赖 `ReasoningContentInput` 曾继承 `ReasoningBodyOwnerProps` 结构做泛型约束：需去掉继承假设，改按 `{ text, running, labels? }` 显式声明
 - 元数据枚举：`engines.dsh` 精确枚举或 peer 精确枚举清单**必须加 `0.2.1-rc.5` 行否则拒载**；caret `^0.2.1-alpha.1` 免动（同三元组）
@@ -94,8 +94,8 @@ dsh-v0.2.2-alpha.2   ← 0.2.2 线首 tag（f3803c9697，2026-10-27，= master t
 ## 未验证项（诚实标注）
 
 1. **提交数**：浅克隆 graft 假象下不可考（同 0.2.2-alpha.2 处理），本次分析**不给出具体 commit 数**；如需精确请补 `git fetch --unshallow` 后复核。
-2. **`reasoningText()` 内部语义**：本轮只读到调用点和 JSDoc，未逐行读该助手实现——若插件依赖具体剥离规则（`**` 之外的其他形态），需自查 `packages/client/ui-chat/src/client/reasoning-text.ts` 源码。
-3. **14 列配对探针**：本次仅实测 gate 一列（两侧=5），余下 12 列（iss/inst/scope/cf/vol/dpc/card/rowcfg/detail/allowver/loc/snap/edsh）在 rc.4→rc.5 无相关面 diff 前提下预期逐项全等，**未逐列跑**——host-matrix probe_matrix rc.5 行按"沿用 rc.4 数值 + 显式标注未逐列实测"填入。
+2. ~~**`reasoningText()` 内部语义**：本轮只读到调用点和 JSDoc，未逐行读该助手实现~~ **已闭合（2026-10-31 重核）**：逐行实读定稿——`<signature>` 前缀块剥离/置空，非 `<` 前缀原样透传；受影响面收窄为依赖签名块完整内容的插件（签名审计/原文完整复制/签名计入字数），`**`/`<thinking>` 等非签名形态正则在 body `text` 中不受影响（见 §主题一实现面与 §判据要点同步修正）。
+3. **14 列配对探针**：已实测 cf=78/gate=10/snap=262/edsh=27〔收窄口径 21〕/loc=12〔收窄 6〕五列与 rc.4 逐项全等（2026-10-31 补测）；余 9 列（iss/inst/scope/vol/dpc/card/rowcfg/detail/allowver）在相关面 diff 全零前提下**预期全等、未直接重跑**——host-matrix probe_matrix rc.5 行沿用 rc.4 数值并已显式标注。
 4. **UI 侧行为回归**：`hidden` 标记（`text.trim() === '' && text !== rawText`）触发条件是否覆盖所有历史空态渲染分支——官方测试 `reasoning-row.client.spec.tsx` 已跑通，但第三方 renderer 若依赖旧的"raw 就是 text"假设可能在特殊模型输出格式（如空 reasoning block）下漂移。
 
 ---

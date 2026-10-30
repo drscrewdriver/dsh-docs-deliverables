@@ -21,15 +21,16 @@ engines.dsh 时代（≥a.4）闸门对声明了 `engines.dsh` 的包按该键**
 
 #### M2.a — 语义自查：`props.text` 用途
 
-`text` 字段语义反转：从"原始模型输出"→"Chat 处理后展示文本"（`reasoningText()` 预处理，例如剥离 `**` 双星）。
+`text` 字段语义反转：从"原始模型输出"→"Chat 处理后展示文本"。`reasoningText()` 实为**签名块处理器**（2026-10-31 重核逐行实读）：raw 以 `<signature>` 开头 → 剥去签名块返回正文（未闭合则置空并整块隐藏）；**非 `<` 前缀原样透传，多数模型下 `text === rawText` 无值差**；`**` 双星仅在折叠摘要层清洗，不影响 body `text`。
 
 | 你的 `text` 用途 | 迁移动作 |
 |---|---|
 | 直接渲染 Markdown / 塞进 DOM | 无动作——继续用 `text` 就是最新口径（官方 cot-translation 属此类） |
-| 正则匹配原始模型标记（如 `<thinking>` / `**`） | **切 `rawText`**——`text` 已被 Chat 剥离 |
-| 精确字数统计 / token 估算 | **切 `rawText`**——`text` 是展示版长度不等价 |
-| 原文复制按钮 / 导出/分享 | **切 `rawText`**——用户预期复制的是原始输出 |
-| 以 raw 为源做二次翻译 / 后处理 | **切 `rawText`**——除非你希望 Chat 预处理过后再翻 |
+| 签名块审计/剥离再展示（匹配 `<signature>…</signature>` 整体/判"这段思考有无官方签名"） | **切 `rawText`**——`text` 中签名体已被剥/整块隐（非 `<signature>` 前缀输出仍原样） |
+| 正则匹配 `**` / `<thinking>` 等非签名形态 | 无动作——这些标记在 body `text` 中**不被剥**（`**` 仅折叠摘要层清洗，2026-10-31 重核收窄命中面） |
+| 精确字数统计 / token 估算 | ⚠️ 仅签名模型分岔——DeepSeek 官方 thinking 带签名块时 `text` 少计签名体；其余模型 `text === rawText`；稳妥起见切 `rawText` |
+| 原文复制按钮 / 导出/分享 | **切 `rawText`**——用户预期复制的是原始输出（签名块完整）；且签名清空时整块被宿主 `hidden` 不渲染，插件失去接管机会 |
+| 以 raw 为源做二次翻译 / 后处理 | 视需求——要翻签名后的正文用 `text`；要翻含签名全文用 `rawText` |
 
 #### M2.b — 类型层：`ReasoningContentInput` 脱钩
 
@@ -57,7 +58,7 @@ function factory<T extends ReasoningContentInput>(props: ReasoningBodyOwnerProps
 
 ### S2. `conversation.chat.reasoning.content` Factory 签名不变
 
-Factory 输入仍是 `{ text, running, labels? }`（不新增 `rawText`）——Chat 的 `DefaultReasoningBody` 把处理后的 `text` 转交 Factory，第三方 wrapper 若继续调该 Factory 传的也应是展示版 `text`（或其翻译）。**别把 `rawText` 传给 Factory**——那会绕过 Chat 的预处理链路（如 `**` 剥离）。
+Factory 输入仍是 `{ text, running, labels? }`（不新增 `rawText`）——Chat 的 `DefaultReasoningBody` 把处理后的 `text` 转交 Factory，第三方 wrapper 若继续调该 Factory 传的也应是展示版 `text`（或其翻译）。**别把 `rawText` 传给 Factory**——那会绕过 Chat 的签名块预处理链路（`<signature>` 剥离/隐藏）。
 
 ### S3. 语言包文案锚
 
