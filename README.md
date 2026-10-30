@@ -10,9 +10,9 @@
 
 | 板块 | 目录 | 来源 | 内容 |
 |------|------|------|------|
-| **官方文档** | `official-repo/` | GitHub 官方仓库 | docs/ 完整镜像（基于 `dsh-v0.2.1-rc.3`；rc.3↔rc.4 间 **docs/ 整目录零 diff**，镜像内容对 `dsh-v0.2.1-rc.4` 逐字成立；726 文件 / 10 子目录，含 upgrade-guide、persistence-changes、defensive-patterns；生成物 schema/目录 JSON 不收录） |
+| **官方文档** | `official-repo/` | GitHub 官方仓库 | docs/ 完整镜像（基于 `dsh-v0.2.1-rc.3`；rc.3↔rc.4 间 **docs/ 整目录零 diff**，镜像内容对 `dsh-v0.2.1-rc.4` 逐字成立；**rc.4↔rc.5 仅在 `docs/upgrade-guide/v0.2.1-rc.4/reasoning-body-props/` 新增 1 份三语 guide（其余 同基线零差异，本镜像未含 rc.5 新增部分，镜像可手动补或等下一轮基线刷新）**；726 文件 / 10 子目录，含 upgrade-guide、persistence-changes、defensive-patterns；生成物 schema/目录 JSON 不收录） |
 | **社区讨论** | `dsh-discussion-summary/` | GitHub Discussions 6321 篇 | 高质量帖子、bug 分析、插件仓库归类、增量批次 |
-| **源码解析** | `source-analysis/` | StudyDocs + 各版本 CHANGELOG | 架构总览 + 模块深度解析（v0.1.0-rc.5 首版 / v0.2.1-rc.4 最新；0.1.6 起为大版本增量目录链） |
+| **源码解析** | `source-analysis/` | StudyDocs + 各版本 CHANGELOG | 架构总览 + 模块深度解析（v0.1.0-rc.5 首版 / v0.2.1-rc.5 最新；0.1.6 起为大版本增量目录链） |
 | **插件框架** | `plugin-framework/` | 开发实践文档 | 文件结构、版本策略、兼容性、投稿指南、插件骨架模板 |
 
 此外还有：
@@ -110,7 +110,8 @@ dsh-docs-deliverables/
 │   ├── v0.2.1-rc.1/                     ← 纯版本 bump（含 0.2.0-rc.2→0.2.1-rc.1 全程缝隙总账）
 │   ├── v0.2.1-rc.2/                     ← 两新包进门（web-deepseek-api / model-label-1017）；契约面零断裂（provider 钉选 volatile 化除外）
 │   ├── v0.2.1-rc.3/                     ← 导航条目自定义（slot +3）；New Session 空白复用（官方指南 1 篇）；DeepSeek 跟官方 /models
-│   ├── v0.2.1-rc.4/                     ← 0.2.1 线尾版：纯修复车：页签 tooltip 精化 + ACP stdout 保留×2；契约面零 diff
+│   ├── v0.2.1-rc.4/                     ← 纯修复车：页签 tooltip 精化 + ACP stdout 保留×2；契约面零 diff
+│   ├── v0.2.1-rc.5/                     ← 0.2.1 线现尾版（PR #7572）：契约精化车——reasoning body slot 换代（`rawText` 新增 + `text` 语义反转）；闸门/seams 零 diff；指南 1 篇
 │   ├── v0.2.2-alpha.2/                  ← 【动态登记，非全量分析】0.2.2 线首 tag（现 master tip，2026-10-28）：换代段，缝隙四件套待做；alpha.1 未发布
 │   ├── v0.1.5-rc.1/changelog-alpha1-rc1.md  ← alpha.1 → rc.1 变更
 │   ├── v0.1.5-alpha.1/CHANGELOG.md
@@ -169,7 +170,7 @@ dsh-docs-deliverables/
 
 ### 深度研究路径
 
-1. `source-analysis/v0.2.1-rc.4/` — **最新**增量分析（纯修复车：页签 tooltip 估算溢出才挂 + More 文案静态化 + ACP stdout 保留×2；契约面零 diff）；增量链：`v0.2.1-rc.3/`（导航条目自定义 + New Session 空白复用官方指南 + DeepSeek 跟官方 /models）← `v0.2.1-rc.2/` ← `v0.2.1-rc.1/` ← `v0.2.1-alpha.5/` ← `v0.2.1-alpha.4/`（闸门换代）← `v0.2.1-alpha.3/`（RBAC/CUA）← `v0.2.1-alpha.2/`（编排换代）← `v0.2.1-alpha.1/`（挂载制/mods 桥）← `v0.2.0-rc.2/` ← `v0.2.0-rc.1/` ← `v0.1.7-rc.2/` ← `v0.1.7-rc.1/`（契约换代 14 篇）← `v0.1.6-alpha.1/`（能力族 14 篇）
+1. `source-analysis/v0.2.1-rc.5/` — **最新**增量分析（契约精化车：reasoning body slot `rawText` 新增 + `text` 语义反转 + `ReasoningContentInput` 脱钩；闸门/seams/持久化零 diff；唯一作者面向 breaking，不注入 body slot 者代码零改动）；`v0.2.1-rc.4/`（纯修复车：页签 tooltip 估算溢出才挂 + More 文案静态化 + ACP stdout 保留×2；契约面零 diff）；增量链：`v0.2.1-rc.3/`（导航条目自定义 + New Session 空白复用官方指南 + DeepSeek 跟官方 /models）← `v0.2.1-rc.2/` ← `v0.2.1-rc.1/` ← `v0.2.1-alpha.5/` ← `v0.2.1-alpha.4/`（闸门换代）← `v0.2.1-alpha.3/`（RBAC/CUA）← `v0.2.1-alpha.2/`（编排换代）← `v0.2.1-alpha.1/`（挂载制/mods 桥）← `v0.2.0-rc.2/` ← `v0.2.0-rc.1/` ← `v0.1.7-rc.2/` ← `v0.1.7-rc.1/`（契约换代 14 篇）← `v0.1.6-alpha.1/`（能力族 14 篇）
 2. `source-analysis/v0.1.5-rc.2/` — 模块详解（13 篇，含插件迁移指引）；`source-analysis/v0.1.0-rc.5/` — 首版模块详解（14 篇，架构基线）
 3. `official-repo/docs/subsystems/` — 子系统官方文档（201 文件，中英对 + i18n）
 4. `dsh-015-notes.md` — 版本演进脉络
@@ -178,8 +179,8 @@ dsh-docs-deliverables/
 
 ## 版本说明
 
-- **官方文档镜像**: 基线 `dsh-v0.2.1-rc.3`（2026-10-23；rc.3↔rc.4 间 docs/ 整目录零 diff，镜像对 `dsh-v0.2.1-rc.4`（`504a01a957`，2026-10-26）仍逐字成立；含 upgrade-guide / persistence-changes / defensive-patterns，生成 schema/目录 JSON 不收录）
-- **源码解析**: 首版基于 v0.1.0-rc.5 快照；**最新全量分析为 v0.2.1-rc.4**（0.2.1 线各版四件套 + 插件迁移指引）；另附 rc.7 / 0.1.1-rc.2 / 0.1.2-rc.1 / 0.1.3-alpha.2 / 0.1.5-alpha.1 / 0.1.5-rc.1 的 CHANGELOG；**v0.2.2-alpha.2（现 master tip，2026-10-28）已登动态条目，全量缝隙分析待做**
+- **官方文档镜像**: 基线 `dsh-v0.2.1-rc.3`（2026-10-23；rc.3↔rc.4 间 docs/ 整目录零 diff，镜像对 `dsh-v0.2.1-rc.4`（`504a01a957`，2026-10-26）仍逐字成立；rc.4↔rc.5 仅在 `docs/upgrade-guide/v0.2.1-rc.4/reasoning-body-props/` 新增一份三语 guide，镜像未同步拉取该新增（可手动补或待下次基线刷新）； 含 upgrade-guide / persistence-changes / defensive-patterns，生成 schema/目录 JSON 不收录）
+- **源码解析**: 首版基于 v0.1.0-rc.5 快照；**最新全量分析为 v0.2.1-rc.5**（0.2.1 线各版四件套 + 插件迁移指引，rc.5 = 契约精化车唯一作者面向 breaking）；另附 rc.7 / 0.1.1-rc.2 / 0.1.2-rc.1 / 0.1.3-alpha.2 / 0.1.5-alpha.1 / 0.1.5-rc.1 的 CHANGELOG；**v0.2.2-alpha.2（现 master tip，2026-10-27）已登动态条目，全量缝隙分析待做**
 - **社区讨论**: 基于 GitHub Discussions **6321 篇**帖子（#13–#6442）
 - **DSH 运行版本**: 0.1.1-rc.2（主机环境）
 
