@@ -62,6 +62,8 @@ dsh plugin --profile web add /path/to/your-plugin
 | [client-ui-extension-seams.md](client-ui-extension-seams.md) | 客户端 UI 扩展接缝（源码实证） | 贡献自定义权限档位时的图标缺失、选中态文字回退、风险确认不触发 |
 | **[plugin-install-and-client-seams.md](plugin-install-and-client-seams.md)** | **「装了但不显示」的四层注册链（源码实证）** | **包已放进 node_modules、profile 的 cordis.patch.yml 也写了 `- id:`，插件却毫无踪影且不报错：④ 层里最静默的是 `dsh.profile.bundles`（只有 `dsh plugin add` 会自动维护）——附 `--dump-config` 离线验证法与客户端 `__ModuleLoader__` 三条硬契约** |
 | **[command-registration-audit/](command-registration-audit/)** | **客户端命令注册契约检查（案例复盘 + 检查工具）** | **`/` 菜单里命令集体消失、控制台 `contribution.description is not a function`：注册期零校验 → 候选期抛错 → source 级降级。含 L1 静态 + L2 沙箱双层检查器与 16 条自测** |
+| **[electron-host-constraints-case.md](electron-host-constraints-case.md)** | **Electron 宿主限制的成因分层（案例版，源：prime-memory）** | **插件在 Desktop 里以奇怪方式崩 / 装不上 / 依赖不跑：先分因（库机制 / 运行时 / 宿主装配），再开药。含 macOS SIGTRAP、asar 内原生模块、ABI、desktop profile 独占、`pluginDependencies` 装≠跑，以及三项「本机不可终判」项** |
+| **[execution-scale-ledger-case.md](execution-scale-ledger-case.md)** | **执行资源规模控制六面（案例版，源：prime-memory #22）** | **要写「一次处理很多条 / 很长一段」的插件：分批/隔离/自愈/熔断/队列/留痕六面不变量、十行面间冲突裁决、八条被否决方案与实测口径** |
 | **[i18n-multilingual-guide.md](i18n-multilingual-guide.md)** | **多语言适配（zh/en 内置 + ja/ko 第三语言）** | **插件要支持日语/韩语：字典拆分、`locale.register` 注册、`addLanguage` 语言包、HMR 回收与验证清单** |
 | [submission-guide.md](submission-guide.md) | awesome-dsh-plugin 投稿 | 向市场提交插件的完整步骤 |
 | [../source-analysis/v0.2.0-rc.1/15-creator-mode-guidance.md](../source-analysis/v0.2.0-rc.1/15-creator-mode-guidance.md) | 创造模式插件指引与 prompt 演进 | 官方创造模式（cordis preset）引导 agent 写插件的现行机制：#4745 prompt 精简（规则搬家对照表）、渐进式 skill 结构（references/ + templates/）、8192 字符阈值与验证清单 |
@@ -81,6 +83,7 @@ dsh plugin --profile web add /path/to/your-plugin
 7. **做多语言**：要让插件的 ja/ko 文案跟随语言切换，参照 [i18n-multilingual-guide.md](i18n-multilingual-guide.md)
 8. **发布市场**：参照 [submission-guide.md](submission-guide.md) 向 awesome-dsh-plugin 投稿
 9. **注册命令后自检**：插件注册了 `/` 命令时，用 [command-registration-audit/](command-registration-audit/) 的工具扫一遍——`description` 必须是函数，写错会让**整个命令菜单**静默消失
+10. **有重活 / 要跑 Desktop**：插件要加载原生模块、起子进程、调 LLM 批处理或做后台填充时，先读 [electron-host-constraints-case.md](electron-host-constraints-case.md) 与 [execution-scale-ledger-case.md](execution-scale-ledger-case.md)——这两篇是「崩得莫名其妙 / 功能静默为空 / 后台把前台卡住」的高频根因
 
 ## 核心概念
 
