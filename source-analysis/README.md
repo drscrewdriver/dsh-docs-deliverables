@@ -31,8 +31,9 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | v0.2.1-rc.5 | `v0.2.1-rc.5/` | 待考 | ⭐⭐⭐ | **契约精化车（0.2.1 线现尾版，PR #7572）**：368 文件中 349 仅版本行，实质 19 文件（含 3 语 guide + 3 语 README + 13 源/测）；**唯一作者面向 breaking** = slot `conversation.chat.reasoning.body` 的 `ReasoningBodyOwnerProps` **新增必填 `rawText: string`** + `text` 字段**语义反转**（从原始模型输出 → Chat 处理后展示文本）；`ReasoningContentInput` **不再 `extends ReasoningBodyOwnerProps`**（字段独立化，Factory 签名不变）；新增内部模块 `reasoning-text.ts`；官方 cot-translation 示范迁移（只改 JSDoc、代码 `props.text` 不动，因其本即展示文本消费方）；**闸门/capability-seams/slot key 集合/settings 核心/vendor/docs-persistence 零 diff**；**官方升级指南 1 篇**（目录 `v0.2.1-rc.4/reasoning-body-props/`——按迁移源命名）；**commit 数浅克隆 graft 下不可考**，同三元组 caret 免动、枚举串需加 rc.5 行 |
 | v0.2.2-alpha.2 | `v0.2.2-alpha.2/` | 待考 | ⭐⭐⭐⭐⭐ | **0.2.2 线首个已发布 tag（原 master tip `f3803c9697`，2026-10-28，npm 挂 `alpha` 标）——换代级大段，本目录仅动态登记、四件套未做**：树级 7242 files +311k/−696k（commit 数浅克隆下不可考）；闸门两文件仍零 diff；能力缝 +50 行（forge/liveshare/action-cards/pluginRecommendations/cuaAccess/headlessStartup 新缝族）；≥26 新包（forge 族/tool-executor 拆分/message-quotes/file-drag 等）；upgrade-guide **集中补挂 +39 篇**（含 rc.2×31、rc.3×6、rc.4/model-listing-refresh）；**⚠ 0.2.2-alpha.1 在 git/npm 均不存在（未对外发布）**；SESSION_FORMAT_VERSION 仍 4 |
 | v0.2.2-alpha.3 | `v0.2.2-alpha.3/` | 待考 | ⭐⭐⭐⭐ | **0.2.2 线第二版（`05b1cae8db`，2026-11-03，npm `alpha` 标现指此版）——功能交付段、无兼容面换代**：a.2→a.3 树级 2315 files +87k/−27k；闸门/slot-catalog/持久化/设置核心**零 diff**；能力缝 +6/−3（新 `ctx.sessionLogDeepSeek`）；+3 新包（ui-context-menu/ui-file-actions/fs-patch）；**17 篇官方指南新增**（13 篇 v0.2.2 线、4 篇 rc 补挂）；**行为 breaking ×1**：`fs-observation-policy` 默认关闭（write/edit 不再强制先 read）+ `apply_patch` 工具进门；SDK `onUserQuestion` 返回值加宽（+`{cancelled:true}`）、`RunResult.finishReason` 新增；Schedule 公共类型面重写；cordis loader/include 换代；`next` 标已指 0.2.2-rc.1；SESSION_FORMAT_VERSION 仍 4 |
+| v0.2.2-rc.1 | `v0.2.2-rc.1/` | +0 | ⭐ | **纯版本 bump（PR #7870，`66491b05e3`，2026-11-04）——现 npm `latest`（从 0.2.1-rc.5 切换至此，0.2.2 线接掌稳定通道）**：387 个 package.json 版本行从 0.2.2-alpha.3 改 0.2.2-rc.1，零代码面变化；对插件唯一意义是 runtime 字符串变 `0.2.2-rc.1` 的命中判定（枚举式清单需加行，caret 免动）；功能面即 alpha.3，见其 README |
 
-> **未覆盖的中间版本**：`dsh-v0.1.5-rc.3`（3 commits）、`dsh-v0.1.6-alpha.2`（887）、`dsh-v0.1.7-alpha.1`（1299）、`dsh-v0.1.7-alpha.2`（162）尚无独立目录。`0.1.7-rc.1` 的文档已把 `0.1.6-alpha.1 → 0.1.7-rc.1` 的 2504 commits 全部纳入（区间包含上述中间版本）；`0.1.7-rc.2` 至 **`0.2.1-rc.5`** 各线尾版均有独立目录。**0.2.0-rc.2 → 0.2.1-rc.5 全线无分析空白**（相邻 tag 间均无中间 tag）。0.2.2 线：a.2/a.3 已有动态登记目录；**`next` 标已指 0.2.2-rc.1**（`66491b05e3`）尚无目录。
+> **未覆盖的中间版本**：`dsh-v0.1.5-rc.3`（3 commits）、`dsh-v0.1.6-alpha.2`（887）、`dsh-v0.1.7-alpha.1`（1299）、`dsh-v0.1.7-alpha.2`（162）尚无独立目录。`0.1.7-rc.1` 的文档已把 `0.1.6-alpha.1 → 0.1.7-rc.1` 的 2504 commits 全部纳入（区间包含上述中间版本）；`0.1.7-rc.2` 至 **`0.2.1-rc.5`** 各线尾版均有独立目录。**0.2.0-rc.2 → 0.2.1-rc.5 全线无分析空白**。0.2.2 线：a.2/a.3/rc.1 均已有动态登记目录；**现 `latest`=0.2.2-rc.1**。
 
 > 版本变更详情（0.1.1→0.1.5 完整提交级记录）参见 [dsh-015-notes.md](../dsh-015-notes.md)。
 
@@ -62,6 +63,7 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | 0.2.1-rc.4 → 0.2.1-rc.5 | 🟡 中 | **契约精化车——唯一作者面向 breaking**：slot `conversation.chat.reasoning.body` 的 `ReasoningBodyOwnerProps` 新增必填 `rawText: string`，**`text` 语义反转**（原始输出→Chat 处理后展示文本）——把 `text` 当 raw 用（正则/字数/复制/二次翻译源）的自定义 renderer **静默漂移**，必须切 `rawText`；`ReasoningContentInput` 不再 `extends ReasoningBodyOwnerProps`（Factory 签名不变，但泛型约束断链）；官方 cot-translation 只改 JSDoc，代码 `props.text` 未动（展示文本消费方兼容）；**闸门/capability-seams/slot key 集合/settings 核心/vendor/持久化 零 diff**；官方指南 1 篇（`v0.2.1-rc.4/reasoning-body-props/`）；不注入 reasoning.body 的插件代码零改动；枚举式清单加 `0.2.1-rc.5` 行、caret `^0.2.1-alpha.1` 免动；commit 数浅克隆下不可考 |
 | 0.2.1-rc.4 → 0.2.2-alpha.2 | 🔴 待析 | **0.2.2 换代段（动态登记，分析未做；与 0.2.1-rc.5 并行分叉，非直连）**：树级 7242 files +311k/−696k（commit 数浅克隆下不可考）；闸门零 diff（装载判据不变，未列 0.2.2 的枚举串在 a.2 宿主仍拒载）；新缝族 forge/liveshare/action-cards 等；≥26 新包；指南补挂 +39 篇；插件影响面待逐主题核，**跟进前勿盲补枚举** |
 | 0.2.2-alpha.2 → 0.2.2-alpha.3 | 🟡 中 | **功能交付段，无兼容面换代**（闸门/slot/持久化/settings 核心零 diff）；**行为 breaking ×1**：`fs-observation-policy` 默认 disabled → write/edit 不再强制先 read、`apply_patch` 工具进门——依赖 `FS_NOT_OBSERVED` 拒绝逻辑的插件需自查；SDK 加宽（`onUserQuestion` 返 `SdkUserQuestionResult` 含 `{cancelled}`、`RunResult.finishReason`）；Schedule 公共类型面重写；cordis `EntryTree.write()` 删除→`commit(change)`；+3 新包；新缝 `ctx.sessionLogDeepSeek`；指南 +17 篇；commit 数浅克隆不可考 |
+| 0.2.2-alpha.3 → 0.2.2-rc.1 | 🟢 低 | **纯版本 bump**（387 个 package.json 版本行，零代码面变化）；**`latest` 从 0.2.1-rc.5 切换至本版（0.2.2 线接掌稳定通道）**；唯一动作：枚举式清单加 `0.2.2-rc.1` 行，caret `^0.2.2-alpha.1` 免动；功能面与 alpha.3 完全相同 |
 
 ## 推荐阅读路径
 
@@ -82,7 +84,7 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 13. **v0.2.1-rc.3** — 导航条目自定义车（三域 pins/隐藏/More + slot×3；**New Session 空白复用带官方指南 1 篇——本段唯一语义级行为变化**；DeepSeek 模型跟官方 /models）
 14. **v0.2.1-rc.4** — 纯修复车（契约面全零；页签 tooltip 精化 + ACP stdout 保留给协议消息×2；只伤 DOM 探针文案锚与 stdout 日志抓取面）
 15. **v0.2.1-rc.5** — 契约精化车（0.2.1 线现尾版；**reasoning body slot 换代**——`rawText` 新增 + `text` 语义反转 + `ReasoningContentInput` 脱钩；注入 body slot 且把 `text` 当 raw 用的插件必须切；其余面全零）
-16. **v0.2.2-alpha.2 → alpha.3** — 0.2.2 线功能段（换代大段后的首个增量：闸门/slot/持久化零 diff；`fs-observation-policy` 默认关；SDK 命令系统 + Schedule 重写 + cordis loader 换代；待全量缝隙分析后裁定跟进策略）
+16. **v0.2.2-alpha.2 → rc.1** — 0.2.2 线（换代大段 + 功能交付 + 纯 bump 接掌 latest；闸门/slot/持久化零 diff；`fs-observation-policy` 默认关为唯一行为 breaking；SDK命令系统 + Schedule重写 + cordis loader换代；待全量缝隙分析后裁定跟进策略）
 
 ### 按角色
 
@@ -255,11 +257,12 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 | `v0.2.1-rc.5/` | [README](v0.2.1-rc.5/README.md) · [CHANGELOG](v0.2.1-rc.5/CHANGELOG.md) · [diff-vs-0.2.1-rc.4](v0.2.1-rc.5/diff-vs-0.2.1-rc.4.md) · [migration](v0.2.1-rc.5/plugin-migration-guide.md) | **契约精化车（0.2.1 线现尾版）**：slot `conversation.chat.reasoning.body` 的 `ReasoningBodyOwnerProps` **新增必填 `rawText`** + **`text` 语义反转**（原始输出→展示文本）；`ReasoningContentInput` 脱钩；新增内部模块 `reasoning-text.ts`；闸门/seams/slot key 集合/vendor/持久化 零 diff；指南 1 篇（目录 `v0.2.1-rc.4/reasoning-body-props/`） |
 | `v0.2.2-alpha.2/` | [README](v0.2.2-alpha.2/README.md) | 0.2.2 线首 tag（动态登记，四件套未做）：7242 files +311k/−696k；闸门零 diff；缝 +50；≥26 新包；指南补挂 +39 |
 | `v0.2.2-alpha.3/` | [README](v0.2.2-alpha.3/README.md) | 0.2.2 线第二版（功能交付段）：2315 files；闸门/slot/持久化零 diff；**fs-observation-policy 默认关**；SDK命令系统/Schedule重写/cordis loader换代；指南 +17 篇 |
+| `v0.2.2-rc.1/` | [README](v0.2.2-rc.1/README.md) | 纯 bump（现 `latest`=本版）：387 package.json 版本行，零代码面变化；0.2.2 线接掌稳定通道 |
 
 ## 原始来源
 
-- 源码快照: `deepseek-harness/` 各 tag（本地已 fetch 至 **`dsh-v0.2.1-rc.5`**（`b830ec950f`，2026-10-29）、**`dsh-v0.2.2-alpha.2`**（`f3803c9697`，2026-10-27）、**`dsh-v0.2.2-alpha.3`**（`05b1cae8db`，2026-11-03，= origin/master tip 现指），均为 depth=1 浅拉；历史分析 worktree 已清理，逐 tag 直读用 `git show|grep <tag>`，对象库含 dsh-v0.2.1-alpha.1..rc.5 全 tag + dsh-v0.2.2-alpha.2 + dsh-v0.2.2-alpha.3）
-- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.2.1-rc.5`，及 `dsh-v0.2.2-alpha.2` / `dsh-v0.2.2-alpha.3`（**0.2.2 线无 alpha.1 tag**；`dsh-v0.2.2-rc.1` 已在远端但本地未拉）
+- 源码快照: `deepseek-harness/` 各 tag（本地已 fetch 至 **`dsh-v0.2.1-rc.5`**（`b830ec950f`，2026-10-29）、**`dsh-v0.2.2-alpha.2`**（`f3803c9697`，2026-10-27）、**`dsh-v0.2.2-alpha.3`**（`05b1cae8db`，2026-11-03）、**`dsh-v0.2.2-rc.1`**（`66491b05e3`，2026-11-04，= origin/master tip 现指），均为 depth=1 浅拉；对象库含 dsh-v0.2.1-alpha.1..rc.5 全 tag + dsh-v0.2.2-alpha.2/alpha.3/rc.1）
+- Git tags: `dsh-v0.1.0-rc.7` ~ `dsh-v0.2.1-rc.5`，及 `dsh-v0.2.2-alpha.2` / `dsh-v0.2.2-alpha.3` / `dsh-v0.2.2-rc.1`（**0.2.2 线无 alpha.1 tag**）
 - **跨版本综述**: `roadmap-0.1.5-to-0.1.7-rc.2.md`（0.1.5 → 0.1.6 → 0.1.7-rc.2 三阶段必要性总述）；`v0.2.1-rc.1/README.md` 内含 0.2.1 线缝隙总账；`v0.2.1-alpha.3/` 起为最新增量目录链
 - 侦察底稿: `_analysis_output/dsh016/RECON.md`（0.1.5-rc.2 → 0.1.6-alpha.1）、**`_analysis_output/dsh017/`**（`BRIEF.md` 写作规范 + `notes-added.txt` 区间新增 note 全清单 + `notes-index.txt`）
 - 原始文章: `详解/ 第01-12篇`
@@ -275,4 +278,4 @@ DeepSeek Harness 源码深度解析。按版本快照组织，每个版本包含
 
 ---
 
-*最后更新: 2026-11-05（四轮：拉取 0.2.2-alpha.3 (`05b1cae8db`，2026-11-03) 建动态登记——功能交付段、fs-observation-policy 默认关为唯一行为 breaking、闸门/slot/持久化仍零 diff；0.2.2 线尾版口径 a.2→a.3。上一轮 2026-10-31 三轮：补拉 rc.5 建四件套；2026-10-28 二轮：登记 0.2.2-alpha.2 动态 + 一轮 rc.4 四件套；2026-10-24 补拉 rc.3）*
+*最后更新: 2026-11-06（五轮：拉取 0.2.2-rc.1 (`66491b05e3`，2026-11-04，现 `latest`) 登记——纯 bump 387 package.json 零代码变化，0.2.2 线接掌稳定通道。上一轮 2026-11-05 四轮：拉取 alpha.3 建动态登记；三轮 2026-10-31 rc.5 四件套；二轮 2026-10-28 alpha.2 动态 + rc.4 四件套；2026-10-24 rc.3）*
