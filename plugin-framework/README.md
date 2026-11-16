@@ -50,8 +50,10 @@ dsh plugin --profile web add /path/to/your-plugin
 | [file-structure.md](file-structure.md) | 标准插件文件结构 | 新建插件时的文件组成参考 |
 | [distribution-strategy.md](distribution-strategy.md) | 版本分发策略 | 同一 npm 包名适配不同 DSH 版本 |
 | **[version-line-sync.md](version-line-sync.md)** | **多版本线同步（兼容分支治理）** | **主线前进、兼容线落后的定期同步：先量 merge 成本与独有价值，再选树对齐；把两线差异写成脚本 + 断言，用钉死的 SHA 当基线** |
-| [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径；**§二十一 = v0.1.6/0.1.7 源码实证速查；§二十二 = v0.2.0 速查（22.4 = 0.2.1-alpha.1 增量）；§二十三 = 会话导航静默删除** |
+| [compatibility-guide.md](compatibility-guide.md) | 兼容性指南 | peerDeps、breaking changes、升级路径；**§二十一 = v0.1.6/0.1.7 源码实证速查；§二十二 = v0.2.0 速查（22.4 = 0.2.1-alpha.1 增量）；§二十三 = 会话导航静默删除；§二十六 = v0.2.2 导出面删除接缝速查** |
 | **[v0.2.0-migration.md](v0.2.0-migration.md)** | **v0.2.0 迁移指南（可操作版）** | **无 API breaking，但 peer 世代门槛（`<0.2.0-0` 挡安装）、`displayTitle` 空串、`forkSession` / composer 契约扩展、`ctx.otel` / `ctx.productAnalytics` 新服务；§八 = rc.2 增量；§九 = 0.2.1-alpha.1 增量（Schedule 挂载制换代取代 §二处方 + subpath 显示与 invariants 必做项）** |
+| **[v0.2.1-migration.md](v0.2.1-migration.md)** | **0.2.1 线迁移总览（合并处方主文档）** | 0.1.7/0.2.0 → 0.2.1（alpha.1～rc.4）：闸门双时代判世代（纯 peer / engines.dsh 裁决）、逐段证据在 source-analysis/v0.2.1-* |
+| **[v0.2.2-migration.md](v0.2.2-migration.md)** | **0.2.2 线迁移总览（事故驱动）** | primitives `useAnchoredPosition` 导出面删除实测边界（rc.2，非指南标题版 alpha.2）；CSS Anchor 迁移三选一裁决；能力降级仅限 W3C 标准探测；peer 四条写法纪律 |
 | **[v0.1.7-migration.md](v0.1.7-migration.md)** | **v0.1.7 迁移指南（可操作版）** | **设置席位 API 换代（`installSection` 删除 → `configure`）、peer 范围强制（`engines.dsh` 无效）、`settings.yaml` 移除、`patchReload` 移除、HMR 改名、会话 V4、本地化显示元数据** |
 | **[v0.1.5-migration.md](v0.1.5-migration.md)** | **v0.1.5 迁移指南**（历史） | **Token/Permission/Inbox/Adapter 全面迁移**；其设置席位部分已被 v0.1.7 取代 |
 | **[v0.1.5-migration-addendum.md](v0.1.5-migration-addendum.md)** | **v0.1.5 迁移补充（实战校准）** | **插件启动 await、firehose seed 盲区、设置席位单注册、peer 预发布陷阱、宿主 LLM 目录接缝** |
@@ -151,3 +153,4 @@ v0.1.5 的插件迁移深度指南参见：[source-analysis/v0.1.5-rc.2/plugin-m
 *文档生成时间：2026-09-12*
 *数据源：`deepseek-ai/deepseek-harness` 仓库 `dsh-v0.1.5-alpha.1` ~ `dsh-v0.1.5-rc.2`*
 *2026-09-29 更新：检出推进至 `dsh-v0.2.0-rc.1`（`4878cdabd8`）；新增 v0.2.0-migration.md、compatibility-guide §二十二、upgrade-pitfalls §九*
+*2026-11-16 更新：0.2.2 线补档——新增 v0.2.1-migration.md（此前漏登记）与 v0.2.2-migration.md（事故驱动：primitives 导出面删除实测边界 rc.2、CSS Anchor 迁移裁决、peer 四条写法纪律）；compatibility-guide 追加 §二十六*

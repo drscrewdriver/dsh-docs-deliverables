@@ -1387,3 +1387,40 @@ git -C $repo diff --shortstat dsh-v0.2.1-alpha.4..dsh-v0.2.1-rc.1   -- packages/
 # rc.1 = 纯 bump
 git -C $repo diff --name-only dsh-v0.2.1-alpha.5..dsh-v0.2.1-rc.1 | grep -v 'package.json$'                              # 空集
 ```
+
+## 二十六、v0.2.2 线接缝速查（2026-11-16，事故驱动补档）
+
+> 来源：dsh-live-token-stats 在 0.2.2-rc.3 宿主的 `useAnchoredPosition is not a function` 崩溃全链路取证（上游 PR #16/#17/#19 链）。本节补的是**导出面删除**这一类接缝——§二十二~二十五的差分方法（diff 包结构/闸门文件）对它不可见：API 从既有包里消失不产生包增删，也不碰 plugin-compatibility.ts。
+> 全量处方见 [v0.2.2-migration.md](v0.2.2-migration.md)；本节只存结论与判据。
+
+### 26.1 primitives 导出面实测（npm pack 解析 lib/index.js 的 export{} 块）
+
+| 版本 | useAnchoredPosition | useDismissOnOutsidePointer |
+|---|---|---|
+| ≤0.2.1-rc.5 | 存在 | 存在 |
+| 0.2.2-alpha.2 / alpha.3 / rc.1 | **仍存在** | 存在 |
+| **0.2.2-rc.2 / rc.3** | **移除** | 存在 |
+
+- 官方指南目录 `v0.2.2-alpha.2/css-anchored-menus/` 是**意图时点**；导出面落地在 **rc.2**。peer 上下界照指南标题版写会误挡 3 个仍兼容宿主——**边界必须真包实测，不抄文档标题**。
+- 同包其它导出（图标、dismiss hook）全程未动：迁移时顺手给仍存在的导出写兜底 = 死代码。
+
+### 26.2 被删 API 的三选一裁决
+
+| 路线 | 判定 |
+|---|---|
+| 运行时 `typeof` 探测 + 自实现 fallback（=旧 §2.1 模式） | ❌ 探测**包私有导出**吞掉 peer 破坏，门禁永久失效；本库 §2 的时代局限由本节取代：仅限**同线 optional 能力**，跨线删除一律声明拦截 |
+| 代码不动、peer 截在删除版之前 | ❌ 新宿主拒载，功能消失 |
+| 迁 CSS Anchor Positioning + peer 同步翻线（`>=0.2.2-rc.2 <0.3.0-0`） | ✅ 纯 CSS 不依赖 primitives 导出，天然跨宿主线 |
+
+能力降级**只允许**探测 W3C 标准（`CSS.supports('anchor-name: --probe')`）：桌面宿主 Electron ≥44（Chromium ~150）恒支持，但 `--profile web` 远程态跑在用户自选浏览器里，锚点支持无保证——分支按此态保留，非空集。
+
+### 26.3 peer 写法纪律汇总（本轮四条沉淀）
+
+1. 宿主口径 `includePrerelease:true`（§21.4）→ caret 是跨线假声明，显式上下界唯一安全。
+2. 上界写 `-0`（`<0.3.0-0`），否则 `0.3.0-rc.*` 漏进。
+3. 边界版本以**真包导出面**为准，不以指南/CHANGELOG 标题为准。
+4. 代码迁移与 peer 翻面**同一变更落成对**，只改一边都是非法态。
+
+### 26.4 0.2.2 线其余变更索引
+
+rc.2 大重构车（seams 8 面重排 / 包 +6−5 / cookie 431 修复）与 rc.3 小补丁车（deepseekChatImport）详 [../source-analysis/v0.2.2-rc.2/README.md](../source-analysis/v0.2.2-rc.2/README.md)、[../source-analysis/v0.2.2-rc.3/README.md](../source-analysis/v0.2.2-rc.3/README.md)；闸门全线零 diff，§21.4/§25.2 规则原样适用。
