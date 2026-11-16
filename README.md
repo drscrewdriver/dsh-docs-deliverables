@@ -127,7 +127,7 @@ dsh-docs-deliverables/
 │   ├── compatibility-guide.md          ← 兼容性指南
 │   ├── submission-guide.md             ← awesome-dsh-plugin 投稿步骤
 │   ├── v0.1.5-migration.md             ← 0.1.5 插件迁移专项
-│   ├── v0.2.2-migration.md             ← 0.2.2 线迁移总览（primitives 导出面删除实测 + CSS Anchor 裁决；v0.1.7/0.2.0/0.2.1 迁移文件在仓未登记，存量缺口）
+│   ├── v0.2.2-migration.md             ← 0.2.2 线迁移总览（primitives 导出面删除实测 + CSS Anchor 裁决；本树仅精选，plugin-framework/ 全量索引见其 README）
 │   └── dsh-plugin-template/            ← 可直接复制的插件骨架（含 client 半包）
 │
 ├── website-reference-en/               ← 英文网站 reference 索引

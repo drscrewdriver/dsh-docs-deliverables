@@ -153,4 +153,4 @@ v0.1.5 的插件迁移深度指南参见：[source-analysis/v0.1.5-rc.2/plugin-m
 *文档生成时间：2026-09-12*
 *数据源：`deepseek-ai/deepseek-harness` 仓库 `dsh-v0.1.5-alpha.1` ~ `dsh-v0.1.5-rc.2`*
 *2026-09-29 更新：检出推进至 `dsh-v0.2.0-rc.1`（`4878cdabd8`）；新增 v0.2.0-migration.md、compatibility-guide §二十二、upgrade-pitfalls §九*
-*2026-11-16 更新：0.2.2 线补档——新增 v0.2.1-migration.md（此前漏登记）与 v0.2.2-migration.md（事故驱动：primitives 导出面删除实测边界 rc.2、CSS Anchor 迁移裁决、peer 四条写法纪律）；compatibility-guide 追加 §二十六*
+*2026-11-16 更新：0.2.2 线补档——新增 v0.2.1-migration.md（回溯补写）与 v0.2.2-migration.md（事故驱动：primitives 导出面删除实测边界 rc.2、CSS Anchor 迁移裁决、peer 四条写法纪律）；compatibility-guide 追加 §二十六*
